@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
-    public ClientEntity findByRut(String rut);
+    public ClientEntity findByRut(String client_rut);
 
     List<ClientEntity> findByMail(String mail);
 }

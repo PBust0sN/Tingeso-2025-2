@@ -7,6 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface RecordsRepository extends JpaRepository<RecordsEntity, Long> {
-    public List<RecordsEntity> findByRecord_date(Date record_date);
-    public List<RecordsEntity> findByRecord_type(String record_type);
+    public List<RecordsEntity> findByRecordDate(Date record_date);
+    public List<RecordsEntity> findByRecordType(String record_type);
 }

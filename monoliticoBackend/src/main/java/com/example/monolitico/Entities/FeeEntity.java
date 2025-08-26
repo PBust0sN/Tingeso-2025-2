@@ -17,7 +17,7 @@ public class FeeEntity {
     @Column(unique = true, nullable = false)
     private Long fee_id;
 
-    private String fee_type;
+    private String feeType;
     private Double amount;
     private Long extra_charges;
     private String description;

@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LoansRepository extends JpaRepository<LoansEntity, Long> {
-    public List<LoansEntity> findByUser_responsable(String responsable);
+    public List<LoansEntity> findByUserResponsable(String responsable);
 
 }

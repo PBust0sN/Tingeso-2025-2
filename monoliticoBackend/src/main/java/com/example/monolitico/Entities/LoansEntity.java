@@ -23,5 +23,5 @@ public class LoansEntity {
     private Date return_date;
     private String loan_type;
     private Date date;
-    private String user_responsable;
+    private String userResponsable;
 }

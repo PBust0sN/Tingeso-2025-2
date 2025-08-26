@@ -17,7 +17,7 @@ public class ClientEntity {
     @Column(unique = true, nullable = false)
     private Long client_id;
 
-    private Long client_rut;
+    private String rut;
     private String name;
     private String last_name;
     private String mail;

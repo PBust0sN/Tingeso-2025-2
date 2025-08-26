@@ -19,8 +19,8 @@ public class RecordsEntity {
     @Column(unique = true, nullable = false)
     private Long record_id;
 
-    private Date record_date;
+    private Date recordDate;
     private String description;
-    private String record_type;
+    private String recordType;
     private Double record_amount;
 }

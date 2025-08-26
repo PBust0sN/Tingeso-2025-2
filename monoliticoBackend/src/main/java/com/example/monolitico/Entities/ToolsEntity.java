@@ -17,7 +17,7 @@ public class ToolsEntity {
     @Column(unique = true, nullable = false)
     private Long tool_id;
 
-    private String tool_name;
+    private String toolName;
     private String initial_state;
     private String disponibility;
     private String category;

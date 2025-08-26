@@ -17,7 +17,7 @@ public class StaffEntity {
     @Column(unique = true, nullable = false)
     private Long staff_id;
 
-    private String staff_rut;
+    private String staffRut;
     private String staff_name;
-    private String staff_mail;
+    private String staffMail;
 }
