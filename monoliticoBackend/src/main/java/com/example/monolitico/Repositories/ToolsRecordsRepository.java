@@ -10,5 +10,5 @@ import java.util.List;
 public interface ToolsRecordsRepository extends JpaRepository<ToolsRecordsEntity,Long> {
 
     public List<ToolsRecordsEntity> findByToolId(Long toolId);
-    public List<ToolsRecordsEntity> findByRecordIdId(Long recordId);
+    public List<ToolsRecordsEntity> findByRecordId(Long recordId);
 }

@@ -25,4 +25,6 @@ public class LoansEntity {
     private Date date;
     private Long staffId;
     private Long clientId;
+    private Long amount;
+    private Long extraCharges;
 }
