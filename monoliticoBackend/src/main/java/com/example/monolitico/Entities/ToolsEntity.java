@@ -22,6 +22,6 @@ public class ToolsEntity {
     private String disponibility;
     private String category;
     private Long loanFee;
-    private Long repostitionFee;
+    private Long repositionFee;
     private Long diaryFineFee;
 }

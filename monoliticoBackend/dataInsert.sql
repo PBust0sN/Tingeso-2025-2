@@ -17,10 +17,10 @@ INSERT INTO staff(staff_id, role_id, staff_mail, staff_name, staff_rut, password
 (3, 2,'ortiz.marco@gmail.com', 'Marco Ortiz', '12765456-2', 'WindowsEnyoyer');
 
 INSERT INTO loans(loan_id, client_id, staff_id, loan_type, date, delivery_date, return_date, amount, extra_charges) VALUES
-(1, 1, 2, 'loan', '2025-08-25', '2025-09-25', '2025-09-09', , 0),
-(2, 2, 2, 'loan', '2025-07-23', '2025-07-23', '2025-08-02', , 0),
-(3, 3, 3, 'loan', '2025-07-31', '2025-07-31', '2025-08-15', ,0),
-(4, 2, 3, 'return', '2025-08-17', '2025-08-17', '2025-08-17', ,0);
+(1, 1, 2, 'loan', '2025-08-25', '2025-09-25', '2025-09-09', 5000, 0),
+(2, 2, 2, 'loan', '2025-07-23', '2025-07-23', '2025-08-02', 3000, 0),
+(3, 3, 3, 'loan', '2025-07-31', '2025-07-31', '2025-08-15', 5000,0),
+(4, 2, 3, 'return', '2025-08-17', '2025-08-17', '2025-08-17', 0,0);
 
 -- Disponible, Prestada, En reparación, Dada de baja, (INITIAL STATES)
 -- REPOSITION VALUES ARE IN CLP
@@ -31,11 +31,23 @@ INSERT INTO tools(tool_id, category, tool_name, initial_state, disponibility, re
 (4, 'Fierro', 'Fierro A-63 12x12 mm 6mm', 'Disponible', 'Disponible', 15000, 5000, 800),
 (5, 'Pasamanos y Barandas', 'Pasamanos redondo Aluminio negro 150 cm', 'Disponible', 'Disponible', 6000, 2000, 100);
 
-INSERT INTO tools_loans(tools_loan_id, tool_id, loan_id) VALUES
+INSERT INTO tools_loans(id, tool_id, loan_id) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 1, 2),
 (4, 4, 3),
 (5, 5, 4);
 
+-- record_types (registro nuevas herramientas, préstamo, devolución, baja, reparación)
+INSERT INTO records(record_id, client_id, loan_id, record_date, record_amount, record_type) VALUES
+(1, 1, 1, '2025-08-25', 5000, 'loan'),
+(2, 2, 2, '2025-07-23', 3000, 'loan'),
+(3, 3, 3, '2025-07-31', 5000, 'loan'),
+(4, 2, 4, '2025-08-17', 0, 'return');
+
+INSERT INTO client_loans(id_client_loans, client_id, loan_id) VALUES
+(1,1, 1),
+(2, 2, 2),
+(3, 2,4),
+(4, 3,3);
 

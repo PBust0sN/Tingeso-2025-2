@@ -20,9 +20,8 @@ public class RecordsEntity {
     private Long recordId;
 
     private Date recordDate;
-    private String description;
     private String recordType;
-    private Double recordAmount;
+    private Long recordAmount;
     private Long clientId;
     private Long loanId;
 }
