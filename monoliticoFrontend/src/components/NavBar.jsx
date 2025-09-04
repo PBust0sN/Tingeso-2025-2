@@ -17,8 +17,17 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ 
+      flexGrow: 1 ,
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      zIndex: 1000,
+    }}>
+      <AppBar position="static"
+        sx={{ backgroundColor: "#b0010176"}}
+        >
         <Toolbar>
           <IconButton
             size="large"
@@ -32,9 +41,9 @@ export default function Navbar() {
           </IconButton>
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            SisGR: Sistema de Gestión Remuneraciones
+            ToolRent: Sistema de Renta De Herramientas
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button variant="outlined" color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
 

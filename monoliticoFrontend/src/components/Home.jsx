@@ -2,37 +2,51 @@ import { Container, Typography, Button, Box, Card, CardContent } from "@mui/mate
 
 const Home = () => {
     return (
-        <Container maxWidth="md" sx={{ mt: 5 }}>
-      {/* Título principal */}
-      <Typography variant="h3" align="center" gutterBottom>
-        Bienvenido a mi Página 🚀
+      <Box sx = {{position: "relative"}}>
+        <Box 
+      sx={{
+        position: "fixed",                // ocupa toda la ventana
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",               // altura total de la ventana                     // ancho total de la ventana
+        backgroundImage: `url("/fondo.jpg")`,
+        backgroundSize: "cover",            // cubre toda la pantalla
+        backgroundPosition: "center",       // centrada
+        backgroundRepeat: "no-repeat",  
+        overflow: "hidden",     // no se repite
+        display: "flex",                    // para centrar contenido
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        textAlign: "center",
+        filter: "blur(8px)"
+      }}
+    >
+    </Box>
+    <Box
+      sx={{
+        position: "relative",
+        zIndex: 1,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        textAlign: "center",
+      }}
+      >
+      <Typography variant="h3" gutterBottom>
+        Bienvenido Al Sistema de Renta de Herramientas Tool Rent
       </Typography>
-
-      {/* Subtítulo */}
-      <Typography variant="h6" align="center" color="text.secondary" gutterBottom>
-        Esta es la página de inicio hecha con React y Material UI
-      </Typography>
-
-      {/* Tarjeta de ejemplo */}
-      <Card sx={{ mt: 4, p: 2 }}>
-        <CardContent>
-          <Typography variant="h5" gutterBottom>
-            Sección principal
-          </Typography>
-          <Typography variant="body1">
-            Aquí puedes mostrar información destacada, noticias o lo que quieras.
-          </Typography>
-          <Box sx={{ mt: 2 }}>
-            <Button variant="contained" color="primary">
-              Acción principal
-            </Button>
-            <Button variant="outlined" sx={{ ml: 2 }}>
-              Acción secundaria
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-    </Container>
+      <Typography variant="h5" gutterBottom>
+        Hace click en el menu lateral para alguna acción
+      </Typography>      
+      </Box>
+    </Box>
+    
     );
 };
 

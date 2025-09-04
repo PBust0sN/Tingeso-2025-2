@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tools")
@@ -28,8 +29,8 @@ public class ToolsController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ToolsEntity> saveTool(@RequestBody ToolsEntity toolsEntity) {
-        ToolsEntity newTool =  toolsService.saveTool(toolsEntity);
+    public ResponseEntity<Optional<ToolsEntity>> saveTool(@RequestBody ToolsEntity toolsEntity) {
+        Optional<ToolsEntity> newTool =  toolsService.saveTool(toolsEntity);
         return ResponseEntity.ok(newTool);
     }
 
@@ -39,6 +40,11 @@ public class ToolsController {
         return ResponseEntity.ok(updateTool);
     }
 
+    @PutMapping("/dropdown")
+    public ResponseEntity<Optional<ToolsEntity>> dropdownTool(@RequestParam Long requester_id, @RequestParam Long tool_id) {
+        Optional<ToolsEntity> updatedTool = toolsService.dropDownATool(requester_id,tool_id);
+        return ResponseEntity.ok(updatedTool);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<ToolsEntity> deleteTool(@PathVariable Long id) throws Exception {
         var isDeleted = toolsService.deleteTools(id);

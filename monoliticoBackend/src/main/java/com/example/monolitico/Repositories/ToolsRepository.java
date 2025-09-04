@@ -11,4 +11,5 @@ public interface ToolsRepository extends JpaRepository<ToolsEntity,Long> {
     public List<ToolsEntity> findByToolName(String tool_name);
     public List<ToolsEntity> findByDisponibility(String disponibility);
     public List<ToolsEntity> findByCategory(String category);
+
 }

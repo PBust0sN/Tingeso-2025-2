@@ -23,5 +23,5 @@ public class ClientEntity {
     private String mail;
     private String phone_number;
     private String state;
-    private String avaliable;
+    private Boolean avaliable;
 }

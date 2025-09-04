@@ -21,5 +21,4 @@ public class StaffEntity {
     private String staffName;
     private String staffMail;
     private String password;
-    private Long roleId;
 }

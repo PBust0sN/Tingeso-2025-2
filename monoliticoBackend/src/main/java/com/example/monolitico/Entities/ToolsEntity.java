@@ -24,4 +24,5 @@ public class ToolsEntity {
     private Long loanFee;
     private Long repositionFee;
     private Long diaryFineFee;
+    private Long stock;
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/loans")
@@ -28,8 +29,8 @@ public class LoansController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<LoansEntity> saveLoan(@RequestBody LoansEntity loan){
-        LoansEntity loanEntity = loansService.saveLoan(loan);
+    public ResponseEntity<Optional<LoansEntity>> saveLoan(@RequestBody LoansEntity loan){
+        Optional<LoansEntity> loanEntity = loansService.saveLoan(loan);
         return ResponseEntity.ok(loanEntity);
     }
 

@@ -5,17 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "ROLES")
+@Table(name = "FINE")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class RolesEntity {
-
+public class FineEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Long rolesId;
+    private Long fineId;
 
+    private Long amount;
     private String type;
+    private Long clientId;
+    private Long loanId;
+    private String state;
 }
