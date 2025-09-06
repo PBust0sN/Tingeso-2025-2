@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,8 @@ public class LoansService {
 
     @Autowired
     ToolsLoansRepository toolsLoansRepository;
+    @Autowired
+    private RecordsServices recordsServices;
 
     //getter of all loans
     public List<LoansEntity> getAllLoans() {
@@ -47,38 +50,61 @@ public class LoansService {
         return Optional.empty();
     }
 
-    // ///////////////////////////////////////////////// FALTA POR TERMINAR
-    public Optional<LoansEntity> AddLoan(Long client_id) {
+
+    public List<String> AddLoan(Long staff_id, Long client_id, List<Long> tools_ids, Long days) {
+        List<String> errors = new ArrayList<>();
+
         //verify that the client is allowed to have another loan
         ClientEntity client = clientService.getClientById(client_id);
         // we create a loan
         LoansEntity loansEntity = new LoansEntity();
 
+        //set the date
+        LocalDateTime date = LocalDateTime.now();
+        loansEntity.setDate(Date.valueOf(date.toLocalDate().toString()));
+
+        //set deliverydate
+        loansEntity.setDeliveryDate(Date.valueOf(date.toLocalDate().toString()));
+
+        //set the return date
+        loansEntity.setReturnDate(Date.valueOf(date.plusDays(days).toLocalDate().toString()));
         //if avaliable is true then the client is allowed for another loan
         if (client.getAvaliable()
                 && !fineService.hasFinesByClientId(client_id)
                 && !fineService.hasFinesOfToolReposition(client_id)
                 && checkDates(loansEntity)) {
 
+            loansEntity.setLoanType("prestamo");
+            loansEntity.setStaffId(staff_id);
+
+            Long amount = 0L;
+            //we add the tools in the list to the tools loans table
+            for (Long tool_id : tools_ids) {
+                ToolsEntity tool = toolsService.getToolsById(tool_id);
+
+                amount += tool.getLoanFee();
+
+                //we substract the stock of the tools
+                tool.setInitialState("Prestada");
+
+                toolsService.updateTool(tool);
+            }
+
+            loansEntity.setAmount(amount);
+
+            saveLoan(loansEntity);
 
             //we have to generate a new move in the kardex
             RecordsEntity record =  new RecordsEntity();
             record.setRecordType("Loan");
 
             //obtenemos la hora actual
-            LocalDateTime date = LocalDateTime.now();
             record.setRecordDate(Date.valueOf(date.toLocalDate().toString())); // hora actual
             record.setLoanId(loansEntity.getLoanId());
             record.setClientId(client_id);
-
-
-            //we substract the stock of the tools
-
-
-            return saveLoan(loansEntity);
         }
-
-        return Optional.empty();
+        errors.add("Client is not avaliable or has fines");
+        return errors;
     }
 
     // verify date of loan
@@ -126,6 +152,32 @@ public class LoansService {
         record.setRecordDate(Date.valueOf(date.toLocalDate().toString())); // hora actual
         record.setLoanId(loansEntity.getLoanId());
         record.setClientId(loansEntity.getClientId());
+
+        recordsServices.saveRecord(record);
+
+        //we add up the stock for every one of the tools in the loan
+        //fist we have to check the conditions the tools return to the shop
+        List<Long> toolsId = toolsLoansRepository.findByLoanId(loansEntity.getLoanId());
+
+        //Disponible, Prestada, En reparación, Dada de baja (STATES)
+        for (Long toolId : toolsId) {
+            ToolsEntity toolsEntity = toolsService.getToolsById(toolId);
+
+            String toolDisponibility = toolsEntity.getDisponibility();
+            //if the tool is damaged, then we update the initial state of the
+            if(toolDisponibility.equals("Dañada")){
+                toolsEntity.setInitialState("En reparacion");
+                toolsService.updateTool(toolsEntity);
+            }else{
+                //the stock of a tool is determinated by the amount of tools of the same name, that have
+                //the initial state in disponible
+                toolsEntity.setInitialState("Disponible");
+                toolsService.updateTool(toolsEntity);
+            }
+
+
+        }
+
 
         return saveLoan(loansEntity);
     }

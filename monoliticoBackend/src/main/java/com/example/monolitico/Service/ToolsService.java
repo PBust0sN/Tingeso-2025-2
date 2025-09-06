@@ -24,10 +24,6 @@ public class ToolsService {
     @Autowired
     StaffService staffService;
 
-    @Autowired
-    RolesService rolesService;
-
-
     //getter of al the tools
     public List<ToolsEntity> getAllTools(){
         return (List<ToolsEntity>) toolsrepository.findAll();
@@ -81,7 +77,6 @@ public class ToolsService {
     //only an admin can drop down a tool in the system
     public Optional<ToolsEntity> dropDownATool(Long requester_id, Long tool_id){
         StaffEntity staff = staffService.getStaffById(requester_id);
-        RolesEntity role = rolesService.getRolesById(staff.getRoleId());
         //if the requester is an admin then
         //find the tool
         ToolsEntity tool = toolsrepository.findById(tool_id).get();
