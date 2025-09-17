@@ -24,4 +24,5 @@ public class RecordsEntity {
     private Long recordAmount;
     private Long clientId;
     private Long loanId;
+    private Long toolId;
 }

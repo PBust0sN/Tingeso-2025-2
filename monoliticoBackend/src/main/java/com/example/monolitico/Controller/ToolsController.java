@@ -31,7 +31,7 @@ public class ToolsController {
         return ResponseEntity.ok(toolsEntity);
     }
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<Optional<ToolsEntity>> saveTool(@RequestBody ToolsEntity toolsEntity) {
         Optional<ToolsEntity> newTool =  toolsService.saveTool(toolsEntity);

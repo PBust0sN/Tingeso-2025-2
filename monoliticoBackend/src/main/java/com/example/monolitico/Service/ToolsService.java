@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,10 +39,10 @@ public class ToolsService {
                 //has to have a reposition fee
                 if (toolsEntity.getRepositionFee() != null) {
                     //has to be a valid state
-                    if(toolsEntity.getInitialState()=="disponible"
-                    || toolsEntity.getInitialState()=="prestada"
-                    || toolsEntity.getInitialState()=="en reparacion"
-                    || toolsEntity.getInitialState()=="dada de baja"){
+                    if(Objects.equals(toolsEntity.getInitialState(), "disponible")
+                    || Objects.equals(toolsEntity.getInitialState(), "prestada")
+                    || Objects.equals(toolsEntity.getInitialState(), "en reparacion")
+                    || Objects.equals(toolsEntity.getInitialState(), "dada de baja")){
                         //generate a new record (records)
                         RecordsEntity record = new RecordsEntity();
                         LocalDate diaActual = LocalDate.now();
@@ -49,13 +50,12 @@ public class ToolsService {
                         record.setRecordDate(sqlDate);
                         //record_types (registro nuevas herramientas, préstamo, devolución, baja, reparación)
                         record.setRecordType("registro nuevas herramientas");
-
+                        record.setToolId(toolsEntity.getToolId());
                         //save the record
                         recordservice.saveRecord(record);
                         //save the tool
                         return Optional.of(toolsrepository.save(toolsEntity));
                     }
-
                 }
             }
         }

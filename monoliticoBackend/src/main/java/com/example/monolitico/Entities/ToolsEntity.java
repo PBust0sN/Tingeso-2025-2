@@ -1,5 +1,6 @@
 package com.example.monolitico.Entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,13 +17,20 @@ public class ToolsEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long toolId;
-
+    @JsonProperty("tool_name")
     private String toolName;
+    @JsonProperty("initial_state")
     private String initialState;
+    @JsonProperty("disponibility")
     private String disponibility;
+    @JsonProperty("category")
     private String category;
+    @JsonProperty("loan_fee")
     private Long loanFee;
+    @JsonProperty("reposition_fee")
     private Long repositionFee;
+    @JsonProperty("diary_fine_fee")
     private Long diaryFineFee;
+    @JsonProperty("stock")
     private Long stock;
 }
