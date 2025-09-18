@@ -17,7 +17,7 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.remove(`/api/tools/loan/${id}`
+    return httpClient.delete(`/api/tools/loan/${id}`
     );
 }
 
