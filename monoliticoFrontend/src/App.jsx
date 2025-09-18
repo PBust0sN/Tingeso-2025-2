@@ -7,6 +7,7 @@ import ToolList from './components/ToolList';
 import ClientList from './components/ClientList';
 import AddTool from './components/AddTool';
 import EditTool from './components/EditTool';
+import EditClient from './components/EditClient';
 
 function App() {
   const { keycloak, initialized } = useKeycloak();
@@ -54,6 +55,10 @@ function App() {
           <Route
             path="/tool/edit/:toolId"
             element={<PrivateRoute element={<EditTool />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/client/edit/:client_id"
+            element={<PrivateRoute element={<EditClient />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
         </Routes>
 

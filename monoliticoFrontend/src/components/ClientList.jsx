@@ -17,6 +17,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { lime, purple } from '@mui/material/colors';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
 
 const ClientList = () => {
   const [client, setclients] = useState([]);
@@ -27,6 +31,13 @@ const ClientList = () => {
 );
 
   const navigate = useNavigate();
+
+  const theme = createTheme({
+    palette: {
+      primary: lime,
+      secondary: purple,
+    },
+  });
 
   const init = () => {
     clientService
@@ -197,13 +208,37 @@ const ClientList = () => {
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{client.phone_number}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{client.avaliable ? "Si" : "No"}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{client.state}</TableCell>
-                  <TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 300 }}>
+                    <ThemeProvider theme={theme}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={() => handleEdit(client.client_id)}
+                      style={{ marginLeft: "0.5rem", marginTop: "0.5rem"}}
+                      startIcon={<AddCircleIcon />}
+                    >
+                      New Loan
+                    </Button>
+                    </ThemeProvider>
+                    <ThemeProvider theme={theme}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      onClick={() => handleEdit(client.client_id)}
+                      style={{ marginLeft: "0.5rem", marginTop: "0.5rem"}}
+                      startIcon={<RotateRightIcon />}
+                    >
+                      Return Loan
+                    </Button>
+                    </ThemeProvider>
                     <Button
                       variant="contained"
                       color="info"
                       size="small"
-                      onClick={() => handleEdit(client.clientId)}
-                      style={{ marginLeft: "0.5rem" }}
+                      onClick={() => handleEdit(client.client_id)}
+                      style={{ marginLeft: "0.5rem", marginTop: "0.5rem" }}
                       startIcon={<EditIcon />}
                     >
                       Editar
@@ -213,8 +248,8 @@ const ClientList = () => {
                       variant="contained"
                       color="error"
                       size="small"
-                      onClick={() => handleDelete(client.clientId)}
-                      style={{ marginLeft: "0.5rem" }}
+                      onClick={() => handleDelete(client.client_id)}
+                      style={{ marginLeft: "1.9rem", marginTop: "0.5rem" }}
                       startIcon={<DeleteIcon />}
                     >
                       Eliminar
