@@ -13,6 +13,8 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const LoanInfo = () => {
   const { loan_id } = useParams();
@@ -49,6 +51,31 @@ const LoanInfo = () => {
       });
   }, [loan_id]);
 
+
+  const handleDelete = (id) => {
+      const confirmDelete = window.confirm(
+        "¿Esta seguro que desea borrar esta herramienta?"
+      );
+      if (confirmDelete) {
+        loansService
+          .remove(id)
+          .then(() => {
+            init();
+          })
+          .catch((error) => {
+            console.log(
+              "Se ha producido un error al intentar eliminar el prestamo",
+              error
+            );
+          });
+      }
+    };
+  
+    const handleEdit = (id) => {
+      console.log("Printing id", id);
+      navigate(`/loan/edit/${id}`);
+    };
+    
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
@@ -216,13 +243,34 @@ const LoanInfo = () => {
             </Table>
           </TableContainer>
         </Paper>
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={() => navigate("/loan/list")}
-        >
-          Volver al listado
-        </Button>
+        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", gap: 2, mt: 2}}>
+            <Button
+            variant="contained"
+            sx={{ mt: 2 }}
+            onClick={() => navigate("/loan/list")}
+            >
+            Volver al listado
+            </Button>
+            <Button
+                variant="contained"
+                color="info"
+                sx = {{ mt: 2}}
+                onClick={() => handleEdit(loan.loan_id)}
+                startIcon={<EditIcon />}
+            >
+                Editar
+            </Button>
+
+            <Button
+                variant="contained"
+                color="error"
+                sx = {{ mt: 2}}
+                onClick={() => handleDelete(loan.loan_id)}
+                startIcon={<DeleteIcon />}
+            >
+                Eliminar
+            </Button>
+        </Box>
       </Box>
     </Box>
   );
