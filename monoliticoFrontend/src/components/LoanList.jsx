@@ -17,6 +17,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { lime, purple } from '@mui/material/colors';
 
 const LoanList = () => {
   const [loans, setLoans] = useState([]);
@@ -41,6 +44,12 @@ const LoanList = () => {
         );
       });
   };
+  const theme = createTheme({
+      palette: {
+        primary: lime,
+        secondary: purple,
+      },
+    });
 
   useEffect(() => {
     init();
@@ -68,6 +77,11 @@ const LoanList = () => {
   const handleEdit = (id) => {
     console.log("Printing id", id);
     navigate(`/loan/edit/${id}`);
+  };
+
+  const handleViewLoan = (id) => {
+    console.log("Printing id", id);
+    navigate(`/loan/info/${id}`);
   };
 
   const formatDate = (dateStr) => {
@@ -214,6 +228,18 @@ const LoanList = () => {
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.clientId}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.extraCharges}</TableCell>
                   <TableCell>
+                    <ThemeProvider theme={theme}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleViewLoan(loan.loanId)}
+                        style={{ marginLeft: "0.5rem"}}
+                        startIcon={<VisibilityIcon />}
+                      >
+                        Ver mas
+                      </Button>
+                      </ThemeProvider>
                     <Button
                       variant="contained"
                       color="info"

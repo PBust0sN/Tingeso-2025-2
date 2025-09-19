@@ -87,6 +87,7 @@ public class LoansService {
                 loansEntity.setStaffId(staff_id);
                 System.out.println("cliente: " + client);
                 loansEntity.setClientId(client_id);
+                loansEntity.setExtraCharges(0L);
 
                 Long amount = 0L;
                 //we add the tools in the list to the tools loans table
