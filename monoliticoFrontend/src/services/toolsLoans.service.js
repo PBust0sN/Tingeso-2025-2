@@ -22,7 +22,7 @@ const remove = id => {
 }
 
 const getToolsIdByLoanId = id => {
-    return httpClient.get(`/api/loan/tools/${id}`);
+    return httpClient.get(`/api/tools/loan/toolsIDs/${id}`);
 }
 
 

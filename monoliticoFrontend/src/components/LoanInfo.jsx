@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import loansService from "../services/loans.service";
 import toolsService from "../services/tools.service";
+import toolsLoansService from "../services/toolsLoans.service";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,21 +26,23 @@ const LoanInfo = () => {
       .get(loan_id)
       .then((response) => {
         setLoan(response.data);
-        // Si el préstamo tiene herramientas asociadas, obtenerlas
-        if (response.data.tools_id && response.data.tools_id.length > 0) {
-          toolsService
-            .getAll()
-            .then((toolsResponse) => {
-              // Filtrar solo las herramientas asociadas a este préstamo
-              const loanTools = toolsResponse.data.filter(tool =>
-                response.data.tools_id.includes(tool.toolId)
-              );
-              setTools(loanTools);
-            })
-            .catch((error) => {
-              console.log("Error al obtener herramientas:", error);
-            });
-        }
+
+        // Obtener los ids de herramientas asociadas a este préstamo
+        toolsLoansService
+          .getToolsIdByLoanId(loan_id)
+          .then(async (idsResponse) => {
+            const toolIds = idsResponse.data; // debe ser un array de ids
+
+            // Obtener la información de cada herramienta por id
+            const toolPromises = toolIds.map((id) =>
+              toolsService.get(id).then((res) => res.data)
+            );
+            const toolDetails = await Promise.all(toolPromises);
+            setTools(toolDetails);
+          })
+          .catch((error) => {
+            console.log("Error al obtener ids de herramientas:", error);
+          });
       })
       .catch((error) => {
         console.log("Error al obtener préstamo:", error);
@@ -58,8 +61,18 @@ const LoanInfo = () => {
 
   if (!loan) {
     return (
-      <Box sx={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <Typography variant="h6" color="text.secondary">Cargando información del préstamo...</Typography>
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h6" color="text.secondary">
+          Cargando información del préstamo...
+        </Typography>
       </Box>
     );
   }
@@ -96,8 +109,20 @@ const LoanInfo = () => {
           paddingTop: 6,
         }}
       >
-        <Paper sx={{ maxWidth: 700, width: "100%", mb: 3, background: "rgba(255,255,255,0.85)", p: 3 }}>
-          <Typography variant="h5" align="center" sx={{ fontWeight: "bold", mb: 2 }}>
+        <Paper
+          sx={{
+            maxWidth: 700,
+            width: "100%",
+            mb: 3,
+            background: "rgba(255,255,255,0.85)",
+            p: 3,
+          }}
+        >
+          <Typography
+            variant="h5"
+            align="center"
+            sx={{ fontWeight: "bold", mb: 2 }}
+          >
             Información del Préstamo
           </Typography>
           <TableContainer>
@@ -145,8 +170,19 @@ const LoanInfo = () => {
         </Paper>
 
         {/* Lista de herramientas asociadas */}
-        <Paper sx={{ maxWidth: 700, width: "100%", background: "rgba(255,255,255,0.85)", p: 3 }}>
-          <Typography variant="h6" align="center" sx={{ fontWeight: "bold", mb: 2 }}>
+        <Paper
+          sx={{
+            maxWidth: 700,
+            width: "100%",
+            background: "rgba(255,255,255,0.85)",
+            p: 3,
+          }}
+        >
+          <Typography
+            variant="h6"
+            align="center"
+            sx={{ fontWeight: "bold", mb: 2 }}
+          >
             Herramientas asociadas
           </Typography>
           <TableContainer>
@@ -162,10 +198,12 @@ const LoanInfo = () => {
               <TableBody>
                 {tools.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={4} align="center">No hay herramientas asociadas a este préstamo.</TableCell>
+                    <TableCell colSpan={4} align="center">
+                      No hay herramientas asociadas a este préstamo.
+                    </TableCell>
                   </TableRow>
                 ) : (
-                  tools.map(tool => (
+                  tools.map((tool) => (
                     <TableRow key={tool.toolId}>
                       <TableCell>{tool.toolId}</TableCell>
                       <TableCell>{tool.toolName}</TableCell>
@@ -178,7 +216,11 @@ const LoanInfo = () => {
             </Table>
           </TableContainer>
         </Paper>
-        <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/loan/list")}>
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={() => navigate("/loan/list")}
+        >
           Volver al listado
         </Button>
       </Box>

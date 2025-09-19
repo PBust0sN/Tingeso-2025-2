@@ -45,7 +45,7 @@ public class ToolsLoansController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/loan/tools/{id}")
+    @GetMapping("/toolsIDs/{id}")
     public ResponseEntity<List<Long>> getToolsIDsByLoanId(@PathVariable Long id){
         List<Long> toolsIDs = toolsLoansService.getToolsIDsByLoanId(id);
         return ResponseEntity.ok(toolsIDs);
