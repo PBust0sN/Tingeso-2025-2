@@ -244,7 +244,7 @@ const LoanList = () => {
                       variant="contained"
                       color="info"
                       size="small"
-                      onClick={() => handleEdit(loan.loan_id)}
+                      onClick={() => handleEdit(loan.loanId)}
                       style={{ marginLeft: "0.5rem" }}
                       startIcon={<EditIcon />}
                     >
@@ -255,7 +255,7 @@ const LoanList = () => {
                       variant="contained"
                       color="error"
                       size="small"
-                      onClick={() => handleDelete(loan.loan_id)}
+                      onClick={() => handleDelete(loan.loanId)}
                       style={{ marginLeft: "0.5rem" }}
                       startIcon={<DeleteIcon />}
                     >
