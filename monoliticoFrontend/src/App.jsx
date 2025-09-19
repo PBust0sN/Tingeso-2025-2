@@ -10,6 +10,7 @@ import EditTool from './components/EditTool';
 import EditClient from './components/EditClient';
 import AddClient from './components/AddClient';
 import LoanList from './components/LoanList';
+import NewLoan from './components/NewLoan';
 
 function App() {
   const { keycloak, initialized } = useKeycloak();
@@ -70,6 +71,10 @@ function App() {
           <Route
             path="/loan/list/"
             element={<PrivateRoute element={<LoanList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/new/:client_id"
+            element={<PrivateRoute element={<NewLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
         </Routes>
 

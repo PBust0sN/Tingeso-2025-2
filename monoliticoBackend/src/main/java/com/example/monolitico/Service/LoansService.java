@@ -54,6 +54,10 @@ public class LoansService {
     public List<String> AddLoan(Long staff_id, Long client_id, List<Long> tools_ids, Long days) {
         List<String> errors = new ArrayList<>();
 
+        System.out.println(staff_id);
+        System.out.println(client_id);
+        System.out.println(tools_ids);
+        System.out.println(days);
         //verify that the client is allowed to have another loan
         ClientEntity client = clientService.getClientById(client_id);
         //if avaliable is true then the client is allowed for another loan
@@ -76,11 +80,13 @@ public class LoansService {
             loansEntity.setReturnDate(Date.valueOf(date.plusDays(days).toLocalDate().toString()));
 
             //if the dates entered in the newloan are wrong, then throw error
-            if(checkDates(loansEntity)) {
+            if(!checkDates(loansEntity)) {
                 errors.add("dates are place bad");
             }else{
-                loansEntity.setLoanType("prestamo");
+                loansEntity.setLoanType("loan   ");
                 loansEntity.setStaffId(staff_id);
+                System.out.println("cliente: " + client);
+                loansEntity.setClientId(client_id);
 
                 Long amount = 0L;
                 //we add the tools in the list to the tools loans table
@@ -120,6 +126,7 @@ public class LoansService {
                     record.setRecordDate(Date.valueOf(date.toLocalDate().toString())); // hora actual
                     record.setLoanId(loansEntity.getLoanId());
                     record.setClientId(client_id);
+                    return errors;
                 }
             }
         }
@@ -130,14 +137,12 @@ public class LoansService {
     // verify date of loan
     public boolean checkDates(LoansEntity loan) {
         //formating the delivery date
-        String deliveryDate = loan.getDeliveryDate().toString();
-        Date sqlDate1 = Date.valueOf(deliveryDate);
-        LocalDate localDate1 = sqlDate1.toLocalDate();
+        //formating the delivery date
+        LocalDate localDate1 = loan.getDeliveryDate().toLocalDate();
 
         //formating the return date
-        String returnDate = loan.getReturnDate().toString();
-        Date sqlDate2 = Date.valueOf(returnDate);
-        LocalDate localDate2 = sqlDate2.toLocalDate();
+
+        LocalDate localDate2 = loan.getReturnDate().toLocalDate();
 
         long dias = ChronoUnit.DAYS.between(localDate1, localDate2);
         //if the differrence is negative it means the loan is late

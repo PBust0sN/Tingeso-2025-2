@@ -65,17 +65,19 @@ public class ClientService {
         //first we find all teh pending loans of a client
         List<LoansEntity> loans = clientRepository.getAllLoansByClientId(id);
 
+        System.out.println("Loans: " + loans);
+        if(loans.isEmpty()){
+            System.out.println("No hay loans en el cliente");
+            return false;
+        }
         //then we substract the return date minus delivery date
         for(LoansEntity loan : loans){
             //formating the delivery date
-            String deliveryDate = loan.getDeliveryDate().toString();
-            Date sqlDate1 = Date.valueOf(deliveryDate);
-            LocalDate localDate1 = sqlDate1.toLocalDate();
+            LocalDate localDate1 = loan.getDeliveryDate().toLocalDate();
 
             //formating the return date
-            String returnDate = loan.getReturnDate().toString();
-            Date sqlDate2 = Date.valueOf(returnDate);
-            LocalDate localDate2 = sqlDate2.toLocalDate();
+
+            LocalDate localDate2 = loan.getReturnDate().toLocalDate();
 
             long dias = ChronoUnit.DAYS.between(localDate1, localDate2);
             //if the differrence is negative it means the loan is late
@@ -89,7 +91,7 @@ public class ClientService {
     }
 
     public boolean HasTheSameToolInLoanByClientId(Long clientId, Long toolId){
-        List<Long> activeLoans = clientLoansRepository.findByClientId(clientId);
+        List<Long> activeLoans = clientLoansRepository.findLoansIdsByClientId(clientId);
 
         for(Long loanId : activeLoans){
             List<Long> tools = toolsLoansRepository.findByLoanId(loanId);

@@ -81,6 +81,11 @@ const ClientList = () => {
     navigate(`/client/edit/${id}`);
   };
 
+  const handleNewLoan = (id) => {
+    console.log("Printing id", id);
+    navigate(`/loan/new/${id}`);
+  };
+
   return (
     <Box sx={{ position: "relative" }}>
       <Box
@@ -214,7 +219,7 @@ const ClientList = () => {
                       variant="contained"
                       color="primary"
                       size="small"
-                      onClick={() => handleEdit(client.client_id)}
+                      onClick={() => handleNewLoan(client.client_id)}
                       style={{ marginLeft: "0.5rem", marginTop: "0.5rem"}}
                       startIcon={<AddCircleIcon />}
                     >
