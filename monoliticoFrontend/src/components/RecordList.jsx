@@ -23,7 +23,7 @@ const RecordList = () => {
   const [search, setSearch] = useState("");
 
   const filteredRecord = records.filter(record =>
-  record.recordType.toLowerCase().includes(search.toLowerCase())
+  (record.recordType || "").toLowerCase().includes(search.toLowerCase())
 );
 
   const navigate = useNavigate();
