@@ -56,29 +56,6 @@ const RecordList = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm(
-      "¿Esta seguro que desea borrar este record?"
-    );
-    if (confirmDelete) {
-      recordsService
-        .remove(id)
-        .then(() => {
-          init();
-        })
-        .catch((error) => {
-          console.log(
-            "Se ha producido un error al intentar eliminar el record",
-            error
-          );
-        });
-    }
-  };
-
-  const handleEdit = (id) => {
-    console.log("Printing id", id);
-    navigate(`/record/edit/${id}`);
-  };
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -117,7 +94,7 @@ const RecordList = () => {
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
                 <TableRow>
-                <TableCell colSpan={9} align="center">
+                <TableCell colSpan={8} align="center">
                   <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
                     Records
                   </Typography>
@@ -125,7 +102,7 @@ const RecordList = () => {
               </TableRow> 
               {/* Fila de búsqueda y botón */}
               <TableRow>
-                <TableCell colSpan={7} align="left">
+                <TableCell colSpan={6} align="left">
                   <TextField
                     variant="outlined"
                     placeholder="Buscar Record Por Tipo..."
@@ -150,7 +127,7 @@ const RecordList = () => {
                       variant="contained"
                       color="primary"
                       onClick={() => navigate('/record/add')}
-                      startIcon={<CreateNewFolderIcon />}
+                      startIcon={<CreateNewFolderIcon  />}
                       size="large"
                       sx={{ height: 43, minWidth: 180 }}
                     >
@@ -178,11 +155,8 @@ const RecordList = () => {
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Loan ID
                 </TableCell>
-                <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
+                <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Record Amount
-                </TableCell>
-                <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Acciones
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -198,31 +172,7 @@ const RecordList = () => {
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{record.toolId == null ? "N/A" : record.toolId}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{record.clientId == null ? "N/A" : record.clientId}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{record.loanId == null ? "N/A" : record.loanId}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{record.recordAmount}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 300 }}>
-                    
-                    <Button
-                      variant="contained"
-                      color="info"
-                      size="small"
-                      onClick={() => handleEdit(record.recordId)}
-                      style={{ marginLeft: "0.5rem", marginTop: "0.5rem" }}
-                      startIcon={<EditIcon />}
-                    >
-                      Editar
-                    </Button>
-
-                    <Button
-                      variant="contained"
-                      color="error"
-                      size="small"
-                      onClick={() => handleDelete(record.recordId)}
-                      style={{ marginLeft: "1.9rem", marginTop: "0.5rem" }}
-                      startIcon={<DeleteIcon />}
-                    >
-                      Eliminar
-                    </Button>
-                  </TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 180 }}>{record.recordAmount}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
