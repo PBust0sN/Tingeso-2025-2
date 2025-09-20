@@ -209,17 +209,17 @@ const LoanList = () => {
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.extraCharges}</TableCell>
                   <TableCell>
                     <ThemeProvider theme={theme}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={() => handleViewLoan(loan.loanId)}
-                        style={{ marginLeft: "0.5rem"}}
-                        startIcon={<VisibilityIcon />}
-                      >
-                        Ver mas
-                      </Button>
-                      </ThemeProvider>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      onClick={() => handleViewLoan(loan.loanId)}
+                      style={{ marginLeft: "0.5rem"}}
+                      startIcon={<VisibilityIcon />}
+                    >
+                      Ver mas
+                    </Button>
+                    </ThemeProvider>
 
                     <Button
                       variant="contained"

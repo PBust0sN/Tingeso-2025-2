@@ -70,12 +70,8 @@ const LoanInfo = () => {
           });
       }
     };
-  
-    const handleEdit = (id) => {
-      console.log("Printing id", id);
-      navigate(`/loan/edit/${id}`);
-    };
-    
+
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
@@ -251,15 +247,7 @@ const LoanInfo = () => {
             >
             Volver al listado
             </Button>
-            <Button
-                variant="contained"
-                color="info"
-                sx = {{ mt: 2}}
-                onClick={() => handleEdit(loan.loan_id)}
-                startIcon={<EditIcon />}
-            >
-                Editar
-            </Button>
+            
 
             <Button
                 variant="contained"
