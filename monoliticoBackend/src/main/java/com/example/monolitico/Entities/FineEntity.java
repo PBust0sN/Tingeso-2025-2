@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
+
 @Table(name = "FINE")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,4 +22,5 @@ public class FineEntity {
     private Long clientId;
     private Long loanId;
     private String state;
+    private Date date;
 }

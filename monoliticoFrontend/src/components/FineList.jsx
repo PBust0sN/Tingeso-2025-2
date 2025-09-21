@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import loansService from "../services/loans.service";
+import fineService from "../services/fine.service";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,25 +19,25 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { lime, purple } from '@mui/material/colors';
 
-const LoanList = () => {
-  const [loans, setLoans] = useState([]);
+const FineList = () => {
+  const [fines, setFines] = useState([]);
   const [search, setSearch] = useState("");
 
-  const filteredLoans = loans.filter(loan =>
-  (loan.loanType || "").toLowerCase().includes(search.toLowerCase())
+  const filteredFines = fines.filter(fine =>
+  String(fine.clientId).toLowerCase().includes(search.toLowerCase())
 );
 
   const navigate = useNavigate();
 
   const init = () => {
-    loansService
+    fineService
       .getAll()
       .then((response) => {
-        setLoans(response.data);
+        setFines(response.data);
       })
       .catch((error) => {
         console.log(
-          "Se ha producido un error al intentar mostrar listado de Prestamos.",
+          "Se ha producido un error al intentar mostrar listado de Multas.",
           error
         );
       });
@@ -53,29 +53,6 @@ const LoanList = () => {
     init();
   }, []);
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm(
-      "¿Esta seguro que desea borrar esta herramienta?"
-    );
-    if (confirmDelete) {
-      loansService
-        .remove(id)
-        .then(() => {
-          init();
-        })
-        .catch((error) => {
-          console.log(
-            "Se ha producido un error al intentar eliminar el prestamo",
-            error
-          );
-        });
-    }
-  };
-
-  const handleViewLoan = (id) => {
-    console.log("Printing id", id);
-    navigate(`/loan/info/${id}`);
-  };
 
   const formatDate = (dateStr) => {
   if (!dateStr) return "";
@@ -128,7 +105,7 @@ const LoanList = () => {
               <TableRow>
                 <TableCell colSpan={10} align="center">
                   <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-                    Listado de prestamos
+                    Listado de Multas
                   </Typography>
                 </TableCell>
               </TableRow> 
@@ -165,25 +142,19 @@ const LoanList = () => {
                   Tipo
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Cantidad
+                  State
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Fecha de Entrega
+                  Client ID
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Fecha de Retorno
+                  Loan ID
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Fecha
+                  Amount
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  ID Staff
-                </TableCell>
-                <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  ID Cliente
-                </TableCell>
-                <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Cargos Extra
+                  Date
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Acciones
@@ -191,33 +162,19 @@ const LoanList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredLoans.map((loan) => (
+              {filteredFines.map((fines) => (
                 <TableRow
-                  key={loan.loanId}
+                  key={fines.fineId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.loanId}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.loanType}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.amount}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.deliveryDate)}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.returnDate)}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.date)}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.staffId}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.clientId}</TableCell>
-                  <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.extraCharges}</TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 180 }}>{fines.fineId}</TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 180 }}>{fines.type}</TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 180 }}>{fines.state}</TableCell>
+                  <TableCell align="center" sx={{ maxWidth: 180 }}>{fines.clientId}</TableCell>
+                  <TableCell align="center" sx={{ maxWidth: 180 }}>{fines.loanId}</TableCell>
+                  <TableCell align="center" sx={{ maxWidth: 180 }}>{fines.amount}</TableCell>
+                  <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(fines.date)}</TableCell>
                   <TableCell>
-                    <ThemeProvider theme={theme}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      onClick={() => handleViewLoan(loan.loanId)}
-                      style={{ marginLeft: "0.5rem"}}
-                      startIcon={<VisibilityIcon />}
-                    >
-                      Ver mas
-                    </Button>
-                    </ThemeProvider>
 
                     <Button
                       variant="contained"
@@ -227,7 +184,7 @@ const LoanList = () => {
                       style={{ marginLeft: "0.5rem" }}
                       startIcon={<DeleteIcon />}
                     >
-                      Eliminar
+                      Pagar
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -240,4 +197,4 @@ const LoanList = () => {
   );
 };
 
-export default LoanList;
+export default FineList;

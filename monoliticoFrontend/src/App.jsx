@@ -21,6 +21,7 @@ import Typography from "@mui/material/Typography";
 import ReturnLoan from './components/ReturnLoan';
 import ListLoanId from './components/ListLoanId';
 import CalculateCost from './components/CalculateCost';
+import FineList from './components/FineList';
 
 function App() {
   const { keycloak } = useKeycloak();
@@ -200,6 +201,10 @@ function App() {
           <Route
             path="/loan/return/id/:client_id/:loan_id/calculateCost"
             element={<PrivateRoute element={<CalculateCost />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/fine/list"
+            element={<PrivateRoute element={<FineList />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
         </Routes>
 
