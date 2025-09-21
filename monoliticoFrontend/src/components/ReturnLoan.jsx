@@ -122,7 +122,7 @@ const ReturnLoan = () => {
         }}
       >
         {/* Datos del préstamo */}
-        <Paper sx={{ maxWidth: 700, width: "100%", mb: 2, background: "rgba(255,255,255,0.85)", p: 2 }}>
+        <Paper sx={{ minWidth: 700, maxWidth: 700, width: "100%", mb: 2, background: "rgba(255,255,255,0.85)", p: 2 }}>
           <Typography variant="h6" align="center" sx={{ fontWeight: "bold", mb: 1 }}>
             Préstamo #{loan.loanId}
           </Typography>
