@@ -20,12 +20,12 @@ const AddRecord = () => {
   const saveRecord = (e) => {
     e.preventDefault();
     const record = {
-      record_type: recordType,
-      record_date: recordDate,
-      tool_id: toolId,
-      loan_id: loanId,
-      client_id: clientId,
-      record_amount: recordAmount,
+      recordType: recordType,
+      recordDate: recordDate,
+      toolId: toolId,
+      loanId: loanId,
+      clientId: clientId,
+      recordAmount: recordAmount,
     };
     console.log(record);
     recordsService
