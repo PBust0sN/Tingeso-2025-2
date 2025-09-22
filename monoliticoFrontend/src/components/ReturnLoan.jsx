@@ -70,7 +70,14 @@ const formatDate = (dateStr) => {
     setToolStates({ ...toolStates, [toolId]: value });
   };
 
-  const handleCalculateCosts = () => {
+  const handleCalculateCosts = async () => {
+  // Actualiza el estado de cada herramienta en el backend
+  const updates = tools.map(tool =>
+    toolsService.updateState(tool.toolId, toolStates[tool.toolId])
+  );
+  await Promise.all(updates);
+
+  // Navega a la ruta de calcular costos
   navigate(`${location.pathname}/calculateCost`, {
     state: {
       loan,

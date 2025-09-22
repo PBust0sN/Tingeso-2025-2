@@ -58,4 +58,11 @@ public class ToolsController {
         var isDeleted = toolsService.deleteTools(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PreAuthorize("hasAnyRole('STAFF', 'ADMIN')")
+    @PutMapping("/update/state/{id}")
+    public ResponseEntity<ToolsEntity> updateToolState(@PathVariable Long id, @RequestParam String state){
+        ToolsEntity updateTool =  toolsService.updateStateById(id, state);
+        return ResponseEntity.ok(updateTool);
+    }
 }

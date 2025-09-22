@@ -105,5 +105,13 @@ public class ToolsService {
         return false;
     }
 
-
+    public ToolsEntity updateStateById(Long id, String state){
+        //first we if the tool
+        ToolsEntity tool = getToolsById(id);
+        //set the state
+        tool.setInitialState(state);
+        //then update
+        updateTool(tool);
+        return tool;
+    }
 }
