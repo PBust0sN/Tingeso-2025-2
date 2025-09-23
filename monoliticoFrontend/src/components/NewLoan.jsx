@@ -9,6 +9,12 @@ import { useKeycloak } from "@react-keycloak/web";
 import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import TextField from '@mui/material/TextField';
+
+const CARD_WIDTH = 200;
+const CARD_HEIGHT = 270;
+const TITLE_FONT_SIZE = "1.15rem";
+
 
 const NewLoan = () => {
   const { client_id } = useParams();
@@ -105,20 +111,16 @@ const NewLoan = () => {
             Selecciona Herramientas para el Préstamo
           </Typography>
           <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
-            <input
+            <TextField
+              id="filled-search"
+              label="Días de préstamo"
               type="number"
-              min={1}
+              variant="filled"
               value={days}
               onChange={e => setDays(e.target.value)}
-              placeholder="Cantidad de días"
-              style={{
-                fontSize: "1.1rem",
-                padding: "8px 16px",
-                borderRadius: "6px",
-                border: "1px solid #bbb",
-                marginRight: "16px",
-                width: "180px"
-              }}
+              sx={{ width: 260 }} // más ancho
+              inputProps={{ min: 1 }}
+              required
             />
           </Box>
           <Box
@@ -136,9 +138,17 @@ const NewLoan = () => {
                 key={tool.toolId}
                 elevation={selectedTools.includes(tool.toolId) ? 8 : 2}
                 sx={{
-                  width: 220,
+                  width: `${CARD_WIDTH}px`,
+                  minWidth: `${CARD_WIDTH}px`,
+                  maxWidth: `${CARD_WIDTH}px`,
+                  height: `${CARD_HEIGHT}px`,
+                  minHeight: `${CARD_HEIGHT}px`,
+                  maxHeight: `${CARD_HEIGHT}px`,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "stretch",
                   p: 2,
-                  cursor: "pointer",
                   border: selectedTools.includes(tool.toolId)
                     ? "2px solid #1976d2"
                     : "2px solid transparent",
@@ -146,15 +156,11 @@ const NewLoan = () => {
                     ? "rgba(25, 118, 210, 0.08)"
                     : "white",
                   transition: "border 0.2s, background 0.2s",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
                 }}
-                onClick={() => handleToolClick(tool.toolId)}
               >
                 <Box
                   sx={{
-                    width: 120,
+                    width: "100%",
                     height: 120,
                     mb: 2,
                     background: "#eee",
@@ -174,27 +180,36 @@ const NewLoan = () => {
                       objectFit: "cover",
                     }}
                   />
-                </Box>       
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-                {tool.tool_name}
-              </Typography>
-              <Box sx={{ mt: 4, display: "flex", justifyContent: "center", gap: 2 }}>
-                <Box sx={{ textAlign: "center" }}>
-                <Typography variant="body2" color="text.secondary">
-                  {tool.category}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {tool.disponibility}
-                </Typography>
                 </Box>
-              <Button
-                  color={selectedTools.includes(tool.toolId) ? "primary" : "inherit"}
-                  onClick={() => handleToolClick(tool.toolId)}
-                  sx={{ minWidth: 0, ml: 2 }}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: "bold",
+                    mb: 1,
+                    textAlign: "left",
+                    fontSize: TITLE_FONT_SIZE,
+                    width: "100%",
+                  }}
                 >
-                  <AddCircleIcon />
-                </Button>
-              </Box>
+                  {tool.tool_name}
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "space-between", mt: 1 }}>
+                  <Box sx={{ textAlign: "left" }}>
+                    <Typography variant="body2" color="text.secondary">
+                      {tool.category}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {tool.disponibility}
+                    </Typography>
+                  </Box>
+                  <Button
+                    color={selectedTools.includes(tool.toolId) ? "primary" : "inherit"}
+                    onClick={() => handleToolClick(tool.toolId)}
+                    sx={{ minWidth: 0, ml: 2 }}
+                  >
+                    <AddCircleIcon />
+                  </Button>
+                </Box>
               </Paper>
             ))}
           </Box>
