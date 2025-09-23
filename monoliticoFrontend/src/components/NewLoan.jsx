@@ -1,27 +1,25 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import SaveIcon from "@mui/icons-material/Save";
 import Paper from "@mui/material/Paper";
-import MenuItem from "@mui/material/MenuItem";
 import toolsService from "../services/tools.service";
 import loansService from "../services/loans.service";
 import { useKeycloak } from "@react-keycloak/web";
+import Typography from "@mui/material/Typography";
+import SaveIcon from "@mui/icons-material/Save";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const NewLoan = () => {
   const { client_id } = useParams();
   const [days, setDays] = useState("");
   const [toolOptions, setToolOptions] = useState([]);
-  const [selectedTools, setSelectedTools] = useState([""]);
+  const [selectedTools, setSelectedTools] = useState([]);
   const navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const staff_id = Number(keycloak.tokenParsed?.acr);
-  const clientNumber = Number(client_id); 
+  const clientNumber = Number(client_id);
 
-  // Cargar herramientas desde el backend
   useEffect(() => {
     toolsService
       .getAll()
@@ -33,16 +31,13 @@ const NewLoan = () => {
       });
   }, []);
 
-  // Agregar otra caja de selección
-  const handleAddToolSelect = () => {
-    setSelectedTools([...selectedTools, ""]);
-  };
-
-  // Cambiar valor de una caja de selección
-  const handleToolChange = (index, value) => {
-    const newSelectedTools = [...selectedTools];
-    newSelectedTools[index] = value;
-    setSelectedTools(newSelectedTools);
+  // Selecciona/des-selecciona una herramienta
+  const handleToolClick = (toolId) => {
+    setSelectedTools((prev) =>
+      prev.includes(toolId)
+        ? prev.filter((id) => id !== toolId)
+        : [...prev, toolId]
+    );
   };
 
   const saveLoan = (e) => {
@@ -51,13 +46,11 @@ const NewLoan = () => {
       staff_id,
       client_id: clientNumber,
       days: Number(days),
-      tools_id: selectedTools.filter(Boolean),
+      tools_id: selectedTools,
     };
-    console.log(loan);
     loansService
       .newLoan(loan)
       .then((response) => {
-        console.log("prestamo añadido.", response.data);
         navigate("/loan/list");
       })
       .catch((error) => {
@@ -83,7 +76,7 @@ const NewLoan = () => {
           zIndex: 0,
         }}
       />
-      {/* Frame del formulario */}
+      {/* Frame principal de herramientas */}
       <Box
         sx={{
           position: "relative",
@@ -92,82 +85,134 @@ const NewLoan = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
+          pt: 6,
         }}
       >
         <Paper
           elevation={6}
           sx={{
             p: 4,
-            minWidth: 350,
-            maxWidth: 450,
-            width: "90%",
-            background: "rgba(255,255,255,0.85)",
+            width: "90vw",
+            maxWidth: "1400px",
+            minHeight: "70vh",
+            background: "rgba(255,255,255,0.95)",
             color: "#222",
+            mb: 3,
           }}
         >
+          <Typography variant="h4" align="center" sx={{ mb: 3, fontWeight: "bold" }}>
+            Selecciona Herramientas para el Préstamo
+          </Typography>
+          <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
+            <input
+              type="number"
+              min={1}
+              value={days}
+              onChange={e => setDays(e.target.value)}
+              placeholder="Cantidad de días"
+              style={{
+                fontSize: "1.1rem",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                border: "1px solid #bbb",
+                marginRight: "16px",
+                width: "180px"
+              }}
+            />
+          </Box>
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            component="form"
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 3,
+              justifyContent: "center",
+              alignItems: "flex-start",
+              minHeight: "50vh",
+            }}
           >
-            <h3>Nuevo Préstamo</h3>
-            <hr />
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <TextField
-                id="days"
-                label="Días"
-                type="number"
-                value={days}
-                variant="standard"
-                onChange={(e) => setDays(e.target.value)}
-                helperText="Cantidad de días del préstamo"
-              />
-            </FormControl>
-            {/* Desplegables dinámicos para herramientas */}
-            {selectedTools.map((selectedTool, idx) => (
-              <FormControl fullWidth sx={{ mb: 2, textAlign:"left"}} key={idx}>
-                <TextField
-                  select
-                  label={`Herramienta ${idx + 1}`}
-                  value={selectedTool}
-                  onChange={e => handleToolChange(idx, e.target.value)}
-                  variant="standard"
-                  
-                >
-                  <MenuItem value="">
-                    <em>Seleccione una herramienta</em>
-                  </MenuItem>
-                  {toolOptions.map((tool) => (
-                    <MenuItem key={tool.tool_id} value={tool.toolId}>
-                      {tool.tool_name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            ))}
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleAddToolSelect}
-              sx={{ mb: 2 }}
-            >
-              Agregar otra herramienta
-            </Button>
-            <FormControl sx={{ mb: 2 }}>
-              <Button
-                variant="contained"
-                color="info"
-                onClick={saveLoan}
-                startIcon={<SaveIcon />}
+            {toolOptions.map((tool) => (
+              <Paper
+                key={tool.toolId}
+                elevation={selectedTools.includes(tool.toolId) ? 8 : 2}
+                sx={{
+                  width: 220,
+                  p: 2,
+                  cursor: "pointer",
+                  border: selectedTools.includes(tool.toolId)
+                    ? "2px solid #1976d2"
+                    : "2px solid transparent",
+                  background: selectedTools.includes(tool.toolId)
+                    ? "rgba(25, 118, 210, 0.08)"
+                    : "white",
+                  transition: "border 0.2s, background 0.2s",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+                onClick={() => handleToolClick(tool.toolId)}
               >
-                Grabar
+                <Box
+                  sx={{
+                    width: 120,
+                    height: 120,
+                    mb: 2,
+                    background: "#eee",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={tool.imageUrl || "/vite.svg"}
+                    alt={tool.tool_name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>       
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+                {tool.tool_name}
+              </Typography>
+              <Box sx={{ mt: 4, display: "flex", justifyContent: "center", gap: 2 }}>
+                <Box sx={{ textAlign: "center" }}>
+                <Typography variant="body2" color="text.secondary">
+                  {tool.category}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {tool.disponibility}
+                </Typography>
+                </Box>
+              <Button
+                  color={selectedTools.includes(tool.toolId) ? "primary" : "inherit"}
+                  onClick={() => handleToolClick(tool.toolId)}
+                  sx={{ minWidth: 0, ml: 2 }}
+                >
+                  <AddCircleIcon />
+                </Button>
+              </Box>
+              </Paper>
+            ))}
+          </Box>
+          <Box sx={{ mt: 4, display: "flex", justifyContent: "center", gap: 2 }}>
+            <Button
+              variant="contained"
+              color="info"
+              onClick={saveLoan}
+              startIcon={<SaveIcon />}
+              disabled={!days || selectedTools.length === 0}
+            >
+              Grabar Préstamo
+            </Button>
+            <Link to="/loan/list" style={{ textDecoration: "none" }}>
+              <Button variant="outlined" color="primary">
+                Volver al Listado
               </Button>
-            </FormControl>
-            <hr />
-            <Link to="/loan/list">Back to List</Link>
+            </Link>
           </Box>
         </Paper>
       </Box>
