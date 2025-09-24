@@ -128,11 +128,13 @@ public class LoansService {
                     record.setRecordDate(Date.valueOf(date.toLocalDate().toString())); // hora actual
                     record.setLoanId(loansEntity.getLoanId());
                     record.setClientId(client_id);
+                    System.out.println(errors);
                     return errors;
                 }
             }
         }
         errors.add("Client is not avaliable or has fines");
+        System.out.println(errors);
         return errors;
     }
 

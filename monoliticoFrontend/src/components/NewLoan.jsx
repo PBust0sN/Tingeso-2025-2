@@ -57,10 +57,21 @@ const NewLoan = () => {
     loansService
       .newLoan(loan)
       .then((response) => {
-        navigate("/loan/list");
+        // Suponiendo que response.data es la lista de errores
+        if (Array.isArray(response.data) && response.data.length === 0) {
+          window.alert("Préstamo añadido exitosamente");
+          navigate("/loan/list");
+        } else if (Array.isArray(response.data)) {
+          // Muestra los errores en una ventana
+          window.alert("Errores:\n" + response.data.join("\n"));
+        } else {
+          // Si la respuesta no es una lista, muestra un mensaje genérico
+          window.alert("Respuesta inesperada del servidor.");
+        }
       })
       .catch((error) => {
-        console.log("Ha ocurrido un error al intentar crear nuevo prestamo.", error);
+        window.alert("Ha ocurrido un error al intentar crear nuevo préstamo.");
+        console.log("Ha ocurrido un error al intentar crear nuevo préstamo.", error);
       });
   };
 
