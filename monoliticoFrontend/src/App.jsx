@@ -24,6 +24,7 @@ import CalculateCost from './components/CalculateCost';
 import FineList from './components/FineList';
 import ReturnLoanFinal from './components/ReturnLoanFinal';
 import AddReport from './components/AddReport';
+import LoansByClientReport from './components/LoansByClientReport';
 
 function App() {
   const { keycloak } = useKeycloak();
@@ -213,8 +214,12 @@ function App() {
             element={<PrivateRoute element={<ReturnLoanFinal />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
           <Route
-            path="/reports/create"
+            path="/reports"
             element={<PrivateRoute element={<AddReport />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/report/loans-by-client"
+            element={<PrivateRoute element={<LoansByClientReport />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
         </Routes>
 
