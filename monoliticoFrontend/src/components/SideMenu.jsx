@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import HandymanIcon from '@mui/icons-material/Handyman';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 export default function Sidemenu({ open, toggleDrawer }) {
   const navigate = useNavigate();
@@ -73,11 +74,11 @@ export default function Sidemenu({ open, toggleDrawer }) {
       <Divider />
 
       <List>
-        <ListItemButton onClick={() => navigate("/employee/discounts")}>
+        <ListItemButton onClick={() => navigate("/reports/create")}>
           <ListItemIcon>
-            <DiscountIcon />
+            <AssessmentIcon />
           </ListItemIcon>
-          <ListItemText primary="Descuentos" />
+          <ListItemText primary="Reportes" />
         </ListItemButton>
         <ListItemButton onClick={() => navigate("/paycheck/vacations")}>
           <ListItemIcon>
