@@ -16,7 +16,8 @@ public class ClientBehindEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long clientIdBehind;
-    private Long report_id;
+
+    private Long reportId;
     private String rut;
     private String name;
     private String lastName;

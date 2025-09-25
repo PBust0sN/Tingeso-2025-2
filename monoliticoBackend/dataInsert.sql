@@ -7,10 +7,10 @@ INSERT INTO client (client_id, avaliable, last_name, name, mail, phone_number, s
 (6, FALSE, 'Moreno', 'Daniel', 'moreno.daniel@gmail.com', '910293847', 'restringido', '98564312-4'),
 (7, FALSE, 'Jimenez', 'Juan', 'jimenez.juan@gmail.com', '909347612', 'restringido', '25657321-8');
 
-INSERT INTO staff(staff_id, role_id, staff_mail, staff_name, staff_rut, password) VALUES
-(1, 1, 'martinez.gonzalo@gmail.com', 'Gonzalo Martinez', '8456231-7', 'DameElCodigo23'),
-(2, 2, 'cavieres.fran@gmail.com', 'Francisca Cavieres', '34234987-4', 'Linux123'),
-(3, 2,'ortiz.marco@gmail.com', 'Marco Ortiz', '12765456-2', 'WindowsEnyoyer');
+INSERT INTO staff(staff_id, staff_mail, staff_name, staff_rut, password) VALUES
+(1, 'martinez.gonzalo@gmail.com', 'Gonzalo Martinez', '8456231-7', 'DameElCodigo23'),
+(2, 'cavieres.fran@gmail.com', 'Francisca Cavieres', '34234987-4', 'Linux123'),
+(3 ,'ortiz.marco@gmail.com', 'Marco Ortiz', '12765456-2', 'WindowsEnyoyer');
 
 INSERT INTO loans(loan_id, client_id, staff_id, loan_type, date, delivery_date, return_date, amount, extra_charges) VALUES
 (1, 1, 2, 'loan', '2025-08-25', '2025-09-25', '2025-09-09', 5000, 0),

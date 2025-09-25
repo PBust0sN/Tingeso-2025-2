@@ -18,7 +18,8 @@ public class LoansReportEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long loanReportId;
-    private Long report_id;
+
+    private Long reportId;
     private Date deliveryDate;
     private Date returnDate;
     private String loanType;
