@@ -16,7 +16,7 @@ public class FineReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fineReportId;
-
+    private Long report_id;
     private Long amount;
     private String type;
     private Long clientId;

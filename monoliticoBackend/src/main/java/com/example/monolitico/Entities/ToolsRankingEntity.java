@@ -17,6 +17,7 @@ public class ToolsRankingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long toolRankingId;
+    private Long report_id;
     private String toolName;
     private String category;
     private Long loanCount;

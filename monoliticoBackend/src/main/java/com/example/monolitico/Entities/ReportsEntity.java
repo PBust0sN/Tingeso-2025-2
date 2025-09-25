@@ -16,10 +16,11 @@ public class ReportsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reportsId;
-
+    private Long reportId;
     private Date reportDate;
-
-    @Column(columnDefinition = "TEXT")
-    private String reportContent;
+    private Long loan_id_report;
+    private Long tools_id_ranking;
+    private Long fine_id_reports;
+    private Long client_id_behind;
 }
+
