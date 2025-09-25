@@ -25,10 +25,6 @@ public class ClientBehindService {
         return clientBehindRepository.findByReportId(reportId);
     }
 
-    public ClientBehindEntity updateClientBehind(ClientBehindEntity clientBehindEntity) {
-        return clientBehindRepository.save(clientBehindEntity);
-    }
-
     public ClientBehindEntity createClientBehind(ClientBehindEntity clientBehindEntity) {
         return clientBehindRepository.save(clientBehindEntity);
     }

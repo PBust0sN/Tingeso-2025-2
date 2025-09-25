@@ -24,10 +24,6 @@ public class LoansReportService {
         return loanReportRepository.save(loansReportEntity);
     }
 
-    public LoansReportEntity updateLoansReport(LoansReportEntity loansReportEntity){
-        return loanReportRepository.save(loansReportEntity);
-    }
-
     public boolean deleteLoansReportById(Long id) throws Exception{
         try{
             loanReportRepository.deleteById(id);

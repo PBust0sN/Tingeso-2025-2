@@ -34,12 +34,6 @@ public class ClientBehindController {
         return ResponseEntity.ok(newClientBehindEntity);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<ClientBehindEntity> updateClientBehind(@RequestBody ClientBehindEntity clientBehindEntity){
-        ClientBehindEntity updatedClientBehindEntity = clientBehindService.updateClientBehind(clientBehindEntity);
-        return ResponseEntity.ok(updatedClientBehindEntity);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<ClientBehindEntity> deleteClientBehindById(@PathVariable("id") Long id) throws Exception{
         var isDeleted = clientBehindService.deleteClientBehindById(id);

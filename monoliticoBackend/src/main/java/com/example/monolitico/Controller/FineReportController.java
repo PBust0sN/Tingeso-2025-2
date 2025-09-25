@@ -33,11 +33,6 @@ public class FineReportController {
         return ResponseEntity.ok(newFineReportEntity);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<FineReportEntity> updateFineReport(@RequestBody FineReportEntity fineReportEntity){
-        FineReportEntity updatedFineReportEntity = fineReportService.updateFineReport(fineReportEntity);
-        return ResponseEntity.ok(updatedFineReportEntity);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<FineReportEntity> deleteFineReport(@PathVariable("id") Long id)throws Exception{

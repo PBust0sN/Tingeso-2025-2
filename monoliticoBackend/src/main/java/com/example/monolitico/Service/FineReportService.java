@@ -29,10 +29,6 @@ public class FineReportService {
         return fineReportRepository.save(fineReportEntity);
     }
 
-    public FineReportEntity updateFineReport(FineReportEntity fineReportEntity) {
-        return fineReportRepository.save(fineReportEntity);
-    }
-
     public boolean deleteFineReportById(Long id) throws Exception {
         try{
             fineReportRepository.deleteById(id);

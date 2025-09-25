@@ -33,11 +33,6 @@ public class ToolsRankingController {
         return ResponseEntity.ok(newToolsRanking);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<ToolsRankingEntity> updatedToolsRanking(@RequestBody ToolsRankingEntity toolsRankingEntity){
-        ToolsRankingEntity updatedToolsRanking = toolsRankingService.updateToolsRanking(toolsRankingEntity);
-        return ResponseEntity.ok(updatedToolsRanking);
-    }
 
     @DeleteMapping("/{id}")
     public  ResponseEntity<ToolsRankingEntity> deleteToolsRanking(@PathVariable("id") Long id) throws Exception{

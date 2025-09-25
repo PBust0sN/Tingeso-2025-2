@@ -33,12 +33,6 @@ public class LoansReportController {
         return ResponseEntity.ok(createLoansReportEntity);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<LoansReportEntity>  updateLoansReport(@RequestBody LoansReportEntity loansReportEntity){
-        LoansReportEntity updateLoansReportEntity = loansReportService.updateLoansReport(loansReportEntity);
-        return ResponseEntity.ok(updateLoansReportEntity);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<LoansReportEntity> deleteLoansReport(@PathVariable("id") Long id)throws Exception{
         var isDeleted =  loansReportService.deleteLoansReportById(id);

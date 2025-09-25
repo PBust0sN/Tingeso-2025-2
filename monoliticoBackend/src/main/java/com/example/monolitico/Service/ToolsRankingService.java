@@ -25,10 +25,6 @@ public class ToolsRankingService {
         return toolsRankingRepository.save(toolsRankingEntity);
     }
 
-    public ToolsRankingEntity updateToolsRanking(ToolsRankingEntity toolsRankingEntity){
-        return toolsRankingRepository.save(toolsRankingEntity);
-    }
-
     public boolean deleteToolsRankingById(Long id)throws  Exception{
         try{
             toolsRankingRepository.deleteById(id);
