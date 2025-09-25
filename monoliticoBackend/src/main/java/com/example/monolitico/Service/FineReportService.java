@@ -21,7 +21,7 @@ public class FineReportService {
         return fineReportRepository.findAll();
     }
 
-    public List<FineReportEntity> getToolsRankingByReportId(Long reportId){
+    public List<FineReportEntity> getFineReportsByReportId(Long reportId){
         return fineReportRepository.findByReportId(reportId);
     }
 
@@ -33,7 +33,7 @@ public class FineReportService {
         return fineReportRepository.save(fineReportEntity);
     }
 
-    public boolean deleteFineReport(Long id) throws Exception {
+    public boolean deleteFineReportById(Long id) throws Exception {
         try{
             fineReportRepository.deleteById(id);
             return true;

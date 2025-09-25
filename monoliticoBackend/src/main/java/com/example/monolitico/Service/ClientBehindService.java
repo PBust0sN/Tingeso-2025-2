@@ -24,7 +24,7 @@ public class ClientBehindService {
     public List<ClientBehindEntity> getClientBehindByReportId(Long reportId){
         return clientBehindRepository.findByReportId(reportId);
     }
-    
+
     public ClientBehindEntity updateClientBehind(ClientBehindEntity clientBehindEntity) {
         return clientBehindRepository.save(clientBehindEntity);
     }
@@ -33,7 +33,7 @@ public class ClientBehindService {
         return clientBehindRepository.save(clientBehindEntity);
     }
 
-    public boolean deleteClientBehind(Long id) throws Exception {
+    public boolean deleteClientBehindById(Long id) throws Exception {
         try{
             clientBehindRepository.deleteById(id);
             return true;

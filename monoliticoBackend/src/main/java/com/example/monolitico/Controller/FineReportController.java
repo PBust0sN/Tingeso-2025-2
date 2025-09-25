@@ -1,0 +1,47 @@
+package com.example.monolitico.Controller;
+
+import com.example.monolitico.Entities.FineReportEntity;
+import com.example.monolitico.Service.FineReportService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/fineReport")
+@CrossOrigin("*")
+public class FineReportController {
+    @Autowired
+    private FineReportService fineReportService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<FineReportEntity>> getFineReportByReportId(@PathVariable("id") Long id){
+        List<FineReportEntity> fineReportEntities = fineReportService.getFineReportsByReportId(id);
+        return ResponseEntity.ok(fineReportEntities);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<FineReportEntity>> getAllFineReports(){
+        List<FineReportEntity> fineReportEntities = fineReportService.getAllFineReport();
+        return ResponseEntity.ok(fineReportEntities);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<FineReportEntity> createFineReport(@RequestBody FineReportEntity fineReportEntity){
+        FineReportEntity newFineReportEntity = fineReportService.createFineReport(fineReportEntity);
+        return ResponseEntity.ok(newFineReportEntity);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<FineReportEntity> updateFineReport(@RequestBody FineReportEntity fineReportEntity){
+        FineReportEntity updatedFineReportEntity = fineReportService.updateFineReport(fineReportEntity);
+        return ResponseEntity.ok(updatedFineReportEntity);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<FineReportEntity> deleteFineReport(@PathVariable("id") Long id)throws Exception{
+        var isDeleted =  fineReportService.deleteFineReportById(id);
+        return ResponseEntity.noContent().build();
+    }
+}

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LoanReportService {
+public class LoansReportService {
     @Autowired
     private LoanReportRepository loanReportRepository;
 
@@ -28,9 +28,9 @@ public class LoanReportService {
         return loanReportRepository.save(loansReportEntity);
     }
 
-    public boolean deleteLoansReport(LoansReportEntity loansReportEntity) throws Exception{
+    public boolean deleteLoansReportById(Long id) throws Exception{
         try{
-            loanReportRepository.delete(loansReportEntity);
+            loanReportRepository.deleteById(id);
             return true;
         }catch (Exception e){
             throw new Exception(e.getMessage());
