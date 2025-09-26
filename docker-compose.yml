@@ -104,6 +104,8 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.3
     container_name: keycloak
+    volumes:
+      - keycloak_data:/opt/keycloak/data
     environment:
       KC_DB: mysql
       KC_DB_URL_HOST: mysql
@@ -119,6 +121,12 @@ services:
     command: start-dev
     networks:
       - mynet
+
+# ===================
+# Volumenes
+# ===================
+volumes:
+  keycloak_data:
 
 # ===================
 # Redes
