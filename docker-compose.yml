@@ -30,6 +30,7 @@ services:
     networks:
       - backend-network
       - mynet
+    restart: unless-stopped
 
   backend2:
     build:
@@ -42,6 +43,7 @@ services:
     networks:
       - backend-network
       - mynet
+    restart: unless-stopped
 
   backend3:
     build:
@@ -54,25 +56,12 @@ services:
     networks:
       - backend-network
       - mynet
+    restart: unless-stopped
 
   # ===================
-  # FRONTEND (3 instancias)
+  # FRONTEND
   # ===================
-  frontend1:
-    build:
-      context: ./monoliticoFrontend
-      dockerfile: Dockerfile.frontend
-    networks:
-      - frontend-network
-
-  frontend2:
-    build:
-      context: ./monoliticoFrontend
-      dockerfile: Dockerfile.frontend
-    networks:
-      - frontend-network
-
-  frontend3:
+  frontend:
     build:
       context: ./monoliticoFrontend
       dockerfile: Dockerfile.frontend
@@ -88,13 +77,11 @@ services:
       dockerfile: Dockerfile.frontend
     container_name: nginx_frontend
     ports:
-      - "8070:80"
+      - "5173:80"
     volumes:
        - ./monoliticoFrontend/nginx/nginx-frontend.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - frontend1
-      - frontend2
-      - frontend3
+      - frontend
     networks:
       - frontend-network
 
@@ -136,6 +123,7 @@ services:
       - "9090:8080"
     depends_on:
       - mysql
+
     command: start-dev --import-realm
     networks:
       - mynet
@@ -145,6 +133,8 @@ services:
 # ===================
 networks:
   frontend-network:
+    driver: bridge
   backend-network:
+    driver: bridge
   mynet:
     driver: bridge
