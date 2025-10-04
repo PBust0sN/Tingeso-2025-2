@@ -12,9 +12,6 @@ FROM openjdk:24
 
 WORKDIR /app
 
-ENV SPRING_PROFILES_ACTIVE=prod
-ENV SERVER_PORT=8090
-
 COPY --from=build /app/target/*.jar tool-rent-backend.jar
 
 EXPOSE 8090

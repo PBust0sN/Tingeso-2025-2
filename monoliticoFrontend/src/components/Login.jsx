@@ -8,6 +8,10 @@ const Login = () => {
   const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
 
+  console.log('Keycloak initialized?', initialized);
+  console.log('Keycloak instance:', keycloak);
+  console.log('Is authenticated?', keycloak?.authenticated);
+  
   useEffect(() => {
     if (initialized && keycloak.authenticated) {
       navigate("/home");

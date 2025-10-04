@@ -4,8 +4,17 @@ import './index.css'
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import keycloak from "./services/keycloak";
 
+console.log('Keycloak instance at index:', keycloak);
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ReactKeycloakProvider authClient={keycloak}>
+  <ReactKeycloakProvider
+    authClient={keycloak}
+    initOptions={{
+      onLoad: 'login-required',   
+      checkLoginIframe: false     
+    }}
+    LoadingComponent={<div>Loading...</div>}
+  >
     <App />
   </ReactKeycloakProvider>
-)
+);

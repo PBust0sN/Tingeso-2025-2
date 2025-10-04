@@ -4,6 +4,7 @@ import keycloak from "./services/keycloak";
 const monoliticoBackendServer = import.meta.env.VITE_MONOLITICO_BACKEND_SERVER;
 const monoliticoBackendport = import.meta.env.VITE_MONOLITICO_BACKEND_PORT;
 
+console.log(import.meta.env);
 console.log(monoliticoBackendServer)
 console.log(monoliticoBackendport)
 
