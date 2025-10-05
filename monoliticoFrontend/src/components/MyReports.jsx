@@ -24,50 +24,70 @@ const MyReports = () => {
   }, []);
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" sx={{ mb: 3 }}>Mis Reportes</Typography>
-      <TableContainer component={Paper} sx={{ maxWidth: 1200, background: "rgba(255,255,255,0.95)" }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>ID Reporte</TableCell>
-              <TableCell>Fecha</TableCell>
-              <TableCell>Préstamo</TableCell>
-              <TableCell>Herramienta</TableCell>
-              <TableCell>Multa</TableCell>
-              <TableCell>Cliente</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {reports.map((report) => (
-              <TableRow key={report.reportId}>
-                <TableCell>{report.reportId}</TableCell>
-                <TableCell>{new Date(report.reportDate).toLocaleString()}</TableCell>
-                <TableCell>{report.loanIdReport || "-"}</TableCell>
-                <TableCell>{report.toolsIdRanking || "-"}</TableCell>
-                <TableCell>{report.fineIdReports || "-"}</TableCell>
-                <TableCell>{report.clientIdBehind || "-"}</TableCell>
-                <TableCell>
-                  {report.loanIdReport && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      onClick={() => navigate(`/loan/info/${report.loanIdReport}`)}
-                      style={{ marginLeft: "0.5rem" }}
-                      startIcon={<VisibilityIcon />}
-                    >
-                      Ver más
-                    </Button>
-                  )}
-                </TableCell>
+    <Box sx={{ position: "relative", minHeight: "100vh" }}>
+      {/* Fondo difuminado */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url("/fondo.jpg")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          filter: "blur(8px)",
+          zIndex: 0,
+        }}
+      />
+      <Box sx={{ position: "relative", zIndex: 1, p: 4 }}>
+        <Typography variant="h4" sx={{ mb: 3 }}>Mis Reportes</Typography>
+        <TableContainer component={Paper} sx={{ maxWidth: 1200, background: "rgba(255,255,255,0.95)" }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>ID Reporte</TableCell>
+                <TableCell>Fecha</TableCell>
+                <TableCell>Préstamo</TableCell>
+                <TableCell>Herramienta</TableCell>
+                <TableCell>Multa</TableCell>
+                <TableCell>Cliente</TableCell>
+                <TableCell></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {reports.map((report) => (
+                <TableRow key={report.reportId}>
+                  <TableCell>{report.reportId}</TableCell>
+                  <TableCell>{new Date(report.reportDate).toLocaleString()}</TableCell>
+                  <TableCell>{report.loanIdReport || "-"}</TableCell>
+                  <TableCell>{report.toolsIdRanking || "-"}</TableCell>
+                  <TableCell>{report.fineIdReports || "-"}</TableCell>
+                  <TableCell>{report.clientIdBehind || "-"}</TableCell>
+                  <TableCell>
+                    {report.loanIdReport && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => navigate(`/loan/info/${report.loanIdReport}`)}
+                        style={{ marginLeft: "0.5rem" }}
+                        startIcon={<VisibilityIcon />}
+                      >
+                        Ver más
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+
     </Box>
   );
-};
+}
 
 export default MyReports;

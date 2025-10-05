@@ -17,6 +17,7 @@ import HandymanIcon from '@mui/icons-material/Handyman';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import FeedIcon from '@mui/icons-material/Feed';
 
 export default function Sidemenu({ open, toggleDrawer }) {
   const navigate = useNavigate();
@@ -80,11 +81,11 @@ export default function Sidemenu({ open, toggleDrawer }) {
           </ListItemIcon>
           <ListItemText primary="Reportes" />
         </ListItemButton>
-        <ListItemButton onClick={() => navigate("/paycheck/vacations")}>
+        <ListItemButton onClick={() => navigate("/myreports")}>
           <ListItemIcon>
-            <HailIcon />
+            <FeedIcon />
           </ListItemIcon>
-          <ListItemText primary="Vacaciones" />
+          <ListItemText primary="My Reports" />
         </ListItemButton>
         <ListItemButton onClick={() => navigate("/paycheck/medicalleave")}>
           <ListItemIcon>
