@@ -3,6 +3,10 @@ import { Box, Typography, Paper, CircularProgress, Button } from "@mui/material"
 import loansService from "../services/loans.service";
 import loansReportsService from "../services/loansReports.service";
 import reportsService from "../services/reports.service";
+import toolsService from "../services/tools.service";
+import toolsReportService from "../services/toolsReport.service";
+import toolsLoanReportService from "../services/toolsLoanReport.service";
+import toolsLoansService from "../services/toolsLoans.service";
 import { useKeycloak } from "@react-keycloak/web";
 import { useNavigate } from "react-router-dom";
 
@@ -11,44 +15,63 @@ const  NewLoanReport = () =>{
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
-		const handleSaveReport = async () => {
-			setLoading(true);
-			try {
-				const clientId = 2; //keycloak.tokenParsed?.preferred_username;
-				if (!clientId) {
-					setLoading(false);
-					console.log(clientId);
-					return;
-				}
-				// Obtener todos los préstamos y filtrar por clientId
-				const allLoansRes = await loansService.getAll();
-				const loansList = allLoansRes.data.filter(l => l.clientId === clientId);
-				if (loansList.length > 0) {
-					const reportRes = await reportsService.create({ loanIdReport: true ,clientIdReport: clientId });
-                    const reportId = reportRes.data?.reportId ;
-					
-                    for (const l of loansList) {
-						
-                        await loansReportsService.create({
-							reportId: reportId,
-							clientId: l.clientId,
-							loanType: l.loanType,
-							amount: l.amount,
-							deliveryDate: l.deliveryDate,
-							returnDate: l.returnDate,
-							date: l.date,
-							staffId: l.staffId,
-							extraCharges: l.extraCharges
-						});
-					}
-				}
-				await new Promise(res => setTimeout(res, 1000));
-				navigate("/myreports");
-			} catch (err) {
-				// Silenciar error, no mostrar nada
-			}
+	const handleSaveReport = async () => {
+		setLoading(true);
+		const clientId = 2; //keycloak.tokenParsed?.preferred_username;
+		if (!clientId) {
 			setLoading(false);
-		};
+			console.log(clientId);
+			return;
+		}
+		// Obtener todos los préstamos y filtrar por clientId
+		const allLoansRes = await loansService.getAll();
+		const loansList = allLoansRes.data.filter(l => l.clientId === clientId);
+		console.log(loansList);
+		if (loansList.length > 0) {
+			const reportRes = await reportsService.create({ loanIdReport: true ,clientIdReport: clientId });
+			const reportId = reportRes.data?.reportId ;
+			for (const l of loansList) {
+				// Crear loanReport
+				const reponseLoanReport =  await loansReportsService.create({
+					reportId: reportId,
+					clientId: l.clientId,
+					loanType: l.loanType,
+					amount: l.amount,
+					deliveryDate: l.deliveryDate,
+					returnDate: l.returnDate,
+					date: l.date,
+					staffId: l.staffId,
+					extraCharges: l.extraCharges
+				});
+
+				const res = reponseLoanReport.data?.loanReportId;
+				// Obtener herramientas asociadas al préstamo
+				const toollist = await toolsLoansService.getToolsIdByLoanId(l.loanId);
+				const toolIds = toollist.data; 
+				console.log(toolIds);
+				for (const toolId of toolIds) {
+					const toolRes = await toolsService.get(toolId);
+					const tool = toolRes.data;
+					console.log(tool);
+					// Crear toolsReport
+					const toolReportRes = await toolsReportService.create({
+						toolName: tool.tool_name,
+						category: tool.category,
+						loanCount: 1 // o el valor que corresponda
+					});
+					const toolIdReport = toolReportRes.data?.toolIdReport;
+					// Vincular con toolsLoanReport
+					await toolsLoanReportService.create({
+						loanId: res,
+						toolId: toolIdReport
+					});
+				}
+			}
+		}
+		await new Promise(res => setTimeout(res, 1000));
+		navigate("/myreports");
+		setLoading(false);
+	};
 
 		return (
 			<Box sx={{ position: "relative", minHeight: "100vh" }}>
@@ -86,10 +109,10 @@ const  NewLoanReport = () =>{
 							<CircularProgress />
 						</Box>
 					)}
-				</Paper>
+					</Paper>
+				</Box>
 			</Box>
-		</Box>
-	);
-}
+		);
+	}
 
-export default NewLoanReport;
+	export default NewLoanReport;

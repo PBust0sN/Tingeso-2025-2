@@ -18,6 +18,6 @@ public class ToolsLoanReportService {
     }
 
     public List<Long> findByLoanId(Long id){
-        return toolsLoanReportRepository.findByLoanId(id);
+        return toolsLoanReportRepository.findToolIdByLoanId(id);
     }
 }

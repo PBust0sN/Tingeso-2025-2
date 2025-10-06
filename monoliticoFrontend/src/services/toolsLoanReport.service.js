@@ -1,7 +1,7 @@
 import httpClient from "../http-common";
 
 const create = data => {
-    return httpClient.post('/api/tools/loan/', data);
+    return httpClient.post('/api/toolsloansreports/', data);
 }
 
 const getToolsIdByLoanId = id => {

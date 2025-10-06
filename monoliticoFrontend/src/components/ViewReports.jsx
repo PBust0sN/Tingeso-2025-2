@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -14,8 +12,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import loansReportsService from "../services/loansReports.service";
 import toolsLoansService from "../services/toolsLoans.service";
+import toolsLoanReportService from "../services/toolsLoanReport.service";
+import toolsReportService from "../services/toolsReport.service";
 import toolsService from "../services/tools.service";
 import TableHead from "@mui/material/TableHead";
+import ToolList from "./ToolList";
 
 function ViewReports() {
 	const { reportId } = useParams();
@@ -30,21 +31,27 @@ function ViewReports() {
 				.catch(() => setReport(null));
 			loansReportsService.getAllByReportId(reportId)
 				.then(async res => {
-					const loans = Array.isArray(res.data) ? res.data : [res.data];
+					const loans = res.data;
+					console.log(loans);
 					setLoansReport(loans);
-					// Obtener herramientas asociadas a cada préstamo
+					// Obtener herramientas asociadas a cada préstamo usando toolsLoanReportService y toolsReportService
 					const toolsMap = {};
 					for (const loan of loans) {
-						try {
-							const idsResponse = await toolsLoansService.getToolsIdByLoanId(loan.loanId);
-							const toolIds = idsResponse.data;
-							const toolPromises = Array.isArray(toolIds) ? toolIds.map((id) => toolsService.get(id).then(res => res.data)) : [];
-							const toolDetails = await Promise.all(toolPromises);
-							toolsMap[loan.loanId] = toolDetails;
-						} catch (err) {
-							toolsMap[loan.loanId] = [];
+						console.log('Procesando loan:', loan);
+						const idsResponse = await toolsLoanReportService.getToolsIdByLoanId(loan.loanReportId);
+						const toolIds = Array.isArray(idsResponse.data) ? idsResponse.data : [];
+						console.log('loanReportId:', loan.loanReportId, 'toolIds:', toolIds);
+						if (toolIds.length === 0) {
+							console.log('No hay herramientas asociadas a este préstamo:', loan.loanReportId);
 						}
+						// Obtener todas las herramientas usando toolsReportService.get(id)
+						const toolsList = await Promise.all(
+							toolIds.map(id => toolsReportService.get(id).then(res => res.data))
+						);
+						console.log('toolsList para loanReportId', loan.loanReportId, ':', toolsList);
+						toolsMap[loan.loanReportId] = toolsList;
 					}
+					console.log(toolsMap);
 					setToolsByLoan(toolsMap);
 				})
 				.catch(() => {
@@ -133,25 +140,25 @@ function ViewReports() {
 										<Table size="small">
 											<TableHead>
 												<TableRow>
-													<TableCell sx={{ fontWeight: "bold" }}>ID Herramienta</TableCell>
+													{/* <TableCell sx={{ fontWeight: "bold" }}>ID Herramienta</TableCell> */}
 													<TableCell sx={{ fontWeight: "bold" }}>Nombre</TableCell>
 													<TableCell sx={{ fontWeight: "bold" }}>Categoría</TableCell>
-													<TableCell sx={{ fontWeight: "bold" }}>Disponibilidad</TableCell>
+													{/* <TableCell sx={{ fontWeight: "bold" }}>Disponibilidad</TableCell> */}
 												</TableRow>
 											</TableHead>
 											<TableBody>
-												{(toolsByLoan[lr.loanId] && toolsByLoan[lr.loanId].length > 0) ? (
-													toolsByLoan[lr.loanId].map((tool, tIdx) => (
-														<TableRow key={tool.toolId + "-" + tIdx}>
-															<TableCell>{tool.toolId}</TableCell>
-															<TableCell>{tool.tool_name}</TableCell>
+												{(toolsByLoan[lr.loanReportId] && toolsByLoan[lr.loanReportId].length > 0) ? (
+													toolsByLoan[lr.loanReportId].map((tool, tIdx) => (
+														<TableRow key={tool.toolReportId + "-" + tIdx}>
+															{/* <TableCell>{tool.toolId}</TableCell> */}
+															<TableCell>{tool.toolName}</TableCell>
 															<TableCell>{tool.category}</TableCell>
-															<TableCell>{tool.disponibility}</TableCell>
+															{/* <TableCell>{tool.disponibility}</TableCell> */}
 														</TableRow>
 													))
 												) : (
 													<TableRow>
-														<TableCell colSpan={4} align="center">No hay herramientas asociadas a este préstamo.</TableCell>
+														<TableCell colSpan={2} align="center">No hay herramientas asociadas a este préstamo.</TableCell>
 													</TableRow>
 												)}
 											</TableBody>
