@@ -17,7 +17,8 @@ const NewClientBehindReport = () => {
     setLoading(true);
 
     // obtener id del token
-    const idFromToken = keycloak?.tokenParsed?.preferred_username || keycloak?.tokenParsed?.username || keycloak?.tokenParsed?.email;
+    //const idFromToken = keycloak?.tokenParsed?.preferred_username || keycloak?.tokenParsed?.username || keycloak?.tokenParsed?.email;
+    const idFromToken = 2;
     if (!keycloak?.authenticated || !idFromToken) {
       setLoading(false);
       return;
@@ -33,13 +34,8 @@ const NewClientBehindReport = () => {
       const reportId = reportRes.data?.reportId;
 
       // 3. obtener datos del cliente (si existe)
-      let clientData = null;
-      try {
-        const clientRes = await clientService.get(idFromToken);
-        clientData = clientRes.data;
-      } catch (e) {
-        clientData = null;
-      }
+      const clientRes = await clientService.get(idFromToken);
+      clientData = clientRes.data;
 
       // 4. crear entrada en clientsBehind
       const clientBehindPayload = {
