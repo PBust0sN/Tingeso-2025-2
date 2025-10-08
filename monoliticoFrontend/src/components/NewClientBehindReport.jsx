@@ -4,6 +4,7 @@ import loansService from "../services/loans.service";
 import reportsService from "../services/reports.service";
 import clientService from "../services/client.service";
 import clientBehindService from "../services/clientBehind.service";
+import clientBehindLoansService from "../services/clientBehindLoans.service";
 import loansReportsService from "../services/loansReports.service";
 import { useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
@@ -35,7 +36,7 @@ const NewClientBehindReport = () => {
 
       // 3. obtener datos del cliente (si existe)
       const clientRes = await clientService.get(idFromToken);
-      clientData = clientRes.data;
+      const clientData = clientRes.data;
 
       // 4. crear entrada en clientsBehind
       const clientBehindPayload = {
@@ -57,8 +58,9 @@ const NewClientBehindReport = () => {
         const delivery = l.deliveryDate ? new Date(l.deliveryDate) : null;
         const ret = l.returnDate ? new Date(l.returnDate) : null;
         const isNegative = delivery && ret && (ret.getTime() - delivery.getTime() < 0);
+        console.log({ delivery, ret, isNegative });
         if (isNegative) {
-          await loansReportsService.create({
+          const loanReportRes = await loansReportsService.create({
             reportId: reportId,
             clientIdBehind: clientBehindId,
             deliveryDate: l.deliveryDate,
@@ -71,6 +73,14 @@ const NewClientBehindReport = () => {
             extraCharges: l.extraCharges,
             loanId: l.loanId,
           });
+          const loanReportId = loanReportRes.data?.loanReportId;
+          // crear entry en clientBehindLoans linkeando loanReportId con clientBehindId
+          if (loanReportId && clientBehindId) {
+            await clientBehindLoansService.create({
+              loanReportId: loanReportId,
+              clientIdBehind: clientBehindId,
+            });
+          }
         }
       }
 
