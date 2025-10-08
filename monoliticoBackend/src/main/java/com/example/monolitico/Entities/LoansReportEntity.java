@@ -20,6 +20,7 @@ public class LoansReportEntity {
     private Long loanReportId;
 
     private Long reportId;
+    private Long clientIdBehind;
     private Date deliveryDate;
     private Date returnDate;
     private String loanType;
