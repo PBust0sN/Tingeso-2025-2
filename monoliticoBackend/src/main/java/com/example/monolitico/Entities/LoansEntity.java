@@ -27,4 +27,5 @@ public class LoansEntity {
     private Long clientId;
     private Long amount;
     private Long extraCharges;
+    private Boolean status;
 }

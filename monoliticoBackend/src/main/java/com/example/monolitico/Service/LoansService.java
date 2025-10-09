@@ -80,6 +80,7 @@ public class LoansService {
             //set the return date
             loansEntity.setReturnDate(Date.valueOf(date.plusDays(days).toLocalDate().toString()));
 
+            loansEntity.setStatus(true);
             //if the dates entered in the newloan are wrong, then throw error
             if(!checkDates(loansEntity)) {
                 errors.add("dates are place bad");
@@ -194,6 +195,8 @@ public class LoansService {
         }
 
         // save loan
+        //once is return the loan isnt active no more
+        loansEntity.setStatus(false);
         return saveLoan(loansEntity);
     }
 

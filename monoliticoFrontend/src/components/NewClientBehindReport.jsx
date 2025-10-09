@@ -28,7 +28,11 @@ const NewClientBehindReport = () => {
     try {
       // 1. obtener prestamos del cliente
       const allLoansRes = await loansService.getAll();
-      const loansList = allLoansRes.data.filter((l) => String(l.clientId) === String(idFromToken));
+      // first filter by client, then exclude loans of type 'return'
+      const loansList = (allLoansRes.data || [])
+        .filter((l) => String(l.clientId) === String(idFromToken))
+        .filter((l) => String(l.loanType).toLowerCase() !== "return")
+        .filter((l) => l.status !== false);
 
       // 2. crear report
       const reportRes = await reportsService.create({ clientIdBehind: true, clientIdReport: idFromToken });

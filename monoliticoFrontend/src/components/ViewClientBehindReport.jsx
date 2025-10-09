@@ -31,13 +31,14 @@ function ViewClientBehindReport() {
         }
 
         const loansRes = await loansReportsService.getAllByReportId(reportId);
-        const loansData =  loansRes.data ;
+        const loansData = loansRes.data || [];
         if (mounted) {
           setLoansReport(loansData);
           console.log("loansReport:", loansData);
         }
       } catch (err) {
         console.error("Error fetching clientBehind or loansReport:", err);
+        throw err;
       }
     };
 
@@ -126,7 +127,7 @@ function ViewClientBehindReport() {
                 <TableBody>
                   {loansReport.map((lr) => (
                     <TableRow key={lr.loanReportId}>
-                      <TableCell>{lr.loanId}</TableCell>
+                      <TableCell>{lr.loanReportId}</TableCell>
                       <TableCell>{lr.loanType}</TableCell>
                       <TableCell>{lr.amount}</TableCell>
                       <TableCell>{formatDate(lr.deliveryDate)}</TableCell>
