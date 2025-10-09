@@ -54,12 +54,16 @@ public class KeycloakService {
         credential.put("value", password);
         credential.put("temporary", false);
 
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("id_real", List.of(id_real.toString()));
+
         Map<String, Object> user = new HashMap<>();
         user.put("username", username);
         user.put("email", email);
-        user.put("id_real", id_real);
         user.put("enabled", true);
         user.put("credentials", List.of(credential));
+        user.put("attributes", attributes);
+
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(user, headers);
 

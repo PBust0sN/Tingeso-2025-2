@@ -10,26 +10,98 @@ import clientService from "../services/client.service";
 import MenuItem from "@mui/material/MenuItem";
 
 const AddClient = () => {
-  const [avaliable, setAvaliable] = useState("");
+  const [avaliable, setAvaliable] = useState("true");
   const [last_name, setLastName] = useState("");
   const [mail, setMail] = useState("");
   const [name, setName] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [rut, setRut] = useState("");
   const [state, setState] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  // Errors state
+  const [errorsList, setErrorsList] = useState([]);
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const validateFields = () => {
+    const errors = [];
+    const fErrors = {};
+
+    if (!rut || !rut.trim()) {
+      errors.push("Rut es obligatorio.");
+      fErrors.rut = true;
+    }
+
+    if (!name || !name.trim()) {
+      errors.push("Name es obligatorio.");
+      fErrors.name = true;
+    }
+
+    if (!last_name || !last_name.trim()) {
+      errors.push("Last Name es obligatorio.");
+      fErrors.last_name = true;
+    }
+
+    if (!mail || !mail.trim()) {
+      errors.push("E-Mail es obligatorio.");
+      fErrors.mail = true;
+    } else {
+      // simple email regex
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(mail)) {
+        errors.push("E-Mail no tiene un formato válido.");
+        fErrors.mail = true;
+      }
+    }
+
+    if (!password || password.length < 6) {
+      errors.push("Password obligatorio (mínimo 6 caracteres).");
+      fErrors.password = true;
+    }
+
+    if (!phone_number || !/^\d+$/.test(phone_number)) {
+      errors.push("Phone Number obligatorio y sólo debe contener dígitos.");
+      fErrors.phone_number = true;
+    }
+
+    if (avaliable !== "true" && avaliable !== "false") {
+      errors.push("Avaliable debe ser TRUE o FALSE.");
+      fErrors.avaliable = true;
+    }
+
+    // state is optional, but if provided, ensure not empty
+    if (state && !state.trim()) {
+      errors.push("State inválido.");
+      fErrors.state = true;
+    }
+
+    return { errors, fErrors };
+  };
 
   const saveClient = (e) => {
     e.preventDefault();
+
+    const { errors, fErrors } = validateFields();
+    setErrorsList(errors);
+    setFieldErrors(fErrors);
+
+    if (errors.length > 0) {
+      window.alert(errors.join("\n"));
+      return;
+    }
+
     const client = {
       rut,
       name,
       last_name,
       mail,
-      avaliable: avaliable === "true", 
+      avaliable: avaliable === "true",
       state,
       phone_number,
+      password,
     };
+
     console.log(client);
     clientService
       .create(client)
@@ -92,6 +164,26 @@ const AddClient = () => {
           >
             <h3>Nuevo Cliente</h3>
             <hr />
+
+            {/* Lista de errores */}
+            {errorsList.length > 0 && (
+              <Box
+                sx={{
+                  width: "100%",
+                  mb: 2,
+                  p: 1,
+                  borderRadius: 1,
+                  backgroundColor: "rgba(255,200,200,0.9)",
+                }}
+              >
+                <ul style={{ margin: 0, paddingLeft: "1rem", color: "#700" }}>
+                  {errorsList.map((err, idx) => (
+                    <li key={idx}>{err}</li>
+                  ))}
+                </ul>
+              </Box>
+            )}
+
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="rut"
@@ -100,6 +192,7 @@ const AddClient = () => {
                 variant="standard"
                 onChange={(e) => setRut(e.target.value)}
                 helperText="99999999-9"
+                error={!!fieldErrors.rut}
               />
             </FormControl>
             <FormControl fullWidth sx={{ mb: 2 }}>
@@ -109,6 +202,7 @@ const AddClient = () => {
                 value={name}
                 variant="standard"
                 onChange={(e) => setName(e.target.value)}
+                error={!!fieldErrors.name}
               />
             </FormControl>
             <FormControl fullWidth sx={{ mb: 2 }}>
@@ -118,6 +212,7 @@ const AddClient = () => {
                 value={last_name}
                 variant="standard"
                 onChange={(e) => setLastName(e.target.value)}
+                error={!!fieldErrors.last_name}
               />
             </FormControl>
             <FormControl fullWidth sx={{ mb: 2 }}>
@@ -127,31 +222,59 @@ const AddClient = () => {
                 value={mail}
                 variant="standard"
                 onChange={(e) => setMail(e.target.value)}
+                error={!!fieldErrors.mail}
               />
             </FormControl>
+
+            {/* Password field */}
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
-                id="avaliable"
-                label="Avaliable"
-                value={avaliable}
-                select
+                id="password"
+                label="Password"
+                type="password"
+                value={password}
                 variant="standard"
-                onChange={(e) => setAvaliable(e.target.value)}
-                style={{ width: "25%" }}
-              >
-                <MenuItem value={"true"}>TRUE</MenuItem>
-                <MenuItem value={"false"}>FALSE</MenuItem>
-              </TextField>
-            </FormControl>
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <TextField
-                id="state"
-                label="State"
-                value={state}
-                variant="standard"
-                onChange={(e) => setState(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
+                helperText="Mínimo 6 caracteres"
+                error={!!fieldErrors.password}
               />
             </FormControl>
+
+            {/* Avaliable y State en la misma fila */}
+            <Box sx={{ display: "flex", gap: 2, width: "100%", mb: 2 }}>
+              <FormControl sx={{ flex: 1 }}>
+                <TextField
+                  id="avaliable"
+                  label="Avaliable"
+                  value={avaliable}
+                  select
+                  variant="standard"
+                  onChange={(e) => setAvaliable(e.target.value)}
+                  error={!!fieldErrors.avaliable}
+                  fullWidth
+                >
+                  <MenuItem value={"true"}>TRUE</MenuItem>
+                  <MenuItem value={"false"}>FALSE</MenuItem>
+                </TextField>
+              </FormControl>
+
+              <FormControl sx={{ flex: 1 }}>
+                <TextField
+                  id="state"
+                  label="State"
+                  value={state}
+                  select
+                  variant="standard"
+                  onChange={(e) => setState(e.target.value)}
+                  error={!!fieldErrors.state}
+                  fullWidth
+                >
+                  <MenuItem value="activo">Activo</MenuItem>
+                  <MenuItem value="restringido">Restringido</MenuItem>
+                </TextField>
+              </FormControl>
+            </Box>
+
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="phone_number"
@@ -160,6 +283,7 @@ const AddClient = () => {
                 variant="standard"
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 helperText="Ej. 911112222"
+                error={!!fieldErrors.phone_number}
               />
             </FormControl>
             <FormControl sx={{ mb: 2 }}>
