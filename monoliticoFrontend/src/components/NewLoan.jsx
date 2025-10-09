@@ -64,6 +64,7 @@ const NewLoan = () => {
         } else if (Array.isArray(response.data)) {
           // Muestra los errores en una ventana
           window.alert("Errores:\n" + response.data.join("\n"));
+          navigate(-1);
         } else {
           // Si la respuesta no es una lista, muestra un mensaje genérico
           window.alert("Respuesta inesperada del servidor.");
@@ -234,7 +235,7 @@ const NewLoan = () => {
             >
               Grabar Préstamo
             </Button>
-            <Link to="/loan/list" style={{ textDecoration: "none" }}>
+            <Link to="/client/list" style={{ textDecoration: "none" }}>
               <Button variant="outlined" color="primary">
                 Volver al Listado
               </Button>

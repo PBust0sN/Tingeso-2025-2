@@ -101,12 +101,6 @@ export default function Sidemenu({ open, toggleDrawer }) {
           </ListItemIcon>
           <ListItemText primary="My Reports" />
         </ListItemButton>
-        <ListItemButton onClick={() => navigate("/paycheck/medicalleave") }>
-          <ListItemIcon>
-            <MedicationLiquidIcon />
-          </ListItemIcon>
-          <ListItemText primary="Licencias Medicas" />
-        </ListItemButton>
       </List>
     </Box>
   );
