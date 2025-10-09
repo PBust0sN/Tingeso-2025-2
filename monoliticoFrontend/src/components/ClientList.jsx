@@ -33,7 +33,7 @@ const ClientList = () => {
   const [expandedRow, setExpandedRow] = useState(null);
 
   const filteredClient = client.filter(client =>
-    client.name.toLowerCase().includes(search.toLowerCase())
+    client.rut.includes(search)
   );
 
   const navigate = useNavigate();
@@ -142,7 +142,7 @@ const ClientList = () => {
                 <TableCell colSpan={7} align="left">
                   <TextField
                     variant="outlined"
-                    placeholder="Buscar Cliente Por Nombre..."
+                    placeholder="Buscar cliente por rut..."
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     sx={{ width: 350, background: "white", borderRadius: 1 }}
