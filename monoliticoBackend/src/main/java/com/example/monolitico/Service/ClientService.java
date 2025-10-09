@@ -23,10 +23,7 @@ public class ClientService {
     ClientLoansRepository clientLoansRepository;
 
     @Autowired
-    ToolsService toolsService;
-
-    @Autowired
-    private ToolsLoansService toolsLoansService;
+    private KeycloakService keycloakService;
     @Autowired
     private ToolsLoansRepository toolsLoansRepository;
 
@@ -37,7 +34,14 @@ public class ClientService {
 
     //save a client into the data base
     public ClientEntity saveClient(ClientEntity clientEntity){
-        return clientRepository.save(clientEntity);
+        ClientEntity client = clientRepository.save(clientEntity);
+        keycloakService.createUserInKeycloak(
+                client.getName(),
+                client.getMail(),
+                client.getPassword(),
+                client.getClient_id()
+        );
+        return client;
     }
 
     //get a client by his id field

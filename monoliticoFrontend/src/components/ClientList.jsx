@@ -24,7 +24,6 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 
 const ClientList = () => {
