@@ -215,7 +215,6 @@ const formatDate = (dateStr) => {
                   <TableCell sx={{ fontWeight: "bold" }}>ID Herramienta</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Nombre</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Categoría</TableCell>
-                  <TableCell sx={{ fontWeight: "bold" }}>Disponibilidad</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -231,7 +230,6 @@ const formatDate = (dateStr) => {
                       <TableCell>{tool.toolId}</TableCell>
                       <TableCell>{tool.tool_name}</TableCell>
                       <TableCell>{tool.category}</TableCell>
-                      <TableCell>{tool.disponibility}</TableCell>
                     </TableRow>
                   ))
                 )}
@@ -243,7 +241,7 @@ const formatDate = (dateStr) => {
             <Button
             variant="contained"
             sx={{ mt: 2 }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/loan/list")}
             >
             Volver atras
             </Button>
