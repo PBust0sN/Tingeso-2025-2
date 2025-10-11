@@ -165,7 +165,7 @@ public class LoansService {
 
     public Optional<LoansEntity> returnLoan(LoansEntity loansEntity) {
         // first we calculate the costs
-        CalculateCostDTO loanCost = calculateCosts(loansEntity.getLoanId());
+        CalculateCostDTO loanCost = calculateCosts(loansEntity.getLoanId(), loansEntity.getClientId());
 
         // we set date and the extra costs
         LocalDateTime date = LocalDateTime.now();
@@ -206,12 +206,13 @@ public class LoansService {
         Long fineAmount = 0L;
         Long devolution = 0L;
 
+        Optional<LoansEntity> loan = loansRepository.findById(loanId);
         if (reamaningDaysOnLoan(loanId) > 0) {
-            repoAmount = calculateRepoFine(loanId);
+            repoAmount = calculateRepoFine(loanId, loan.get().getClientId());
             devolution = calculateReturnPayment(loanId);
         } else if (reamaningDaysOnLoan(loanId) < 0) {
             fineAmount = calculateFine(loanId);
-            repoAmount = calculateRepoFine(loanId);
+            repoAmount = calculateRepoFine(loanId, loan.get().getClientId());
         }
         if(devolution - repoAmount >0){
             dto.setReturnPayment(devolution - repoAmount);
@@ -237,7 +238,7 @@ public class LoansService {
         return 0L;
     }
 
-    public Long calculateRepoFine(Long id){
+    public Long calculateRepoFine(Long id, Long clientId){
         List<Long> tools = toolsLoansRepository.findByLoanId(id);
         Long repofine = 0L;
         for(Long toolId : tools){
@@ -245,6 +246,17 @@ public class LoansService {
                 repofine += toolsService.getToolsById(toolId).getRepositionFee();
             }
         }
+
+        FineEntity newFine =  new FineEntity();
+        newFine.setState("pendiente");
+        newFine.setAmount(repofine);
+        newFine.setType("dmg fine");
+        newFine.setClientId(clientId);
+        LocalDateTime date = LocalDateTime.now();
+        newFine.setDate(Date.valueOf(date.toLocalDate()));
+        newFine.setLoanId(id);
+
+        fineService.saveFine(newFine);
         return repofine;
     }
 
