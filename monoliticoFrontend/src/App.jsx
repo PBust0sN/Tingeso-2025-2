@@ -20,9 +20,7 @@ import Login  from './components/Login';
 import Typography from "@mui/material/Typography";
 import ReturnLoan from './components/ReturnLoan';
 import ListLoanId from './components/ListLoanId';
-import CalculateCost from './components/CalculateCost';
 import FineList from './components/FineList';
-import ReturnLoanFinal from './components/ReturnLoanFinal';
 import AddReport from './components/AddReport';
 import MyReports from './components/MyReports';
 import NewLoanReport from './components/NewLoanReport';
@@ -209,16 +207,8 @@ function App() {
             element={<PrivateRoute element={<ReturnLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
           <Route
-            path="/loan/return/id/:client_id/:loan_id/calculateCost"
-            element={<PrivateRoute element={<CalculateCost />} rolesAllowed={["STAFF","ADMIN"]} />}
-          />
-          <Route
             path="/fine/list"
             element={<PrivateRoute element={<FineList />} rolesAllowed={["STAFF","ADMIN"]} />}
-          />
-          <Route
-            path="/loan/return/id/:client_id/:loan_id/calculateCost/devolution"
-            element={<PrivateRoute element={<ReturnLoanFinal />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
           <Route
             path="/reports/create"

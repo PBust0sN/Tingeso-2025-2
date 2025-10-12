@@ -80,7 +80,7 @@ public class LoansService {
             //set the return date
             loansEntity.setReturnDate(Date.valueOf(date.plusDays(days).toLocalDate().toString()));
 
-            loansEntity.setStatus(true);
+            loansEntity.setActive(true);
             //if the dates entered in the newloan are wrong, then throw error
             if(!checkDates(loansEntity)) {
                 errors.add("dates are place bad");
@@ -165,11 +165,14 @@ public class LoansService {
 
     public Optional<LoansEntity> returnLoan(LoansEntity loansEntity) {
         // first we calculate the costs
-        CalculateCostDTO loanCost = calculateCosts(loansEntity.getLoanId(), loansEntity.getClientId());
+        CalculateCostDTO loanCost = calculateCosts(loansEntity.getLoanId());
 
         // we set date and the extra costs
         LocalDateTime date = LocalDateTime.now();
         loansEntity.setDate(Date.valueOf(date.toLocalDate()));
+
+        //NOTE: the extra chargues only account for the repo ammount other costs
+        //are held by fines
         loansEntity.setExtraCharges(loanCost.getFineAmount() + loanCost.getRepoAmount());
 
         // then create a record
@@ -196,7 +199,7 @@ public class LoansService {
 
         // save loan
         //once is return the loan isnt active no more
-        loansEntity.setStatus(false);
+        loansEntity.setActive(false);
         return saveLoan(loansEntity);
     }
 
