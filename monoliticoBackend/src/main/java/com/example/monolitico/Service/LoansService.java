@@ -166,7 +166,7 @@ public class LoansService {
     public Optional<LoansEntity> returnLoan(LoansEntity loansEntity) {
         // first we calculate the costs
         CalculateCostDTO loanCost = calculateCosts(loansEntity.getLoanId());
-
+        System.out.println("1");
         // we set date and the extra costs
         LocalDateTime date = LocalDateTime.now();
         loansEntity.setDate(Date.valueOf(date.toLocalDate()));
@@ -250,16 +250,17 @@ public class LoansService {
             }
         }
 
-        FineEntity newFine =  new FineEntity();
-        newFine.setState("pendiente");
-        newFine.setAmount(repofine);
-        newFine.setType("dmg fine");
-        newFine.setClientId(clientId);
-        LocalDateTime date = LocalDateTime.now();
-        newFine.setDate(Date.valueOf(date.toLocalDate()));
-        newFine.setLoanId(id);
-
-        fineService.saveFine(newFine);
+        if(repofine > 0){
+            FineEntity newFine =  new FineEntity();
+            newFine.setState("pendiente");
+            newFine.setAmount(repofine);
+            newFine.setType("dmg fine");
+            newFine.setClientId(clientId);
+            LocalDateTime date = LocalDateTime.now();
+            newFine.setDate(Date.valueOf(date.toLocalDate()));
+            newFine.setLoanId(id);
+            fineService.saveFine(newFine);
+        }
         return repofine;
     }
 

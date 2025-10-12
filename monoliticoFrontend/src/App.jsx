@@ -18,6 +18,7 @@ import RecordList from './components/RecordList';
 import AddRecord from './components/AddRecord';
 import Login  from './components/Login';
 import Typography from "@mui/material/Typography";
+import PreReturnLoan from './components/PreReturnLoan';
 import ReturnLoan from './components/ReturnLoan';
 import ListLoanId from './components/ListLoanId';
 import FineList from './components/FineList';
@@ -204,6 +205,10 @@ function App() {
           />
           <Route
             path="/loan/return/id/:client_id/:loan_id"
+            element={<PrivateRoute element={<PreReturnLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/return/id/:client_id/:loan_id/summary"
             element={<PrivateRoute element={<ReturnLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
           <Route

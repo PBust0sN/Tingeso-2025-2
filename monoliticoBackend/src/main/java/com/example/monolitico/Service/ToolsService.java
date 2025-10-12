@@ -46,6 +46,7 @@ public class ToolsService {
                     System.out.println("3");
                     //has to be a valid state condition is satisfied in the frontend part
                     System.out.println("4");
+                    Optional<ToolsEntity> newtool = Optional.of(toolsrepository.save(toolsEntity));
                     //generate a new record (records)
                     RecordsEntity record = new RecordsEntity();
                     LocalDate diaActual = LocalDate.now();
@@ -57,7 +58,7 @@ public class ToolsService {
                     //save the record
                     recordservice.saveRecord(record);
                     //save the tool
-                    return Optional.of(toolsrepository.save(toolsEntity));
+                    return newtool;
                 }
             }
         }
