@@ -111,4 +111,8 @@ public class ClientService {
     public ClientEntity findByRut (String rut){
         return clientRepository.findByRut(rut);
     }
+
+    public List<LoansEntity> findALlLoansByClientId(Long clientId){
+        return clientRepository.getAllLoansByClientId(clientId);
+    }
 }

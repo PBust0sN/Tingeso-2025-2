@@ -50,7 +50,7 @@ public class LoansController {
 
     @PostMapping("/new")
     public ResponseEntity<List<String>> saveNewLoan(@RequestBody NewLoanDTO newLoan){
-        List<String> errors = loansService.AddLoan(
+        List<String> errors = loansService.addLoan(
                 newLoan.getStaff_id(),
                 newLoan.getClient_id(),
                 newLoan.getTools_id(),

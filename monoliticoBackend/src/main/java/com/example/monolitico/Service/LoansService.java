@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -51,98 +52,128 @@ public class LoansService {
     }
 
 
-    public List<String> AddLoan(Long staff_id, Long client_id, List<Long> tools_ids, Long days) {
+    public List<String> addLoan(Long staff_id, Long client_id, List<Long> tools_ids, Long days) {
         List<String> errors = new ArrayList<>();
 
         System.out.println(staff_id);
         System.out.println(client_id);
         System.out.println(tools_ids);
         System.out.println(days);
-        //verify that the client is allowed to have another loan
+
+        // get client
         ClientEntity client = clientService.getClientById(client_id);
-        //if avaliable is true then the client is allowed for another loan
-        if (client.getAvaliable()
-                && !fineService.hasFinesByClientId(client_id)
-                && !fineService.hasFinesOfToolReposition(client_id)
-                && !clientService.hasExpiredLoansById(client_id)) {
 
-            // we create a loan
-            LoansEntity loansEntity = new LoansEntity();
+        // Verification 1: avaliable client
+        if (!client.getAvaliable()) {
+            errors.add("Client is not available for new loans.");
+        }
 
-            //set the date
-            LocalDateTime date = LocalDateTime.now();
-            loansEntity.setDate(Date.valueOf(date.toLocalDate().toString()));
+        // Verification 2: fines
+        if (fineService.hasFinesByClientId(client_id)) {
+            errors.add("Client has pending fines.");
+        }
 
-            //set deliverydate
-            loansEntity.setDeliveryDate(Date.valueOf(date.toLocalDate().toString()));
+        // Verification 3: fine by reposition
+        if (fineService.hasFinesOfToolReposition(client_id)) {
+            errors.add("Client has fines for tool replacement.");
+        }
 
-            //set the return date
-            loansEntity.setReturnDate(Date.valueOf(date.plusDays(days).toLocalDate().toString()));
-
-            loansEntity.setActive(true);
-            //if the dates entered in the newloan are wrong, then throw error
-            if(!checkDates(loansEntity)) {
-                errors.add("dates are place bad");
-            }else{
-                loansEntity.setLoanType("loan   ");
-                loansEntity.setStaffId(staff_id);
-                System.out.println("cliente: " + client);
-                loansEntity.setClientId(client_id);
-                loansEntity.setExtraCharges(0L);
-
-                Long amount = 0L;
-                //we add the tools in the list to the tools loans table
-                for (Long tool_id : tools_ids) {
-                    ToolsEntity tool = toolsService.getToolsById(tool_id);
-
-                    //if the client has the same tool already loan to him then throw a error
-                    if(clientService.HasTheSameToolInLoanByClientId(client_id, tool_id)){
-                        errors.add("you have a loan with: ".concat(tool.getToolName()));
-                    }else {
-                        amount += tool.getLoanFee();
-                    }
-                }
-                //if we have encountered 0 errors then we continue the process
-                if(errors.isEmpty()){
-                    loansEntity.setAmount(amount);
-
-                    saveLoan(loansEntity);
-
-                    for (Long tool_id : tools_ids) {
-                        ToolsEntity tool = toolsService.getToolsById(tool_id);
-
-                        //we substract the stock of the tools
-                        tool.setStock(tool.getStock() - 1);
-
-                        //we add the relation in the tool_loan table
-                        ToolsLoansEntity toolsLoansEntity = new ToolsLoansEntity();
-                        toolsLoansEntity.setToolId(tool_id);
-                        toolsLoansEntity.setLoanId(loansEntity.getLoanId());
-                        toolsLoansService.saveToolsLoans(toolsLoansEntity);
-
-                        //we update the tool info
-                        toolsService.updateTool(tool);
-                    }
-
-                    //we have to generate a new move in the kardex
-                    RecordsEntity record =  new RecordsEntity();
-                    record.setRecordType("Loan");
-
-                    //we get teh actual time
-                    record.setRecordDate(Date.valueOf(date.toLocalDate().toString())); // actual date
-                    record.setLoanId(loansEntity.getLoanId());
-                    record.setClientId(client_id);
-                    System.out.println(errors);
-                    return errors;
-                }
-            }
-        }else{
-            errors.add("Client is not avaliable or has fines");
+        // Verification 4: behind loans
+        if (clientService.hasExpiredLoansById(client_id)) {
+            errors.add("Client has expired loans.");
+        }
+        // Verification 5: client state
+        if(Objects.equals(client.getState(), "restringido")){
+            errors.add("Client has fines to be pay");
+        }
+        // Verification 6: number of loans
+        if(clientService.findALlLoansByClientId(client.getClient_id()).size()>=5){
+            errors.add("Client has already max out the number of loans he can have.");
+        }
+        // if we encounter errors then we don't continue
+        if (!errors.isEmpty()) {
             System.out.println(errors);
             return errors;
         }
+
+        // create the loan
+        LoansEntity loansEntity = new LoansEntity();
+        LocalDateTime date = LocalDateTime.now();
+
+        loansEntity.setDate(Date.valueOf(date.toLocalDate()));
+        loansEntity.setDeliveryDate(Date.valueOf(date.toLocalDate()));
+        loansEntity.setReturnDate(Date.valueOf(date.plusDays(days).toLocalDate()));
+        loansEntity.setActive(true);
+
+        // validate dates
+        if (!checkDates(loansEntity)) {
+            errors.add("Loan dates are incorrect.");
+            return errors;
+        }
+
+        loansEntity.setLoanType("loan");
+        loansEntity.setStaffId(staff_id);
+        loansEntity.setClientId(client_id);
+        loansEntity.setExtraCharges(0L);
+
+        long amount = 0L;
+
+        //check if the client has other loans with the tools
+        for (Long tool_id : tools_ids) {
+            ToolsEntity tool = toolsService.getToolsById(tool_id);
+
+            //is the tool loaned to much?
+
+
+            
+
+            if(tool.getStock()<=0){
+                errors.add("Tool " + tool.getToolName() + " isnt in stock.");
+            }
+            if(!Objects.equals(tool.getDisponibility(), "disponible")){
+                errors.add("Tool " + tool.getToolName() + " hans't disponibility.");
+            }
+
+            if (clientService.HasTheSameToolInLoanByClientId(client_id, tool_id)) {
+                errors.add("Client already has a loan with tool: " + tool.getToolName());
+            } else {
+                amount += tool.getLoanFee();
+            }
+        }
+
+        // if we have errors, don't continue
+        if (!errors.isEmpty()) {
+            System.out.println(errors);
+            return errors;
+        }
+
+        // save the loan
+        loansEntity.setAmount(amount);
+        saveLoan(loansEntity);
+
+        //update tools
+        for (Long tool_id : tools_ids) {
+            ToolsEntity tool = toolsService.getToolsById(tool_id);
+            tool.setStock(tool.getStock() - 1);
+            toolsService.updateTool(tool);
+
+            ToolsLoansEntity toolsLoansEntity = new ToolsLoansEntity();
+            toolsLoansEntity.setToolId(tool_id);
+            toolsLoansEntity.setLoanId(loansEntity.getLoanId());
+            toolsLoansService.saveToolsLoans(toolsLoansEntity);
+        }
+
+        // Registrar movimiento en Kardex
+        RecordsEntity record = new RecordsEntity();
+        record.setRecordType("Loan");
+        record.setRecordDate(Date.valueOf(date.toLocalDate()));
+        record.setLoanId(loansEntity.getLoanId());
+        record.setClientId(client_id);
+
+        System.out.println(errors);
         return errors;
     }
+
 
     // verify date of loan
     public boolean checkDates(LoansEntity loan) {
