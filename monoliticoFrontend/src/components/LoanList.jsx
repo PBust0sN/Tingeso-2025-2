@@ -18,6 +18,7 @@ import Typography from "@mui/material/Typography";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { lime, purple } from '@mui/material/colors';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
 
 const LoanList = () => {
   const [loans, setLoans] = useState([]);
@@ -55,7 +56,7 @@ const LoanList = () => {
 
   const handleDelete = (id) => {
     const confirmDelete = window.confirm(
-      "¿Esta seguro que desea borrar esta herramienta?"
+      "¿Esta seguro que desea borrar este prestamo?"
     );
     if (confirmDelete) {
       loansService
@@ -207,16 +208,26 @@ const formatDate = (dateStr) => {
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{loan.extraCharges}</TableCell>
                   <TableCell>
                     <ThemeProvider theme={theme}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      onClick={() => handleViewLoan(loan.loanId)}
-                      style={{ marginLeft: "0.5rem"}}
-                      startIcon={<VisibilityIcon />}
-                    >
-                      Ver mas
-                    </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleViewLoan(loan.loanId)}
+                        style={{ marginLeft: "0.5rem"}}
+                        startIcon={<VisibilityIcon />}
+                      >
+                        Ver mas
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={() => navigate(`/loan/return/id/${loan.clientId}/${loan.loanId}`)}
+                        style={{ marginLeft: "0.5rem" }}
+                        startIcon={<RotateRightIcon />}
+                      >
+                        Devolver
+                      </Button>
                     </ThemeProvider>
 
                     <Button
