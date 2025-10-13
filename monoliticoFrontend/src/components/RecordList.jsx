@@ -71,7 +71,7 @@ const RecordList = () => {
   const handleSearch = () => {
     let filtered = [...records];
     if (selectedTool) {
-      filtered = filtered.filter(r => String(r.toolName) === String(selectedTool));
+      filtered = filtered.filter(r => String(r.toolId) === String(selectedTool));
     }
     if (startDate) {
       filtered = filtered.filter(r => {
@@ -151,7 +151,7 @@ const RecordList = () => {
                     >
                       <MenuItem value="" sx={{ textAlign: 'center' }}>Todas</MenuItem>
                       {tools.map(tool => (
-                        <MenuItem key={tool.toolId} value={tool.tool_name} sx={{ textAlign: 'center' }}>
+                        <MenuItem key={tool.toolId} value={tool.toolId} sx={{ textAlign: 'center' }}>
                           {tool.tool_name}
                         </MenuItem>
                       ))}
