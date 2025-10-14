@@ -12,14 +12,24 @@ import Button from "@mui/material/Button";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const MyReports = () => {
   const [reports, setReports] = useState([]);
+  const [filteredReports, setFilteredReports] = useState([]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     reportsService.getAll()
-      .then((response) => setReports(response.data))
+      .then((response) => {
+        setReports(response.data);
+        setFilteredReports(response.data);
+      })
       .catch((error) => console.log("Error al cargar reportes", error));
   }, []);
 
@@ -55,15 +65,76 @@ const MyReports = () => {
         <TableContainer component={Paper} sx={{ maxWidth: 1200, background: "rgba(255,255,255,0.95)" }}>
           <Table size="small">
             <TableHead>
+              {/* Fila de filtros dentro de la tabla */}
               <TableRow>
-                <TableCell>ID Reporte</TableCell>
-                <TableCell>Fecha</TableCell>
-                <TableCell>Tipo</TableCell>
-                <TableCell></TableCell>
+                <TableCell colSpan={4}>
+                  <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        label="Fecha inicio"
+                        value={startDate}
+                        onChange={(newValue) => setStartDate(newValue)}
+                        enableAccessibleFieldDOMStructure={false}
+                        slots={{ textField: TextField }}
+                        slotProps={{
+                          textField: {
+                            sx: { width: 160, background: "white", borderRadius: 1, '& .MuiInputBase-root': { height: 43 } }
+                          }
+                        }}
+                      />
+                      <DatePicker
+                        label="Fecha fin"
+                        value={endDate}
+                        onChange={(newValue) => setEndDate(newValue)}
+                        enableAccessibleFieldDOMStructure={false}
+                        slots={{ textField: TextField }}
+                        slotProps={{
+                          textField: {
+                            sx: { width: 160, background: "white", borderRadius: 1, '& .MuiInputBase-root': { height: 43 } }
+                          }
+                        }}
+                      />
+                    </LocalizationProvider>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        let filtered = [...reports];
+                        if (startDate) {
+                          filtered = filtered.filter(r => new Date(r.reportDate) >= startDate);
+                        }
+                        if (endDate) {
+                          const endOfDay = new Date(endDate);
+                          endOfDay.setHours(23,59,59,999);
+                          filtered = filtered.filter(r => new Date(r.reportDate) <= endOfDay);
+                        }
+                        setFilteredReports(filtered);
+                      }}
+                      sx={{ height: 43 }}
+                    >
+                      Buscar
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        setStartDate(null); setEndDate(null); setFilteredReports(reports);
+                      }}
+                      sx={{ height: 43 }}
+                    >
+                      Limpiar
+                    </Button>
+                  </Box>
+                </TableCell>
               </TableRow>
+               <TableRow>
+                 <TableCell>ID Reporte</TableCell>
+                 <TableCell>Fecha</TableCell>
+                 <TableCell>Tipo</TableCell>
+                 <TableCell></TableCell>
+               </TableRow>
             </TableHead>
             <TableBody>
-              {reports.map((report) => {
+              {filteredReports.map((report) => {
                 let tipo = "";
                 if (report.loanIdReport) tipo = "Préstamo";
                 else if (report.toolsIdRanking) tipo = "Tool Ranking";
