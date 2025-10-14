@@ -156,7 +156,7 @@ function App() {
 
           <Route
             path="/tool/list"
-            element={<PrivateRoute element={<ToolList />} rolesAllowed={["STAFF","ADMIN"]} />}
+            element={<PrivateRoute element={<ToolList />} rolesAllowed={["ADMIN"]} />}
           />
           <Route
             path="/client/list"
@@ -164,7 +164,7 @@ function App() {
           />
           <Route
             path="/tool/add"
-            element={<PrivateRoute element={<AddTool />} rolesAllowed={["STAFF","ADMIN"]} />}
+            element={<PrivateRoute element={<AddTool />} rolesAllowed={["ADMIN"]} />}
           />
           <Route
             path="/tool/edit/:toolId"
@@ -172,11 +172,11 @@ function App() {
           />
           <Route
             path="/client/edit/:client_id"
-            element={<PrivateRoute element={<EditClient />} rolesAllowed={["STAFF","ADMIN"]} />}
+            element={<PrivateRoute element={<EditClient />} rolesAllowed={["ADMIN"]} />}
           />
           <Route
             path="/client/add/"
-            element={<PrivateRoute element={<AddClient />} rolesAllowed={["STAFF","ADMIN"]} />}
+            element={<PrivateRoute element={<AddClient />} rolesAllowed={["ADMIN"]} />}
           />
           <Route
             path="/loan/list/"
@@ -192,7 +192,7 @@ function App() {
           />
           <Route
             path="/record/list"
-            element={<PrivateRoute element={<RecordList />} rolesAllowed={["STAFF","ADMIN"]} />}
+            element={<PrivateRoute element={<RecordList />} rolesAllowed={["ADMIN"]} />}
           />
           <Route
             path="/loan/list/:client_id"
