@@ -135,7 +135,7 @@ const RecordList = () => {
               </TableRow> 
               {/* Fila de búsqueda avanzada */}
               <TableRow sx={{ '& .MuiTableCell-root': { paddingTop: 1, paddingBottom: 1 } }}>
-                <TableCell colSpan={6} sx={{ py: 0 }}>
+                <TableCell colSpan={8} sx={{ py: 0 }}>
                   <Box sx={{ height: 43, display: "flex", gap: 2, alignItems: "center" }}>
                     {/* Desplegable de herramientas */}
                     <TextField
@@ -200,33 +200,14 @@ const RecordList = () => {
                     </Button>
                   </Box>
                 </TableCell>
-                <TableCell colSpan={2} sx={{ py: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => navigate('/record/add')}
-                    startIcon={<CreateNewFolderIcon />}
-                    size="large"
-                    sx={{
-                      height: 56,           // aumentar alto del botón
-                      minWidth: 200,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.95rem',
-                      px: 2
-                    }}
-                  >
-                    Nuevo Record
-                  </Button>
-                </TableCell>
+                
               </TableRow>
               {/* Fila de encabezados */}
               <TableRow>
                 <TableCell align="left" sx={{  maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Id
                 </TableCell>
-                <TableCell align="left" sx={{  maxWidth: 180, fontWeight: "bold", color: "black" }}>
+                <TableCell align="left" sx={{  maxWidth: 250, fontWeight: "bold", color: "black" }}>
                   Record Type
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
@@ -253,12 +234,12 @@ const RecordList = () => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="left" sx={{ maxWidth: 180 }}>{record.recordId}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 180 }}>{record.recordType}</TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 250 }}>{record.recordType}</TableCell>
                   <TableCell align="left" sx={{ maxWidth: 180 }}>{formatDate(record.recordDate)}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{record.toolId == null ? "N/A" : record.toolId}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{record.clientId == null ? "N/A" : record.clientId}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{record.loanId == null ? "N/A" : record.loanId}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 180 }}>{record.recordAmount}</TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 180 }}>{record.recordAmount == null ? "N/A": record.recordAmount}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
