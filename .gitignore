@@ -18,3 +18,7 @@ init.sql
 
 # Archivos y carpetas de Docker
 **/docker-entrypoint-initdb.d/
+
+
+#jenkins.war (pipelines)
+jenkins.war
