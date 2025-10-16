@@ -1,8 +1,11 @@
 package com.example.monolitico.Services;
 
-import com.example.monolitico.Entities.ReportsEntity;
+import com.example.monolitico.Entities.*;
 import com.example.monolitico.Repositories.ReportsRepository;
+import com.example.monolitico.Service.ClientService;
+import com.example.monolitico.Service.LoansService;
 import com.example.monolitico.Service.ReportsServices;
+import com.example.monolitico.Service.ToolsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,9 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -22,6 +23,15 @@ class ReportsServiceTest {
 
     @Mock
     private ReportsRepository reportsRepository;
+
+    @Mock
+    private LoansService loansService;
+
+    @Mock
+    private ClientService clientService;
+
+    @Mock
+    private ToolsService toolsService;
 
     @InjectMocks
     private ReportsServices reportsServices;
@@ -42,9 +52,11 @@ class ReportsServiceTest {
         report.setClientIdReport(10L);
     }
 
+    // =================== CRUD Tests ===================
+
     @Test
     void testGetAllReports() {
-        when(reportsRepository.findAll()).thenReturn(Arrays.asList(report));
+        when(reportsRepository.findAll()).thenReturn(Collections.singletonList(report));
 
         List<ReportsEntity> result = reportsServices.getAllReports();
 
@@ -110,12 +122,56 @@ class ReportsServiceTest {
         Date startDate = Date.valueOf("2025-10-01");
         Date endDate = Date.valueOf("2025-10-31");
 
-        when(reportsRepository.findByReportDateBetween(startDate, endDate)).thenReturn(Arrays.asList(report));
+        when(reportsRepository.findByReportDateBetween(startDate, endDate))
+                .thenReturn(Collections.singletonList(report));
 
         List<ReportsEntity> result = reportsServices.getReportsBetweenDates(startDate, endDate);
 
         assertNotNull(result);
         assertEquals(1, result.size());
         verify(reportsRepository, times(1)).findByReportDateBetween(startDate, endDate);
+    }
+
+    // =================== Empty Report Methods ===================
+    @Test
+    void testGenerateLoansReport() {
+        List<LoansEntity> result = reportsServices.generateLoansReport();
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testGenerateBehindClientsReport() {
+        List<ClientEntity> result = reportsServices.generateBehindClientsReport();
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testGeneratedMostLoanToolsReport() {
+        List<ToolsEntity> result = reportsServices.generatedMostLoanToolsReport();
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    // =================== Edge Cases ===================
+    @Test
+    void testGetReportsById_NotFound() {
+        when(reportsRepository.findById(99L)).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> reportsServices.getReportsById(99L));
+        verify(reportsRepository, times(1)).findById(99L);
+    }
+
+    @Test
+    void testSaveReport_DateSet() {
+        ReportsEntity newReport = new ReportsEntity();
+        newReport.setLoanIdReport(false);
+
+        when(reportsRepository.save(any(ReportsEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ReportsEntity saved = reportsServices.saveReport(newReport);
+
+        assertNotNull(saved.getReportDate());
+        verify(reportsRepository, times(1)).save(newReport);
     }
 }

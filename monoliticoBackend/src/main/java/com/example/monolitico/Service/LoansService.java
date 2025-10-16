@@ -305,6 +305,9 @@ public class LoansService {
         }else {
             dto.setRepoAmount(0L);
         }
+        if(dto.getFineAmount()==null){
+            dto.setFineAmount(0L);
+        }
         return dto;
     }
 

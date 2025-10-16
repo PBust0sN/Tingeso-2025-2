@@ -77,4 +77,47 @@ class ToolsRankingServiceTest {
         assertTrue(result);
         verify(toolsRankingRepository, times(1)).deleteById(1L);
     }
+
+    @Test
+    void testGetAllToolsRankingEmpty() {
+        when(toolsRankingRepository.findAll()).thenReturn(List.of());
+
+        List<ToolsRankingEntity> result = toolsRankingService.getAllToolsRanking();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(toolsRankingRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetToolsRankingByReportIdEmpty() {
+        when(toolsRankingRepository.findByReportId(999L)).thenReturn(List.of());
+
+        List<ToolsRankingEntity> result = toolsRankingService.getToolsRankingByReportId(999L);
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(toolsRankingRepository, times(1)).findByReportId(999L);
+    }
+
+    @Test
+    void testDeleteToolsRankingByIdThrowsException() {
+        doThrow(new RuntimeException("DB error")).when(toolsRankingRepository).deleteById(1L);
+
+        Exception exception = assertThrows(Exception.class, () -> toolsRankingService.deleteToolsRankingById(1L));
+
+        assertEquals("DB error", exception.getMessage());
+        verify(toolsRankingRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testCreateToolsRankingNull() {
+        when(toolsRankingRepository.save(null)).thenThrow(new IllegalArgumentException("Entity is null"));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> toolsRankingService.createToolsRanking(null));
+
+        assertEquals("Entity is null", exception.getMessage());
+        verify(toolsRankingRepository, times(1)).save(null);
+    }
+
 }
