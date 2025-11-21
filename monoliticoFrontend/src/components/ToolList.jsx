@@ -24,7 +24,7 @@ const ToolList = () => {
   const [search, setSearch] = useState("");
 
   const filteredTools = tools.filter(tool =>
-  (tool.toolName || "").toLowerCase().includes(search.toLowerCase())
+  (tool.tool_name || "").toLowerCase().includes(search.toLowerCase())
 );
 
   const navigate = useNavigate();
