@@ -33,6 +33,13 @@ public class FineController {
     }
 
     @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @GetMapping("/get-all-clients/{id}")
+    public ResponseEntity<List<FineEntity>> getAllClientsById(@PathVariable Long id){
+        List<FineEntity> fines = fineService.getAllFinesByClientId(id);
+        return ResponseEntity.ok(fines);
+    }
+
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PostMapping("/")
     public ResponseEntity<FineEntity> createFine(@RequestBody FineEntity fineEntity){
         FineEntity newFine = fineService.saveFine(fineEntity);

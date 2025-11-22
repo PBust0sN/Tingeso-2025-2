@@ -10,4 +10,5 @@ import java.util.List;
 public interface FineRepository extends JpaRepository<FineEntity, Long> {
 
     public List<FineEntity> getFineEntityByClientIdAndTypeIs(Long id, String type);
+    public List<FineEntity> findByClientId(Long id);
 }

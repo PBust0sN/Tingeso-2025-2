@@ -235,8 +235,8 @@ const ClientList = () => {
                               variant="contained"
                               color="error"
                               size="small"
-                              onClick={() => handleNewLoan(client.client_id)}
-                              startIcon={<AddCircleIcon />}
+                              onClick={() => navigate(`/fines/${client.client_id}`)}
+                              startIcon={<VisibilityIcon />}
                             >
                               Ver Multas
                             </Button>
@@ -247,7 +247,7 @@ const ClientList = () => {
                               color="success"
                               size="small"
                               onClick={() => navigate(`/reports/${client.client_id}`)}
-                              startIcon={<AddCircleIcon />}
+                              startIcon={<VisibilityIcon />}
                             >
                               Ver Reportes
                             </Button>

@@ -21,6 +21,9 @@ public class FineService {
         return fineRepository.findAll();
     }
 
+    public List<FineEntity> getAllFinesByClientId(Long id){
+        return fineRepository.findByClientId(id);
+    }
     public FineEntity saveFine(FineEntity fineEntity) {
         return fineRepository.save(fineEntity);
     }
