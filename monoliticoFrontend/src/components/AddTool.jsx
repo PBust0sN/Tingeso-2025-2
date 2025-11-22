@@ -104,6 +104,7 @@ const AddTool = () => {
       category: category,
       diary_fine_fee: Number(diaryFineFee),
       loan_fee: Number(loanFee),
+      loan_count: 0,
       reposition_fee: Number(repositionFee),
       initial_state: initialState,
       disponibility: disponibility,

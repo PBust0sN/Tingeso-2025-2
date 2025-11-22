@@ -20,13 +20,38 @@ INSERT INTO loans(loan_id, client_id, staff_id, loan_type, date, delivery_date, 
 
 -- Disponible, Prestada, En reparación, Dada de baja, (INITIAL STATES)
 -- REPOSITION VALUES ARE IN CLP
-INSERT INTO tools(tool_id, category, tool_name, initial_state, disponibility, reposition_fee, loan_fee, diary_fine_fee) VALUES
-(1, 'Cierres Perimetrales', 'Alambre galbanizado', 'Disponible', 'Disponible', 4000, 3000, 500),
-(2, 'Materiales obra pesada', 'Cemento Polpaico 25Kg', 'Disponible', 'Disponible', 6000, 2000, 600),
-(3, 'Tabiqueria', 'Cinta sellador Adhesivo', 'Disponible','Disponible', 7000, 1000, 300),
-(4, 'Fierro', 'Fierro A-63 12x12 mm 6mm', 'Disponible', 'Disponible', 15000, 5000, 800),
-(5, 'Pasamanos y Barandas', 'Pasamanos redondo Aluminio negro 150 cm', 'Disponible', 'Disponible', 6000, 2000, 100);
-
+INSERT INTO tools(tool_id, category, tool_name, initial_state, disponibility, reposition_fee, loan_fee, diary_fine_fee, stock, low_dmg_fee, loan_count) VALUES
+(1, 'Herramientas manuales', 'Martillo', 'Disponible', 'Disponible', 8000, 1500, 300, 25, 200, 0),
+(2, 'Herramientas manuales', 'Destornillador Plano', 'Disponible', 'Disponible', 6000, 1200, 200, 30, 150, 0),
+(3, 'Herramientas manuales', 'Destornillador Phillips', 'Disponible', 'Disponible', 6000, 1200, 200, 30, 150, 0),
+(4, 'Herramientas manuales', 'Llave inglesa', 'Disponible', 'Disponible', 9000, 1800, 300, 20, 250, 0),
+(5, 'Herramientas manuales', 'Juego de llaves Allen', 'Disponible', 'Disponible', 7000, 1500, 250, 18, 200, 0),
+(6, 'Herramientas manuales', 'Alicate universal', 'Disponible', 'Disponible', 8000, 1600, 300, 22, 220, 0),
+(7, 'Herramientas manuales', 'Sierra manual', 'Disponible', 'Disponible', 10000, 2000, 350, 12, 300, 0),
+(8, 'Herramientas manuales', 'Cinta métrica', 'Disponible', 'Disponible', 5000, 800, 150, 40, 100, 0),
+(9, 'Electroportátiles', 'Taladro percutor', 'Disponible', 'Disponible', 45000, 8000, 1500, 8, 1200, 0),
+(10, 'Electroportátiles', 'Atornillador eléctrico', 'Disponible', 'Disponible', 35000, 6000, 1200, 10, 1000, 0),
+(11, 'Electroportátiles', 'Amoladora angular', 'Disponible', 'Disponible', 35000, 7000, 1200, 9, 1100, 0),
+(12, 'Electroportátiles', 'Sierra circular', 'Disponible', 'Disponible', 50000, 9000, 1800, 6, 1400, 0),
+(13, 'Electroportátiles', 'Sierra de calar (jigsaw)', 'Disponible', 'Disponible', 32000, 6000, 1000, 10, 900, 0),
+(14, 'Electroportátiles', 'Lijadora orbital', 'Disponible', 'Disponible', 30000, 6000, 900, 11, 800, 0),
+(15, 'Electroportátiles', 'Rotomartillo', 'Disponible', 'Disponible', 70000, 10000, 2000, 5, 1800, 0),
+(16, 'Jardinería', 'Cortacésped', 'Disponible', 'Disponible', 120000, 15000, 2500, 3, 3000, 0),
+(17, 'Jardinería', 'Desbrozadora', 'Disponible', 'Disponible', 80000, 10000, 1800, 4, 2200, 0),
+(18, 'Jardinería', 'Motosierra', 'Disponible', 'Disponible', 90000, 12000, 2000, 5, 2400, 0),
+(19, 'Jardinería', 'Podadora de tijera', 'Disponible', 'Disponible', 25000, 4000, 600, 15, 500, 0),
+(20, 'Jardinería', 'Soplador / Aspirador de hojas', 'Disponible', 'Disponible', 30000, 5000, 700, 7, 700, 0),
+(21, 'Medición y nivelación', 'Nivel láser', 'Disponible', 'Disponible', 40000, 7000, 1000, 6, 1200, 0),
+(22, 'Medición y nivelación', 'Multímetro digital', 'Disponible', 'Disponible', 15000, 3000, 500, 20, 400, 0),
+(23, 'Medición y nivelación', 'Cinta métrica profesional', 'Disponible', 'Disponible', 8000, 1200, 200, 35, 150, 0),
+(24, 'Medición y nivelación', 'Calibrador vernier', 'Disponible', 'Disponible', 12000, 2000, 300, 14, 250, 0),
+(25, 'Construcción y elevación', 'Compactadora / Gimpy', 'Disponible', 'Disponible', 100000, 20000, 3000, 2, 3500, 0),
+(26, 'Construcción y elevación', 'Generador portátil', 'Disponible', 'Disponible', 200000, 25000, 4000, 2, 5000, 0),
+(27, 'Construcción y elevación', 'Andamio modular (unidad)', 'Disponible', 'Disponible', 50000, 8000, 1200, 10, 1500, 0),
+(28, 'Construcción y elevación', 'Carretilla', 'Disponible', 'Disponible', 15000, 3000, 400, 25, 300, 0),
+(29, 'Construcción y elevación', 'Plataforma elevadora pequeña', 'Disponible', 'Disponible', 250000, 30000, 5000, 1, 6000, 0),
+(30, 'Especializadas', 'Soldadora MIG/MMA', 'Disponible', 'Disponible', 180000, 22000, 3500, 3, 4000, 0),
+(31, 'Especializadas', 'Compresor de aire portátil', 'Disponible', 'Disponible', 140000, 18000, 3000, 4, 3200, 0);
 INSERT INTO tools_loans(id, tool_id, loan_id) VALUES
 (1, 1, 1),
 (2, 2, 1),
