@@ -18,8 +18,8 @@ const NewClientBehindReport = () => {
     setLoading(true);
 
     // obtener id del token
-    //const idFromToken = keycloak?.tokenParsed?.preferred_username || keycloak?.tokenParsed?.username || keycloak?.tokenParsed?.email;
-    const idFromToken = 2;
+    const idFromToken = keycloak?.tokenParsed?.id_real;
+    
     if (!keycloak?.authenticated || !idFromToken) {
       setLoading(false);
       return;

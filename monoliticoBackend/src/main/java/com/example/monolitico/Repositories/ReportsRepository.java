@@ -11,4 +11,5 @@ import java.util.List;
 public interface ReportsRepository extends CrudRepository<ReportsEntity, Long> {
 
     public List<ReportsEntity> findByReportDateBetween(Date date1, Date date2);
+    public List<ReportsEntity> findByClientIdReport(Long clientId);
 }

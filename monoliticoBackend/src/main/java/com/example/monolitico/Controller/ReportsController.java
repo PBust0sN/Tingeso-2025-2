@@ -34,6 +34,13 @@ public class ReportsController {
     }
 
     @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @GetMapping("/get-all-client/{id}")
+    public ResponseEntity<List<ReportsEntity>> getAllClient(@PathVariable Long id){
+        List<ReportsEntity> reports = reportsServices.getAllByClientId(id);
+        return ResponseEntity.ok(reports);
+    }
+
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PostMapping("/")
     public ResponseEntity<ReportsEntity> saveRecord(@RequestBody ReportsEntity report){
         ReportsEntity newReport = reportsServices.saveReport(report);

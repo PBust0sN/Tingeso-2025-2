@@ -5,8 +5,10 @@ import toolsReportService from "../services/toolsReport.service";
 import reportsService from "../services/reports.service";
 import toolsRankingService from "../services/toolsRanking.service";
 import { useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 
 const NewRakingTool = () => {
+	const { keycloak } = useKeycloak();
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
@@ -35,7 +37,10 @@ const NewRakingTool = () => {
 		}
 
 		//then we create a new report, with the toolsIdRanking set to true
-		const reportRes = await reportsService.create({ toolsIdRanking: true });
+		console.log(keycloak?.tokenParsed?.id_real)
+		const reportRes = await reportsService.create({ 
+			toolsIdRanking: true,
+			clientIdReport: keycloak?.tokenParsed?.id_real });
 		const reportId = reportRes.data?.reportId;
 
 		// then we create the ranking entries in toolsRanking

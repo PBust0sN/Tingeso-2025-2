@@ -38,10 +38,38 @@ const Home = () => {
         textAlign: "center",
       }}
       >
-      <Typography variant="h3" gutterBottom>
+      <Typography
+        variant="h3"
+        gutterBottom
+        sx={{
+          fontWeight: 700,
+          color: "#fff",
+          WebkitTextStroke: "1px rgba(0,0,0,0.85)", // contorno en navegadores WebKit
+          textShadow: [
+            "1px 1px 0 rgba(0,0,0,0.85)",
+            "-1px 1px 0 rgba(0,0,0,0.85)",
+            "1px -1px 0 rgba(0,0,0,0.85)",
+            "-1px -1px 0 rgba(0,0,0,0.85)"
+          ].join(", "), // fallback para simular contorno en otros navegadores
+        }}
+      >
         Bienvenido Al Sistema de Renta de Herramientas Tool Rent
       </Typography>
-      <Typography variant="h5" gutterBottom>
+      <Typography
+      variant="h5"
+        gutterBottom
+        sx={{
+          fontWeight: 700,
+          color: "#fff",
+          WebkitTextStroke: "1px rgba(0,0,0,0.85)", // contorno en navegadores WebKit
+          textShadow: [
+            "1px 1px 0 rgba(0,0,0,0.85)",
+            "-1px 1px 0 rgba(0,0,0,0.85)",
+            "1px -1px 0 rgba(0,0,0,0.85)",
+            "-1px -1px 0 rgba(0,0,0,0.85)"
+          ].join(", "), // fallback para simular contorno en otros navegadores
+        }}
+        >
         Hace click en el menu lateral para alguna acción
       </Typography>      
       </Box>

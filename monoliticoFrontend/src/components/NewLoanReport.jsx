@@ -17,7 +17,7 @@ const  NewLoanReport = () =>{
 
 	const handleSaveReport = async () => {
 		setLoading(true);
-		const clientId = 2; //keycloak.tokenParsed?.preferred_username;
+		const clientId = keycloak?.tokenParsed?.id_real; 
 		if (!clientId) {
 			setLoading(false);
 			console.log(clientId);
@@ -28,7 +28,8 @@ const  NewLoanReport = () =>{
 		const loansList = allLoansRes.data.filter(l => l.clientId === clientId);
 		console.log(loansList);
 		if (loansList.length > 0) {
-			const reportRes = await reportsService.create({ loanIdReport: true ,clientIdReport: clientId });
+			const reportRes = await reportsService.create({ loanIdReport: true ,
+				clientIdReport: clientId });
 			const reportId = reportRes.data?.reportId ;
 			for (const l of loansList) {
 				// Crear loanReport

@@ -76,4 +76,9 @@ public class ReportsServices {
             throw new Exception(e.getMessage());
         }
     }
+
+    //get all reports given a client id
+    public List<ReportsEntity> getAllByClientId(Long clientId){
+        return reportsRepository.findByClientIdReport(clientId);
+    }
 }
