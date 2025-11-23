@@ -159,6 +159,7 @@ public class LoansService {
         for (Long tool_id : tools_ids) {
             ToolsEntity tool = toolsService.getToolsById(tool_id);
             tool.setStock(tool.getStock() - 1);
+            tool.setLoanCount(tool.getLoanCount() + 1);
             toolsService.updateTool(tool);
 
             ToolsLoansEntity toolsLoansEntity = new ToolsLoansEntity();
@@ -173,6 +174,8 @@ public class LoansService {
         record.setRecordDate(Date.valueOf(date.toLocalDate()));
         record.setLoanId(loansEntity.getLoanId());
         record.setClientId(client_id);
+        record.setRecordAmount(amount);
+        recordsServices.saveRecord(record);
 
         System.out.println(errors);
         return errors;
@@ -299,7 +302,12 @@ public class LoansService {
             newFine.setDate(Date.valueOf(date.toLocalDate()));
             newFine.setLoanId(id);
             fineService.saveFine(newFine);
+            //if a client has a pending fine, then we mark it as "restringido"
 
+            ClientEntity clientEntity = clientService.getClientById(clientId);
+            clientEntity.setState("restringido");
+            clientService.updateClient(clientEntity);
+            
             dto.setRepoAmount(repofine);
             dto.setRepoFine(newFine);
         }else {
