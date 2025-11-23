@@ -54,7 +54,7 @@ public class LoansController {
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/new")
     public ResponseEntity<List<String>> saveNewLoan(@RequestBody NewLoanDTO newLoan){
         List<String> errors = loansService.addLoan(
@@ -66,21 +66,21 @@ public class LoansController {
         return ResponseEntity.ok(errors);
     }
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/return")
     public ResponseEntity<ReturnLoanDTO> returnLoan(@RequestBody LoansEntity loan){
         ReturnLoanDTO returN = loansService.returnLoan(loan);
         return ResponseEntity.ok(returN);
     }
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @GetMapping("/calculate/cost/{id}")
     public ResponseEntity<ReturnLoanDTO> calculateLoanCost(@PathVariable Long id){
         ReturnLoanDTO cost = loansService.calculateCosts(id);
         return ResponseEntity.ok(cost);
     }
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/checkdates")
     public ResponseEntity<Boolean> checkDate(@RequestBody LoansEntity loansEntity){
         boolean bool = loansService.checkDates(loansEntity);

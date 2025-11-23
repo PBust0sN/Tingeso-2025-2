@@ -214,7 +214,7 @@ function App() {
           />
           <Route
             path="/reports/create"
-            element={<PrivateRoute element={<AddReport />} rolesAllowed={["STAFF","ADMIN"]} />}
+            element={<PrivateRoute element={<AddReport />} rolesAllowed={["STAFF","ADMIN","CLIENT"]} />}
           />
           <Route
             path="/myreports"
