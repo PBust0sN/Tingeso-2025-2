@@ -285,7 +285,7 @@ public class LoansService {
                 RecordsEntity record = new RecordsEntity();
                 record.setRecordType("DownTool");
                 record.setRecordAmount(toolsService.getToolsById(toolId).getRepositionFee());
-                record.setClientId(clientId);
+                record.setToolId(toolId);
                 record.setLoanId(id);
                 record.setRecordDate(Date.valueOf(LocalDate.now()));
                 recordsServices.saveRecord(record);
@@ -307,7 +307,7 @@ public class LoansService {
             ClientEntity clientEntity = clientService.getClientById(clientId);
             clientEntity.setState("restringido");
             clientService.updateClient(clientEntity);
-            
+
             dto.setRepoAmount(repofine);
             dto.setRepoFine(newFine);
         }else {

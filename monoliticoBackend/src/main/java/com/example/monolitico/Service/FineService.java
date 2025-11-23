@@ -1,5 +1,6 @@
 package com.example.monolitico.Service;
 
+import com.example.monolitico.Entities.ClientEntity;
 import com.example.monolitico.Entities.FineEntity;
 import com.example.monolitico.Repositories.FineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ public class FineService {
 
     @Autowired
     private FineRepository fineRepository;
+    @Autowired
+    private ClientService clientService;
 
     public FineEntity getFineById(Long id) {
         return fineRepository.findById(id).get();
@@ -43,7 +46,7 @@ public class FineService {
 
     public boolean hasFinesByClientId(Long id){
         //if the list of fines of a client is empty, it means that the client hasn't have fines
-        if(fineRepository.getFineEntityByClientIdAndTypeIs(id, "fine").isEmpty()){
+        if(fineRepository.findByClientId(id).isEmpty()){
             return false;
         }
         return true;
@@ -57,9 +60,20 @@ public class FineService {
     }
 
     public boolean hasLessOrEqual5FinesByClientId(Long id){
-        if(fineRepository.getFineEntityByClientIdAndTypeIs(id, "fine").size()<=5){
+        if(fineRepository.findByClientId(id).size()<=5){
             return true;
         }
         return false;
+    }
+
+    public void payFine(Long client_id, Long fine_id){
+        ClientEntity client =  clientService.getClientById(client_id);
+        FineEntity fine =  getFineById(fine_id);
+        fine.setState("pagado");
+        updateFine(fine);
+        if(fineRepository.findByClientId(client_id).size()<=1){
+            client.setState("activo");
+            clientService.updateClient(client);
+        }
     }
 }

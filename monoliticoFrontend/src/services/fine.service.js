@@ -12,6 +12,10 @@ const get = id => {
     return httpClient.get(`/api/fine/${id}`);
 }
 
+const pay = (client_id,fine_id) => {
+    return httpClient.post(`/api/fine/pay/${client_id}/${fine_id}`);
+}
+
 const getAllByClientId = id => {
     return httpClient.get(`/api/fine/get-all-clients/${id}`);
 }
@@ -25,4 +29,4 @@ const remove = id => {
     );
 }
 
-export default { getAll, get, getAllByClientId, create, update, remove};
+export default { getAll, get, getAllByClientId, pay, create, update, remove};

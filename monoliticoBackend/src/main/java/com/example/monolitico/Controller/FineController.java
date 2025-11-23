@@ -60,4 +60,11 @@ public class FineController {
         return ResponseEntity.noContent().build();
 
     }
+
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+    @PostMapping("/pay/{client_id}/{fine_id}")
+    public ResponseEntity<Void> payFine(@PathVariable Long client_id, @PathVariable Long fine_id){
+        fineService.payFine(client_id,fine_id);
+        return ResponseEntity.ok().build();
+    }
 }

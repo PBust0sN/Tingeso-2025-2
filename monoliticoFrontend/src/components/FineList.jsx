@@ -57,12 +57,12 @@ const FineList = () => {
     init();
   }, []);
 
-  const handlePay = (id) => {
+  const handlePay = (client_id, fine_id) => {
       const confirmPay = window.confirm(
         "¿Esta seguro que desea pagar esta multa?"
       );
       if (confirmPay) {
-        fineService.remove(id)
+        fineService.pay(client_id, fine_id)
           .then(() => {
             init(); // Refrescar la lista después de pagar
           })
@@ -74,7 +74,7 @@ const FineList = () => {
           }); 
       }
     };
-
+  
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr.length === 10 ? dateStr + "T00:00:00Z" : dateStr);
@@ -202,9 +202,10 @@ const FineList = () => {
                       variant="contained"
                       color="error"
                       size="small"
-                      onClick={() => handlePay(fines.fineId)}
+                      onClick={() => handlePay(fines.clientId,fines.fineId)}
                       style={{ marginLeft: "0.5rem" }}
                       startIcon={<PaymentIcon />}
+                      disabled={String(fines.state || "").toLowerCase() === "pagado"}
                     >
                       Pagar
                     </Button>
