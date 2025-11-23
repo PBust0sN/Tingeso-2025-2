@@ -21,6 +21,30 @@ export default function Navbar() {
     setOpen(open);
   };
 
+  const clearAllCookies = () => {
+    const cookies = document.cookie.split("; ");
+    for (const c of cookies) {
+      const eqPos = c.indexOf("=");
+      const name = eqPos > -1 ? c.substr(0, eqPos) : c;
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+    }
+  };
+
+  const handleLogout = () => {
+    try {
+      try { localStorage.clear(); } catch (e) {}
+      try { sessionStorage.clear(); } catch (e) {}
+      clearAllCookies();
+    } finally {
+      if (keycloak && typeof keycloak.logout === "function") {
+        keycloak.logout({ redirectUri: window.location.origin });
+      } else {
+        window.location.href = "/";
+      }
+    }
+  };
+
   return (
     <Box sx={{ 
       flexGrow: 1 ,
@@ -56,7 +80,7 @@ export default function Navbar() {
                     {keycloak.tokenParsed?.username ||
                       keycloak.tokenParsed?.email}
                   </Typography>
-                  <IconButton color="inherit" onClick={() => keycloak.logout()}>
+                  <IconButton color="inherit" onClick={handleLogout}>
                     <LogoutIcon />
                   </IconButton>
                 </>
