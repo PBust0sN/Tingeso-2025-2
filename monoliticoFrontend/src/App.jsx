@@ -35,6 +35,7 @@ import EmployeeList from './components/EmployeeList';
 import AdminList from './components/AdminList';
 import AddAdmin from './components/AddAdmin';
 import AddEmployee from './components/AddEmployee';
+import EditEmployee from './components/EditEmployee';
 
 
 function App() {
@@ -203,6 +204,10 @@ function App() {
           <Route
             path="/loan/list/"
             element={<PrivateRoute element={<LoanList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/employee/edit/:client_id"
+            element={<PrivateRoute element={<EditEmployee />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
           <Route
             path="/loan/new/:client_id"

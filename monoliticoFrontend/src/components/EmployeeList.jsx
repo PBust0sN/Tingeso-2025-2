@@ -105,7 +105,7 @@ const EmployeeList = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/client/edit/${id}`);
+    navigate(`/employee/edit/${id}`);
   };
 
   const handleNewLoan = (id) => {
