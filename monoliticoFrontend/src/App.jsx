@@ -31,6 +31,7 @@ import NewClientBehindReport from './components/NewClientBehindReport';
 import ViewClientBehindReport from './components/ViewClientBehindReport';
 import ViewReportsById from './components/ViewReportsById';
 import FineListId from './components/FineListId';
+import EmployeeList from './components/EmployeeList';
 
 
 function App() {
@@ -163,6 +164,10 @@ function App() {
           <Route
             path="/client/list"
             element={<PrivateRoute element={<ClientList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/employee/list"
+            element={<PrivateRoute element={<EmployeeList />} rolesAllowed={["STAFF","ADMIN"]} />}
           />
           <Route
             path="/tool/add"

@@ -25,4 +25,5 @@ public class ClientEntity {
     private String state;
     private Boolean avaliable;
     private String password;
+    private String role;
 }

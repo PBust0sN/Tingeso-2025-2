@@ -27,7 +27,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 
-const ClientList = () => {
+const EmployeeList = () => {
   const { keycloak } = useKeycloak(); // <-- agregado
   const [client, setclients] = useState([]);
   const [search, setSearch] = useState("");
@@ -47,10 +47,10 @@ const ClientList = () => {
       // soportar distintos formatos que el backend pueda retornar
       const rolesField = c.roles ?? c.keycloakRoles ?? c.realm_roles ?? c.role;
       if (Array.isArray(rolesField)) {
-        return rolesField.map(r => String(r).toUpperCase()).includes("CLIENT");
+        return rolesField.map(r => String(r).toUpperCase()).includes("STAFF");
       }
       if (typeof rolesField === "string") {
-        return rolesField.toUpperCase() === "CLIENT";
+        return rolesField.toUpperCase() === "STAFF";
       }
       return false;
     })
@@ -155,7 +155,7 @@ const ClientList = () => {
               <TableRow>
                 <TableCell colSpan={10} align="center">
                   <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-                    Listado de Clientes
+                    Listado de empleados
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -339,4 +339,4 @@ const ClientList = () => {
   );
 };
 
-export default ClientList;
+export default EmployeeList;
