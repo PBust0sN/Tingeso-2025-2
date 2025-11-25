@@ -39,6 +39,11 @@ const NewLoan = () => {
 
   // Selecciona/des-selecciona una herramienta
   const handleToolClick = (toolId) => {
+    const tool = toolOptions.find(t => t.toolId === toolId);
+    if (!tool) return;
+    // evitar seleccionar si no hay stock
+    if (!(tool.stock > 0)) return;
+
     setSelectedTools((prev) =>
       prev.includes(toolId)
         ? prev.filter((id) => id !== toolId)
@@ -145,85 +150,96 @@ const NewLoan = () => {
               minHeight: "50vh",
             }}
           >
-            {toolOptions.map((tool) => (
-              <Paper
-                key={tool.toolId}
-                elevation={selectedTools.includes(tool.toolId) ? 8 : 2}
-                sx={{
-                  width: `${CARD_WIDTH}px`,
-                  minWidth: `${CARD_WIDTH}px`,
-                  maxWidth: `${CARD_WIDTH}px`,
-                  height: `${CARD_HEIGHT}px`,
-                  minHeight: `${CARD_HEIGHT}px`,
-                  maxHeight: `${CARD_HEIGHT}px`,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                  alignItems: "stretch",
-                  p: 2,
-                  border: selectedTools.includes(tool.toolId)
-                    ? "2px solid #1976d2"
-                    : "2px solid transparent",
-                  background: selectedTools.includes(tool.toolId)
-                    ? "rgba(25, 118, 210, 0.08)"
-                    : "white",
-                  transition: "border 0.2s, background 0.2s",
-                }}
-              >
-                <Box
+            {toolOptions.map((tool) => {
+              const outOfStock = !(tool.stock > 0);
+              const isSelected = selectedTools.includes(tool.toolId);
+              return (
+                <Paper
+                  key={tool.toolId}
+                  elevation={isSelected ? 8 : 2}
                   sx={{
-                    width: "100%",
-                    height: 120,
-                    mb: 2,
-                    background: "#eee",
-                    borderRadius: "12px",
-                    overflow: "hidden",
+                    width: `${CARD_WIDTH}px`,
+                    minWidth: `${CARD_WIDTH}px`,
+                    maxWidth: `${CARD_WIDTH}px`,
+                    height: `${CARD_HEIGHT}px`,
+                    minHeight: `${CARD_HEIGHT}px`,
+                    maxHeight: `${CARD_HEIGHT}px`,
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "stretch",
+                    p: 2,
+                    border: isSelected ? "2px solid #1976d2" : "2px solid transparent",
+                    background: isSelected ? "rgba(25, 118, 210, 0.08)" : "white",
+                    transition: "border 0.2s, background 0.2s",
+                    opacity: outOfStock ? 0.6 : 1,
+                    cursor: outOfStock ? "not-allowed" : "pointer",
                   }}
+                  onClick={() => !outOfStock && handleToolClick(tool.toolId)}
                 >
-                  <img
-                    src={`/${tool.toolId}.png`}
-                    alt={tool.tool_name}
-                    style={{
+                  <Box
+                    sx={{
                       width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
+                      height: 120,
+                      mb: 2,
+                      background: "#eee",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
-                  />
-                </Box>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    mb: 1,
-                    textAlign: "left",
-                    fontSize: TITLE_FONT_SIZE,
-                    width: "100%",
-                  }}
-                >
-                  {tool.tool_name}
-                </Typography>
-                <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "space-between", mt: 1 }}>
-                  <Box sx={{ textAlign: "left" }}>
-                    <Typography variant="body2" color="text.secondary">
-                      {tool.category}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {tool.disponibility}
-                    </Typography>
-                  </Box>
-                  <Button
-                    color={selectedTools.includes(tool.toolId) ? "primary" : "inherit"}
-                    onClick={() => handleToolClick(tool.toolId)}
-                    sx={{ minWidth: 0, ml: 2 }}
                   >
-                    <AddCircleIcon />
-                  </Button>
-                </Box>
-              </Paper>
-            ))}
+                    <img
+                      src={`/${tool.toolId}.png`}
+                      alt={tool.tool_name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: "bold",
+                      mb: 1,
+                      textAlign: "left",
+                      fontSize: TITLE_FONT_SIZE,
+                      width: "100%",
+                    }}
+                  >
+                    {tool.tool_name}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "space-between", mt: 1 }}>
+                    <Box sx={{ textAlign: "left" }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {tool.category}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {tool.disponibility}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Stock: {tool.stock}
+                      </Typography>
+                    </Box>
+                    <Button
+                      color={isSelected ? "primary" : "inherit"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToolClick(tool.toolId);
+                      }}
+                      sx={{ minWidth: 0, ml: 2 }}
+                      disabled={outOfStock}
+                      title={outOfStock ? "Sin stock" : undefined}
+                    >
+                      <AddCircleIcon />
+                    </Button>
+                  </Box>
+                </Paper>
+              );
+            })}
           </Box>
           <Box sx={{ mt: 4, display: "flex", justifyContent: "center", gap: 2 }}>
             <Button
