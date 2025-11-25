@@ -71,7 +71,10 @@ public class FineService {
         FineEntity fine =  getFineById(fine_id);
         fine.setState("pagado");
         updateFine(fine);
-        if(fineRepository.findByClientId(client_id).size()<=1){
+
+
+        //need to count the fines that are not pending
+        if(fineRepository.getPendingFinesByClientId(client_id).size()<=1){
             client.setState("activo");
             clientService.updateClient(client);
         }

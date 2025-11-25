@@ -69,10 +69,10 @@ public class LoansService {
             errors.add("Client is not available for new loans.");
         }
 
-        // Verification 2: fines
-        if (fineService.hasFinesByClientId(client_id)) {
-            errors.add("Client has pending fines.");
-        }
+        // Verification 2: fines, aready taking cared in the state section
+        //if (fineService.hasFinesByClientId(client_id)) {
+        //    errors.add("Client has pending fines.");
+        //}
 
         // Verification 3: fine by reposition
         if (fineService.hasFinesOfToolReposition(client_id)) {
@@ -214,6 +214,8 @@ public class LoansService {
 
             if ("Dañada".equals(toolsEntity.getInitialState())) {
                 toolsEntity.setInitialState("Bueno");
+                //if is damaged then that tool is taken out of system by reducing the stock
+                toolsEntity.setStock(toolsEntity.getStock() - 1);
             }else if("Malo".equals(toolsEntity.getInitialState())){
                 toolsEntity.setInitialState("Bueno");
                 List<String> tools = loanCost.getTools();
@@ -222,6 +224,8 @@ public class LoansService {
                 Long lowDmgAmount = loanCost.getLowDmgAmount();
                 loanCost.setLowDmgAmount(lowDmgAmount+toolsEntity.getLowDmgFee());
             }
+            //we add up to the stock
+            toolsEntity.setStock(toolsEntity.getStock() + 1);
             toolsService.updateTool(toolsEntity);
         }
         //NOTE: the extra chargues only account for the repo ammount other costs

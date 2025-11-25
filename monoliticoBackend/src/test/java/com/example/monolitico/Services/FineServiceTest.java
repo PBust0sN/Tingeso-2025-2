@@ -64,7 +64,7 @@ public class FineServiceTest {
 
     @Test
     void testGetAllFinesByClientId() {
-        when(fineRepository.findByClientId(10L)).thenReturn(List.of(fine));
+        when(fineRepository.findFinesByClientId(10L)).thenReturn(List.of(fine));
 
         List<FineEntity> result = fineService.getAllFinesByClientId(10L);
 
