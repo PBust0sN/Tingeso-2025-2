@@ -65,7 +65,7 @@ const NewLoan = () => {
         // Suponiendo que response.data es la lista de errores
         if (Array.isArray(response.data) && response.data.length === 0) {
           window.alert("Préstamo añadido exitosamente");
-          navigate("/loan/list");
+          navigate("/client/list");
         } else if (Array.isArray(response.data)) {
           // Muestra los errores en una ventana
           window.alert("Errores:\n" + response.data.join("\n"));
@@ -217,7 +217,7 @@ const NewLoan = () => {
                       <Typography variant="body2" color="text.secondary">
                         {tool.category}
                       </Typography>
-                      
+
                       <Typography variant="h6" 
                       sx={{
                       fontWeight: "bold",

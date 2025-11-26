@@ -369,6 +369,11 @@ public class LoansService {
                 newFine.setLoanId(id);
                 fineService.saveFine(newFine);
 
+                //The client now has a pending fine, then he gets restricted from taking more loans
+                ClientEntity clientEntity = clientService.getClientById(clientId);
+                clientEntity.setState("restringido");
+                clientService.updateClient(clientEntity);
+
                 dto.setFineAmount(fine);
                 dto.setFine(newFine);
             }else{
