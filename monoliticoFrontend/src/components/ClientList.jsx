@@ -197,9 +197,15 @@ const ClientList = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
+                <TableCell align="left" sx={{ maxWidth: 100, fontWeight: "bold", color: "black" }}>
                   Id
                 </TableCell>
+
+                {/* Nuevo campo: Foto */}
+                <TableCell align="left" sx={{ maxWidth: 100, fontWeight: "bold", color: "black" }}>
+                  Foto
+                </TableCell>
+
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Rut
                 </TableCell>
@@ -233,6 +239,16 @@ const ClientList = () => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" sx={{ maxWidth: 180 }}>{client.client_id}</TableCell>
+
+                    {/* Celda de imagen (muestra client.imageUrl si existe, sino intenta una ruta por id, con placeholder onError) */}
+                    <TableCell align="left" sx={{ maxWidth: 100 }}>
+                      <img
+                        src={`/icon${client.client_id}.png`}
+                        style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 6 }}
+                        onError={(e) => { e.currentTarget.src = "/default-avatar.png"; }}
+                      />
+                    </TableCell>
+
                     <TableCell align="left" sx={{ maxWidth: 180 }}>{client.rut}</TableCell>
                     <TableCell align="left" sx={{ maxWidth: 180 }}>{client.last_name}</TableCell>
                     <TableCell align="center" sx={{ maxWidth: 180 }}>{client.name}</TableCell>
@@ -247,7 +263,8 @@ const ClientList = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell colSpan={9} sx={{ p: 0, background: "rgba(240,240,240,0.5)" }}>
+                    {/* ajustar colspan por la nueva columna (ahora 10) */}
+                    <TableCell colSpan={10} sx={{ p: 0, background: "rgba(240,240,240,0.5)" }}>
                       <Collapse in={expandedRow === client.client_id} timeout="auto" unmountOnExit>
                         <Box sx={{ display: "flex", gap: 2, p: 2, justifyContent: "center" }}>
                           <ThemeProvider theme={theme}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -16,7 +16,7 @@ const AddClient = () => {
   const [name, setName] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [rut, setRut] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState("activo"); // solo 'activo' o 'restringido'
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -24,12 +24,28 @@ const AddClient = () => {
   const [errorsList, setErrorsList] = useState([]);
   const [fieldErrors, setFieldErrors] = useState({});
 
+  // Cargar todos los clientes para validar unicidad de RUT
+  const [clients, setClients] = useState([]);
+  useEffect(() => {
+    clientService
+      .getAll()
+      .then((res) => setClients(res.data || []))
+      .catch(() => setClients([]));
+  }, []);
+
+  const normalizeRut = (r) => (r || "").replace(/\./g, "").trim().toLowerCase();
+
   const validateFields = () => {
     const errors = [];
     const fErrors = {};
 
     if (!rut || !rut.trim()) {
       errors.push("Rut es obligatorio.");
+      fErrors.rut = true;
+    }
+    // prohibir puntos en RUT
+    if ((rut || "").includes(".")) {
+      errors.push("Rut no debe contener puntos.");
       fErrors.rut = true;
     }
 
@@ -65,6 +81,22 @@ const AddClient = () => {
       fErrors.phone_number = true;
     }
 
+    // state solo 'activo' o 'restringido'
+    if (!["activo", "restringido"].includes(String(state))) {
+      errors.push("State inválido. Debe ser 'activo' o 'restringido'.");
+      fErrors.state = true;
+    }
+
+    // verificar unicidad de RUT contra los clientes cargados
+    const newRutNorm = normalizeRut(rut);
+    if (newRutNorm) {
+      const exists = clients.some((c) => normalizeRut(c.rut) === newRutNorm);
+      if (exists) {
+        errors.push("El RUT ya existe en la base de datos.");
+        fErrors.rut = true;
+      }
+    }
+
     return { errors, fErrors };
   };
 
@@ -81,11 +113,11 @@ const AddClient = () => {
     }
 
     const client = {
-      rut,
+      rut: normalizeRut(rut),
       name,
       last_name,
       mail,
-      state: "activo",
+      state,
       phone_number,
       password,
     };
@@ -178,8 +210,8 @@ const AddClient = () => {
                 label="Rut"
                 value={rut}
                 variant="standard"
-                onChange={(e) => setRut(e.target.value)}
-                helperText="99999999-9"
+                onChange={(e) => setRut(e.target.value.replace(/\./g, ""))}
+                helperText="99999999-9 (sin puntos)"
                 error={!!fieldErrors.rut}
               />
             </FormControl>
@@ -239,6 +271,21 @@ const AddClient = () => {
                 error={!!fieldErrors.phone_number}
               />
             </FormControl>
+
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <TextField
+                select
+                label="State"
+                value={state}
+                variant="standard"
+                onChange={(e) => setState(e.target.value)}
+                error={!!fieldErrors.state}
+              >
+                <MenuItem value="activo">activo</MenuItem>
+                <MenuItem value="restringido">restringido</MenuItem>
+              </TextField>
+            </FormControl>
+
             <FormControl sx={{ mb: 2 }}>
               <Button
                 variant="contained"

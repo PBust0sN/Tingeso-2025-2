@@ -191,6 +191,9 @@ const EmployeeList = () => {
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Id
                 </TableCell>
+                <TableCell align="left" sx={{ maxWidth: 100, fontWeight: "bold", color: "black" }}>
+                  Foto
+                </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Rut
                 </TableCell>
@@ -224,6 +227,13 @@ const EmployeeList = () => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" sx={{ maxWidth: 180 }}>{client.client_id}</TableCell>
+                    <TableCell align="left" sx={{ maxWidth: 100 }}>
+                      <img
+                        src={`/icon${client.client_id}.png`}
+                        style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 6 }}
+                        onError={(e) => { e.currentTarget.src = "/default-avatar.png"; }}
+                      />
+                    </TableCell>
                     <TableCell align="left" sx={{ maxWidth: 180 }}>{client.rut}</TableCell>
                     <TableCell align="left" sx={{ maxWidth: 180 }}>{client.last_name}</TableCell>
                     <TableCell align="center" sx={{ maxWidth: 180 }}>{client.name}</TableCell>
