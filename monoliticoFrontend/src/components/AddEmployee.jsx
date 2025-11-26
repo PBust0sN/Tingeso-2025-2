@@ -64,7 +64,17 @@ const AddEmployee = () => {
       errors.push("Phone Number obligatorio y sólo debe contener dígitos.");
       fErrors.phone_number = true;
     }
-
+    
+    // verificar unicidad de RUT contra los clientes cargados
+    const newRutNorm = normalizeRut(rut);
+    if (newRutNorm) {
+      const exists = clients.some((c) => normalizeRut(c.rut) === newRutNorm);
+      if (exists) {
+        errors.push("El RUT ya existe en la base de datos.");
+        fErrors.rut = true;
+      }
+    }
+    
     return { errors, fErrors };
   };
 
@@ -81,7 +91,7 @@ const AddEmployee = () => {
     }
 
     const client = {
-      rut,
+      rut: normalizeRut(rut),
       name,
       last_name,
       mail,
@@ -239,6 +249,19 @@ const AddEmployee = () => {
                 helperText="Ej. 911112222"
                 error={!!fieldErrors.phone_number}
               />
+            </FormControl>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <TextField
+                select
+                label="State"
+                value={state}
+                variant="standard"
+                onChange={(e) => setState(e.target.value)}
+                error={!!fieldErrors.state}
+              >
+                <MenuItem value="activo">activo</MenuItem>
+                <MenuItem value="restringido">restringido</MenuItem>
+              </TextField>
             </FormControl>
             <FormControl sx={{ mb: 2 }}>
               <Button

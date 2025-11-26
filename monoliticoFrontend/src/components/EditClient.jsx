@@ -15,15 +15,24 @@ const EditClient = () => {
   const [name, setName] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [rut, setRut] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState("activo");
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const { client_id } = useParams();
   const navigate = useNavigate();
 
-  // control de errores (igual que en AddClient)
+  // control de errores (igual que en Add)
   const [errorsList, setErrorsList] = useState([]);
   const [fieldErrors, setFieldErrors] = useState({});
+
+  // lista de todos los clientes para validar unicidad de RUT
+  const [clients, setClients] = useState([]);
+  useEffect(() => {
+    clientService
+      .getAll()
+      .then((res) => setClients(res.data || []))
+      .catch(() => setClients([]));
+  }, []);
 
   useEffect(() => {
     if (client_id) {
@@ -32,19 +41,30 @@ const EditClient = () => {
         .then((client) => {
           // quitar puntos si vienen desde backend
           setRut((client.data.rut || "").replace(/\./g, ""));
-          setName(client.data.name);
-          setLastName(client.data.last_name);
-          setMail(client.data.mail);
-          setState(client.data.state);
-          setPhoneNumber(client.data.phone_number);
-          setPassword(client.data.password);
-          setRole(client.data.role);
+          setName(client.data.name || "");
+          setLastName(client.data.last_name || "");
+          setMail(client.data.mail || "");
+          setState(client.data.state || "activo");
+          setPhoneNumber(client.data.phone_number || "");
+          setPassword(""); // no cargar password por seguridad
+          // cargar rol si viene (soporta role string o roles array)
+          if (Array.isArray(client.data.roles) && client.data.roles.length > 0) {
+            setRole(client.data.roles[0]);
+          } else if (client.data.role) {
+            setRole(client.data.role);
+          } else if (client.data.keycloakRoles && Array.isArray(client.data.keycloakRoles)) {
+            setRole(client.data.keycloakRoles[0] ?? "");
+          } else {
+            setRole("");
+          }
         })
         .catch((error) => {
           console.log("Se ha producido un error.", error);
         });
     }
   }, [client_id]);
+
+  const normalizeRut = (r) => (r || "").replace(/\./g, "").trim().toLowerCase();
 
   const validateFields = () => {
     const errors = [];
@@ -58,6 +78,20 @@ const EditClient = () => {
     if ((rut || "").includes(".")) {
       errors.push("Rut no debe contener puntos.");
       fErrors.rut = true;
+    }
+
+    // verificar unicidad de RUT contra los clientes cargados (excluir el cliente actual)
+    const newRutNorm = normalizeRut(rut);
+    if (newRutNorm) {
+      const exists = clients.some(
+        (c) =>
+          normalizeRut(c.rut) === newRutNorm &&
+          String(c.client_id) !== String(client_id)
+      );
+      if (exists) {
+        errors.push("El RUT ya existe en la base de datos.");
+        fErrors.rut = true;
+      }
     }
 
     if (!name || !name.trim()) {
@@ -81,10 +115,12 @@ const EditClient = () => {
       }
     }
 
+
     if (!phone_number || !/^\+?\d+$/.test(phone_number)) {
       errors.push("Phone Number obligatorio y sólo debe contener dígitos (puede incluir +).");
       fErrors.phone_number = true;
     }
+
 
     return { errors, fErrors };
   };
@@ -101,7 +137,10 @@ const EditClient = () => {
       return;
     }
 
-    const client = { client_id, rut, name, last_name, mail, state, phone_number, password, role };
+    const client = { client_id, rut: normalizeRut(rut), name, last_name, mail, state, phone_number, role };
+    // incluir password sólo si se especifica para mantener la actual si queda vacío
+    if (password && password.trim().length > 0) client.password = password;
+
     clientService
       .update(client)
       .then((response) => {
@@ -248,6 +287,20 @@ const EditClient = () => {
                 helperText="Ej. +56911112222"
                 error={!!fieldErrors.phone_number}
               />
+            </FormControl>
+            
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <TextField
+                select
+                label="State"
+                value={state}
+                variant="standard"
+                onChange={(e) => setState(e.target.value)}
+                error={!!fieldErrors.state}
+              >
+                <MenuItem value="activo">activo</MenuItem>
+                <MenuItem value="restringido">restringido</MenuItem>
+              </TextField>
             </FormControl>
 
             <FormControl sx={{ mb: 2 }}>

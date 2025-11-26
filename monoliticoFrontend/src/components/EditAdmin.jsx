@@ -9,8 +9,7 @@ import Paper from "@mui/material/Paper";
 import clientService from "../services/client.service";
 import MenuItem from "@mui/material/MenuItem";
 
-const AddAdmin = () => {
-  const [avaliable, setAvaliable] = useState("true");
+const EditAdmin = () => {
   const [last_name, setLastName] = useState("");
   const [mail, setMail] = useState("");
   const [name, setName] = useState("");
@@ -78,7 +77,7 @@ const AddAdmin = () => {
     return { errors, fErrors };
   };
 
-  const saveClient = (e) => {
+  const saveAdmin = (e) => {
     e.preventDefault();
 
     const { errors, fErrors } = validateFields();
@@ -105,7 +104,7 @@ const AddAdmin = () => {
     clientService
       .create(client)
       .then((response) => {
-        console.log("Cliente añadido.", response.data);
+        console.log("Admin añadido.", response.data);
         navigate("/admin/list");
       })
       .catch((error) => {
@@ -267,7 +266,7 @@ const AddAdmin = () => {
               <Button
                 variant="contained"
                 color="info"
-                onClick={saveClient}
+                onClick={saveAdmin}
                 startIcon={<SaveIcon />}
               >
                 Grabar
@@ -282,4 +281,4 @@ const AddAdmin = () => {
   );
 };
 
-export default AddAdmin;
+export default EditAdmin;

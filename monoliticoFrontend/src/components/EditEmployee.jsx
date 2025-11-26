@@ -10,27 +10,38 @@ import clientService from "../services/client.service";
 import MenuItem from "@mui/material/MenuItem";
 
 const EditEmployee = () => {
-  const [avaliable, setAvaliable] = useState("");
   const [last_name, setLastName] = useState("");
   const [mail, setMail] = useState("");
   const [name, setName] = useState("");
   const [phone_number, setPhoneNumber] = useState("");
   const [rut, setRut] = useState("");
   const [state, setState] = useState("");
+  const [password, setPassword] = useState(""); // opcional en edición
   const { client_id } = useParams();
   const navigate = useNavigate();
+
+  // control de errores y campos con errores
+  const [errorsList, setErrorsList] = useState([]);
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  // lista de todos los clientes para validar unicidad de RUT
+  const [clients, setClients] = useState([]);
+  useEffect(() => {
+    clientService
+      .getAll()
+      .then((res) => setClients(res.data || []))
+      .catch(() => setClients([]));
+  }, []);
 
   useEffect(() => {
     if (client_id) {
       clientService
         .get(client_id)
         .then((client) => {
-          {/*AQUI VAN LOS SET */}
-          setRut(client.data.rut);
+          setRut((client.data.rut).replace(/\./g, ""));
           setName(client.data.name);
           setLastName(client.data.last_name);
           setMail(client.data.mail);
-          setAvaliable(client.data.avaliable);
           setState(client.data.state);
           setPhoneNumber(client.data.phone_number);
         })
@@ -40,17 +51,110 @@ const EditEmployee = () => {
     }
   }, [client_id]);
 
-  const saveTool = (e) => {
+  const normalizeRut = (r) => (r || "").replace(/\./g, "").trim().toLowerCase();
+
+  const validateFields = () => {
+    const errors = [];
+    const fErrors = {};
+
+    if (!rut || !rut.trim()) {
+      errors.push("Rut es obligatorio.");
+      fErrors.rut = true;
+    }
+    // prohibir puntos en el RUT
+    if ((rut || "").includes(".")) {
+      errors.push("Rut no debe contener puntos.");
+      fErrors.rut = true;
+    }
+
+    // verificar unicidad de RUT contra los clientes cargados (excluir el cliente actual)
+    const newRutNorm = normalizeRut(rut);
+    if (newRutNorm) {
+      const exists = clients.some(
+        (c) =>
+          normalizeRut(c.rut) === newRutNorm &&
+          String(c.client_id) !== String(client_id)
+      );
+      if (exists) {
+        errors.push("El RUT ya existe en la base de datos.");
+        fErrors.rut = true;
+      }
+    }
+
+    if (!name || !name.trim()) {
+      errors.push("Name es obligatorio.");
+      fErrors.name = true;
+    }
+
+    if (!last_name || !last_name.trim()) {
+      errors.push("Last Name es obligatorio.");
+      fErrors.last_name = true;
+    }
+
+    if (!mail || !mail.trim()) {
+      errors.push("E-Mail es obligatorio.");
+      fErrors.mail = true;
+    } else {
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(mail)) {
+        errors.push("E-Mail no tiene un formato válido.");
+        fErrors.mail = true;
+      }
+    }
+
+    // password en edición es opcional; si se entrega debe tener mínimo 6 caracteres
+    if (password && password.length > 0 && password.length < 6) {
+      errors.push("Password debe tener mínimo 6 caracteres si se proporciona.");
+      fErrors.password = true;
+    }
+
+    if (!phone_number || !/^\+?\d+$/.test(phone_number)) {
+      errors.push("Phone Number obligatorio y sólo debe contener dígitos (puede incluir +).");
+      fErrors.phone_number = true;
+    }
+
+    // state debe ser 'activo' o 'restringido' si se especifica
+    if (state && !["activo", "restringido"].includes(String(state))) {
+      errors.push("State inválido. Debe ser 'activo' o 'restringido'.");
+      fErrors.state = true;
+    }
+
+    return { errors, fErrors };
+  };
+
+  const saveEmployee = (e) => {
     e.preventDefault();
-    const client = { client_id, rut, name, last_name, mail, avaliable, state, phone_number};
+
+    const { errors, fErrors } = validateFields();
+    setErrorsList(errors);
+    setFieldErrors(fErrors);
+
+    if (errors.length > 0) {
+      window.alert(errors.join("\n"));
+      return;
+    }
+
+    const client = {
+      client_id,
+      rut: normalizeRut(rut),
+      name,
+      last_name,
+      mail,
+      state,
+      phone_number,
+      role: "STAFF"
+    };
+    // incluir password sólo si se especifica
+    if (password && password.trim().length > 0) client.password = password;
+
     clientService
       .update(client)
       .then((response) => {
-        console.log("Cliente actualizado.", response.data);
+        console.log("Empleado actualizado.", response.data);
         navigate("/employee/list");
       })
       .catch((error) => {
-        console.log("Ha ocurrido un error al intentar actualizar el cliente.", error);
+        console.log("Ha ocurrido un error al intentar actualizar el empleado.", error);
       });
   };
 
@@ -104,14 +208,35 @@ const EditEmployee = () => {
           >
             <h3>Editar Empleado</h3>
             <hr />
+
+            {/* Lista de errores */}
+            {errorsList.length > 0 && (
+              <Box
+                sx={{
+                  width: "100%",
+                  mb: 2,
+                  p: 1,
+                  borderRadius: 1,
+                  backgroundColor: "rgba(255,200,200,0.9)",
+                }}
+              >
+                <ul style={{ margin: 0, paddingLeft: "1rem", color: "#700" }}>
+                  {errorsList.map((err, idx) => (
+                    <li key={idx}>{err}</li>
+                  ))}
+                </ul>
+              </Box>
+            )}
+
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="rut"
                 label="Rut"
                 value={rut}
                 variant="standard"
-                onChange={(e) => setrut(e.target.value)}
-                helperText="99999999-9"
+                onChange={(e) => setRut(e.target.value.replace(/\./g, ""))}
+                helperText="99999999-9 (sin puntos)"
+                error={!!fieldErrors.rut}
               />
             </FormControl>
 
@@ -122,6 +247,7 @@ const EditEmployee = () => {
                 value={name}
                 variant="standard"
                 onChange={(e) => setName(e.target.value)}
+                error={!!fieldErrors.name}
               />
             </FormControl>
 
@@ -132,6 +258,7 @@ const EditEmployee = () => {
                 value={last_name}
                 variant="standard"
                 onChange={(e) => setLastName(e.target.value)}
+                error={!!fieldErrors.last_name}
               />
             </FormControl>
 
@@ -142,32 +269,7 @@ const EditEmployee = () => {
                 value={mail}
                 variant="standard"
                 onChange={(e) => setMail(e.target.value)}
-              />
-            </FormControl>
-
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <TextField
-                    id="avaliable"
-                    label="Avaliable"
-                    value={avaliable}
-                    select
-                    variant="standard"
-                    defaultValue="true"
-                    onChange={(e) => setAvaliable(e.target.value)}
-                    style={{ width: "25%" }}
-                >
-                    <MenuItem value={"true"}>TRUE</MenuItem>
-                    <MenuItem value={"false"}>FALSE</MenuItem>
-              </TextField>
-            </FormControl>
-
-            <FormControl fullWidth sx={{ mb: 2 }}>
-              <TextField
-                id="state"
-                label="State"
-                value={state}
-                variant="standard"
-                onChange={(e) => setState(e.target.value)}
+                error={!!fieldErrors.mail}
               />
             </FormControl>
 
@@ -179,21 +281,37 @@ const EditEmployee = () => {
                 variant="standard"
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 helperText="Ej. +56911112222"
+                error={!!fieldErrors.phone_number}
               />
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <TextField
+                id="state"
+                label="State"
+                value={state}
+                select
+                variant="standard"
+                onChange={(e) => setState(e.target.value)}
+                error={!!fieldErrors.state}
+              >
+                <MenuItem value="activo">activo</MenuItem>
+                <MenuItem value="restringido">restringido</MenuItem>
+              </TextField>
             </FormControl>
 
             <FormControl sx={{ mb: 2 }}>
               <Button
                 variant="contained"
                 color="info"
-                onClick={saveTool}
+                onClick={saveEmployee}
                 startIcon={<SaveIcon />}
               >
                 Grabar
               </Button>
             </FormControl>
             <hr />
-            <Link to="/client/list">Back to List</Link>
+            <Link to="/employee/list">Back to List</Link>
           </Box>
         </Paper>
       </Box>
