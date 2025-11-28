@@ -18,7 +18,7 @@ const NewClientBehindReport = () => {
     setLoading(true);
 
     // get the real id from the token
-    const idFromToken = keycloak?.tokenParsed?.id_real;
+    const idFromToken = parseInt(keycloak?.tokenParsed?.id_real);
     
     if (!keycloak?.authenticated || !idFromToken) {
       setLoading(false);

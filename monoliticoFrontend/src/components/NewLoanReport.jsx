@@ -17,17 +17,23 @@ const  NewLoanReport = () =>{
 
 	const handleSaveReport = async () => {
 		setLoading(true);
-		const clientId = keycloak?.tokenParsed?.id_real; 
+		const clientId = parseInt(keycloak?.tokenParsed?.id_real); // Convertir a número
 		if (!clientId) {
 			setLoading(false);
-			console.log(clientId);
+			console.log("No clientId found:", clientId);
 			return;
 		}
+		console.log("ClientId:", clientId);
 		// get all the loans and the filtered by client id
 		const allLoansRes = await loansService.getAll();
-		const loansList = allLoansRes.data.filter(l => l.clientId === clientId);
-		console.log(loansList);
-		if (loansList.length >= 0) {
+		console.log("All loans:", allLoansRes.data);
+		console.log("First loan full object:", JSON.stringify(allLoansRes.data[0], null, 2)); // Ver todos los valores
+		const loansList = allLoansRes.data.filter(l => {
+			console.log("Comparing l.clientId:", l.clientId, "type:", typeof l.clientId, "with clientId:", clientId, "type:", typeof clientId, "Match:", l.clientId === clientId);
+			return l.clientId === clientId;
+		});
+		console.log("Filtered loans:", loansList);
+		if (loansList.length > 0) {
 			const reportRes = await reportsService.create({ loanIdReport: true ,
 				clientIdReport: clientId });
 			const reportId = reportRes.data?.reportId ;
@@ -58,7 +64,7 @@ const  NewLoanReport = () =>{
 					const toolReportRes = await toolsReportService.create({
 						toolName: tool.tool_name,
 						category: tool.category,
-						loanCount: 1
+						loanNount: tool.loan_count
 					});
 					const toolIdReport = toolReportRes.data?.toolIdReport;
 					// Vincular con toolsLoanReport
