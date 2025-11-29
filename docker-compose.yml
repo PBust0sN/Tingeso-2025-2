@@ -10,11 +10,14 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: tingeso
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
-      - ./data/dataInsert.sql:/docker-entrypoint-initdb.d/dataInsert.sql:ro
+      - ./data/dataInsert.sql:/docker-entrypoint-initdb.d/02-dataInsert.sql:ro
     networks:
       - mynet
 
@@ -28,6 +31,8 @@ services:
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
       REDIRECT_URI: http://localhost:5173*
       IMAGE_UPLOAD_DIR: /uploads
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
     depends_on:
       - mysql
       - keycloak
@@ -44,6 +49,8 @@ services:
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
       REDIRECT_URI: http://localhost:5173*
       IMAGE_UPLOAD_DIR: /uploads
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
     depends_on:
       - mysql
       - keycloak
@@ -60,6 +67,8 @@ services:
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
       REDIRECT_URI: http://localhost:5173*
       IMAGE_UPLOAD_DIR: /uploads
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
     depends_on:
       - mysql
       - keycloak
@@ -83,6 +92,9 @@ services:
   nginx:
       image: nginx:alpine
       container_name: nginx
+      environment:
+        LANG: C.UTF-8
+        LC_ALL: C.UTF-8
       ports:
         - "5173:80"   # frontend
         - "8090:8090" # backend
@@ -112,6 +124,8 @@ services:
       KC_DB_USERNAME: root
       KC_DB_PASSWORD: admin
       KC_HOSTNAME: localhost
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
     ports:
       - "8080:8080"   
     restart: always

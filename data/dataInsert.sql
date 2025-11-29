@@ -1,6 +1,17 @@
 CREATE DATABASE IF NOT EXISTS tingeso;
 CREATE DATABASE IF NOT EXISTS keycloakdb;
 
+-- Configuración UTF-8 para las bases de datos
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
+-- Alterar base de datos tingeso
+ALTER DATABASE tingeso CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Alterar base de datos keycloakdb
+ALTER DATABASE keycloakdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
 create table if not exists tingeso.client
 (
     avaliable    bit          null,
