@@ -18,7 +18,6 @@ const NewClientBehindReport = () => {
   const handleGenerateBehind = async () => {
     setLoading(true);
 
-    // Obtener clientId de la URL si existe, si no usar el de Keycloak
     const urlClientId = searchParams.get("clientId");
     const idFromToken = urlClientId ? parseInt(urlClientId) : parseInt(keycloak?.tokenParsed?.id_real);
     
@@ -95,7 +94,13 @@ const NewClientBehindReport = () => {
       // simulate delay for better UX 
       await new Promise((res) => setTimeout(res, 1000));
       setLoading(false);
-      navigate("/myreports");
+      
+      const urlClientId = searchParams.get("clientId");
+      if (urlClientId) {
+        navigate("/client/list");
+      } else {
+        navigate("/myreports");
+      }
     } catch (e) {
       console.error("Error creating behind report:", e);
       setLoading(false);

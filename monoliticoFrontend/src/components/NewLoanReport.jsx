@@ -84,7 +84,12 @@ const  NewLoanReport = () =>{
 			}
 		}
 		await new Promise(res => setTimeout(res, 1000));
-		navigate("/myreports");
+
+		if (urlClientId) {
+			navigate("/client/list");
+		} else {
+			navigate("/myreports");
+		}
 		setLoading(false);
 	};
 
