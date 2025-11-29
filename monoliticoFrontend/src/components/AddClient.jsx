@@ -120,6 +120,7 @@ const AddClient = () => {
       state,
       phone_number,
       password,
+      role: "CLIENT",
     };
 
     console.log(client);

@@ -14,7 +14,7 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./data/dataInsert.sql:/docker-entrypoint-initdb.d/dataInsert.sql:ro
     networks:
       - mynet
 
@@ -22,9 +22,7 @@ services:
   # BACKEND (3 instancias)
   # ===================
   backend1:
-    build:
-      context: ./monoliticoBackend
-      dockerfile: Dockerfile
+    image: pbust0sn/toolrent-backend:latest
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
@@ -40,9 +38,7 @@ services:
     restart: unless-stopped
 
   backend2:
-    build:
-      context: ./monoliticoBackend
-      dockerfile: Dockerfile
+    image: pbust0sn/toolrent-backend:latest
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
@@ -58,9 +54,7 @@ services:
     restart: unless-stopped
 
   backend3:
-    build:
-      context: ./monoliticoBackend
-      dockerfile: Dockerfile
+    image: pbust0sn/toolrent-backend:latest
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
@@ -79,9 +73,7 @@ services:
   # FRONTEND
   # ===================
   frontend:
-    build:
-      context: ./monoliticoFrontend
-      dockerfile: Dockerfile
+    image: pbust0sn/toolrent-frontend:latest
     networks:
       - mynet
 

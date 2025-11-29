@@ -27,10 +27,10 @@ class LoansRepositoryTest {
     @BeforeEach
     void setUp() {
         loan = new LoansEntity();
-        loan.setDeliveryDate(Date.valueOf(LocalDate.now().minusDays(2)));
-        loan.setReturnDate(Date.valueOf(LocalDate.now().plusDays(5)));
+        loan.setDeliveryDate((LocalDate.now().minusDays(2)));
+        loan.setReturnDate((LocalDate.now().plusDays(5)));
         loan.setLoanType("loan");
-        loan.setDate(Date.valueOf(LocalDate.now()));
+        loan.setDate((LocalDate.now()));
         loan.setStaffId(10L);
         loan.setClientId(20L);
         loan.setAmount(500L);

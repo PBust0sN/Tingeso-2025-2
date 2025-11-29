@@ -35,10 +35,10 @@ class LoansControllerTest {
     void setUp() {
         loanExample = new LoansEntity(
                 1L,
-                new Date(System.currentTimeMillis()),
-                new Date(System.currentTimeMillis() + 86400000), // +1 día
+                new Date(System.currentTimeMillis()).toLocalDate(),
+                new Date(System.currentTimeMillis() + 86400000).toLocalDate(), // +1 día
                 "Normal",
-                new Date(System.currentTimeMillis()),
+                new Date(System.currentTimeMillis()).toLocalDate(),
                 101L,
                 202L,
                 5000L,

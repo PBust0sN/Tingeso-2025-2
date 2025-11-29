@@ -38,7 +38,7 @@ class ClientControllerTest {
         clientEntity.setMail("juan@example.com");
         clientEntity.setPhone_number("999999999");
         clientEntity.setState("Activo");
-        clientEntity.setAvaliable(true);
+
         clientEntity.setPassword("1234");
     }
 

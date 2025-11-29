@@ -44,26 +44,26 @@ class ClientServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         client = new ClientEntity(1L, "12345678-9", "John", "Doe", "john@example.com",
-                "555-1234", "active", true, "password123");
+                "555-1234", "active", "true", "password123");
 
         loan = new LoansEntity();
         loan.setLoanId(1L);
         loan.setClientId(1L);
-        loan.setDeliveryDate(Date.valueOf(LocalDate.now().minusDays(5)));
-        loan.setReturnDate(Date.valueOf(LocalDate.now().plusDays(5)));
+        loan.setDeliveryDate(LocalDate.now().minusDays(5));
+        loan.setReturnDate(LocalDate.now().plusDays(5));
     }
 
     @Test
     void testSaveClient() {
         when(clientRepository.save(any(ClientEntity.class))).thenReturn(client);
-        doNothing().when(keycloakService).createUserInKeycloak(anyString(), anyString(), anyString(), anyLong());
+        doNothing().when(keycloakService).createUserInKeycloak(anyString(), anyString(), anyString(), anyLong(),anyString());
 
         ClientEntity result = clientService.saveClient(client);
 
         assertNotNull(result);
         assertEquals(client.getClient_id(), result.getClient_id());
         verify(clientRepository, times(1)).save(client);
-        verify(keycloakService, times(1)).createUserInKeycloak(client.getName(), client.getMail(), client.getPassword(), client.getClient_id());
+        verify(keycloakService, times(1)).createUserInKeycloak(client.getName(), client.getMail(), client.getPassword(), client.getClient_id(),client.getRole());
     }
 
     @Test
@@ -178,8 +178,8 @@ class ClientServiceTest {
     @Test
     void testHasExpiredLoansById_WithExpiredLoan() {
         LoansEntity expiredLoan = new LoansEntity();
-        expiredLoan.setDeliveryDate(Date.valueOf(LocalDate.now()));
-        expiredLoan.setReturnDate(Date.valueOf(LocalDate.now().minusDays(3))); // vencido
+        expiredLoan.setDeliveryDate((LocalDate.now()));
+        expiredLoan.setReturnDate((LocalDate.now().minusDays(3))); // vencido
 
         when(clientRepository.getAllLoansByClientId(1L))
                 .thenReturn(Arrays.asList(expiredLoan));
@@ -202,7 +202,7 @@ class ClientServiceTest {
         when(clientRepository.save(any())).thenReturn(client);
         doThrow(new RuntimeException("Keycloak error"))
                 .when(keycloakService)
-                .createUserInKeycloak(anyString(), anyString(), anyString(), anyLong());
+                .createUserInKeycloak(anyString(), anyString(), anyString(), anyLong(),anyString());
 
         assertThrows(RuntimeException.class, () -> clientService.saveClient(client));
     }

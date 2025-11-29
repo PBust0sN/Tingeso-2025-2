@@ -22,6 +22,9 @@ const AddAdmin = () => {
   // Errors state
   const [errorsList, setErrorsList] = useState([]);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [clients, setClients] = useState([]);
+
+  const normalizeRut = (r) => (r || "").replace(/\./g, "").trim().toLowerCase();
 
   const validateFields = () => {
     const errors = [];

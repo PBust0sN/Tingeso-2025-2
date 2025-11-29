@@ -39,7 +39,6 @@ public class FineServiceTest {
 
         client = new ClientEntity();
         client.setClient_id(1L);
-        client.setAvaliable(true);
         client.setState("activo");
     }
 
@@ -62,15 +61,7 @@ public class FineServiceTest {
         assertEquals(1, result.size());
     }
 
-    @Test
-    void testGetAllFinesByClientId() {
-        when(fineRepository.findFinesByClientId(10L)).thenReturn(List.of(fine));
 
-        List<FineEntity> result = fineService.getAllFinesByClientId(10L);
-
-        assertEquals(1, result.size());
-        assertEquals(10L, result.get(0).getClientId());
-    }
 
     @Test
     void testSaveFine() {

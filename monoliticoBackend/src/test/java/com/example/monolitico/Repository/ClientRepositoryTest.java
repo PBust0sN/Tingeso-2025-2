@@ -34,7 +34,7 @@ class ClientRepositoryTest {
         client.setMail("juan@example.com");
         client.setPhone_number("123456789");
         client.setState("activo");
-        client.setAvaliable(true);
+
         client.setPassword("1234");
 
         ClientEntity saved = entityManager.persistAndFlush(client);
@@ -48,7 +48,7 @@ class ClientRepositoryTest {
 
     @Test
     void testFindByRut() {
-        ClientEntity client = new ClientEntity(null, "11.111.111-1", "Ana", "Torres", "ana@mail.com", "555", "activo", true, "pass");
+        ClientEntity client = new ClientEntity(null, "11.111.111-1", "Ana", "Torres", "ana@mail.com", "555", "activo", "true", "pass");
         entityManager.persistAndFlush(client);
 
         ClientEntity found = clientRepository.findByRut("11.111.111-1");
@@ -59,8 +59,8 @@ class ClientRepositoryTest {
 
     @Test
     void testFindByMail() {
-        ClientEntity client1 = new ClientEntity(null, "22.222.222-2", "Pedro", "Gómez", "pedro@mail.com", "111", "activo", true, "pass1");
-        ClientEntity client2 = new ClientEntity(null, "33.333.333-3", "Lucía", "Martínez", "lucia@mail.com", "222", "activo", true, "pass2");
+        ClientEntity client1 = new ClientEntity(null, "22.222.222-2", "Pedro", "Gómez", "pedro@mail.com", "111", "activo", "true", "pass1");
+        ClientEntity client2 = new ClientEntity(null, "33.333.333-3", "Lucía", "Martínez", "lucia@mail.com", "222", "activo", "true", "pass2");
 
         entityManager.persist(client1);
         entityManager.persist(client2);
