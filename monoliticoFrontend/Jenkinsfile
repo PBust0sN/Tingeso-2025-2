@@ -7,10 +7,10 @@ pipeline {
         stage('Build Frontend'){
             steps{
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PBust0sN/monolitico-tingeso']])
-                dir(monoliticoFrontend){
+                    bat 'cd monoliticoFrontend'                
                     bat 'npm install'
                     bat 'npm run build'
-                }
+
             }
         }
         stage('Build And Push image to Docker Hub'){
