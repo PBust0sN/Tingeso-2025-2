@@ -78,7 +78,7 @@ services:
   frontend:
     build: ./monoliticoFrontend
     image: pbust0sn/toolrent-frontend:latest
-    pull_policy: build
+    pull_policy: always
     networks:
       - mynet
 
@@ -88,9 +88,6 @@ services:
   nginx:
       image: nginx:alpine
       container_name: nginx
-      environment:
-        LANG: C.UTF-8
-        LC_ALL: C.UTF-8
       ports:
         - "5173:80"   # frontend
         - "8090:8090" # backend
