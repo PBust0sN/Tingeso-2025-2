@@ -10,6 +10,7 @@ import imagesService from "../services/images.service";
 import Paper from "@mui/material/Paper";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
 
 const EditTool = () => {
   const [category, setCategory] = useState("");
