@@ -53,7 +53,7 @@ const Home = () => {
           ].join(", "), // fallback for outline in other browsers
         }}
       >
-        Bienvenido Al Sistema de Renta de Herramientas Tool Rent
+        Bienvenido 
       </Typography>
       <Typography
       variant="h5"
@@ -61,7 +61,7 @@ const Home = () => {
         sx={{
           fontWeight: 700,
           color: "#fff",
-          WebkitTextStroke: "1px rgba(0,0,0,0.85)", // Wedbkit outline
+          WebkitTextStroke: "1px rgba(0,0,0,0.85)", // Wedbkit outline Al Sistema de Renta de Herramientas Tool Rent
           textShadow: [
             "1px 1px 0 rgba(0,0,0,0.85)",
             "-1px 1px 0 rgba(0,0,0,0.85)",
