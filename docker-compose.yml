@@ -26,6 +26,7 @@ services:
   # ===================
   backend1:
     image: pbust0sn/toolrent-backend:latest
+    pull_policy: always
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
@@ -44,6 +45,7 @@ services:
 
   backend2:
     image: pbust0sn/toolrent-backend:latest
+    pull_policy: always
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
@@ -62,6 +64,7 @@ services:
 
   backend3:
     image: pbust0sn/toolrent-backend:latest
+    pull_policy: always
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
@@ -83,6 +86,7 @@ services:
   # ===================
   frontend:
     image: pbust0sn/toolrent-frontend:latest
+    pull_policy: always
     networks:
       - mynet
 
