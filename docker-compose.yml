@@ -76,8 +76,9 @@ services:
   # FRONTEND
   # ===================
   frontend:
+    build: ./monoliticoFrontend
     image: pbust0sn/toolrent-frontend:latest
-    pull_policy: always
+    pull_policy: build
     networks:
       - mynet
 
