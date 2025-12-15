@@ -6,7 +6,7 @@ spring:
       server:
         git:
           default-label: main
-          uri: https://github.com/PBust0sN/Tingeso-2025-2/tree/main/Evaluacion-2-Microservicios/config-data
+          uri: https://github.com/PBust0sN/Tingeso-2025-2/tree/main/Evaluacion-2-Microservicios
           search-paths: config-data
   application:
     name: config-service
