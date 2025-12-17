@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  config-service:
+    image: pbust0sn/config-service:latest
+    container_name: config-service
+    ports:
+      - "8081:8081"
+    networks:
+      - microservices-network
+
+  eureka-service:
+    image: pbust0sn/eureka-service:latest
+    container_name: eureka-service
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+
+  gateway-service:
+    image: pbust0sn/gateway-service:latest
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    networks:
+      - microservices-network
+    depends_on:
+      - config-service
+      - eureka-service
+
+networks:
+  microservices-network:
+    driver: bridge
