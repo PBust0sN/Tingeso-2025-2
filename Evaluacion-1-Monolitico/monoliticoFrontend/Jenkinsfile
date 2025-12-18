@@ -3,8 +3,8 @@ pipeline {
     stages{
         stage('Build Frontend'){
             steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PBust0sN/monolitico-tingeso/Evaluacion-1-Monolitico']])
-                dir("monoliticoFrontend"){
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PBust0sN/Tingeso-2025-2']])
+                dir("Evaluacion-1-Monolitico/monoliticoFrontend"){
                     bat 'npm install'
                     bat 'npm run build'
                 }
