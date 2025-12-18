@@ -18,6 +18,7 @@ const EditTool = () => {
   const [initialState, setInitialState] = useState("");
   const [toolName, setToolName] = useState("");
   const [loanFee, setLoanFee] = useState("");
+  const [loanCount, setLoanCount] = useState("");
   const [repositionFee, setRepositionFee] = useState("");
   const [diaryFineFee, setDiaryFineFee] = useState("");
   const [stock, setStock] = useState("");
@@ -47,6 +48,7 @@ const EditTool = () => {
           setDiaryFineFee(String(tool.data.diary_fine_fee));
           setStock(String(tool.data.stock || ""));
           setLowDmgFee(String(tool.data.low_dmg_fee || ""));
+          setLoanCount(String(tool.data.loan_count || ""));
           // Cargar imagen existente
           loadExistingImage(toolId);
         })
@@ -246,6 +248,7 @@ const EditTool = () => {
       disponibility: disponibility.trim(),
       stock: Number(stock),
       low_dmg_fee: Number(lowDmgFee),
+      loan_count: Number(loanCount)
     };
 
     toolsService
