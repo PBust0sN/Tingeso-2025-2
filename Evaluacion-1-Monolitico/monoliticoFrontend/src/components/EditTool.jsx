@@ -48,7 +48,7 @@ const EditTool = () => {
           setDiaryFineFee(String(tool.data.diary_fine_fee));
           setStock(String(tool.data.stock || ""));
           setLowDmgFee(String(tool.data.low_dmg_fee || ""));
-          setLoanCount(String(tool.data.loan_count || ""));
+          setLoanCount(tool.data.loan_count || "");
           // Cargar imagen existente
           loadExistingImage(toolId);
         })
@@ -185,10 +185,10 @@ const EditTool = () => {
   const uploadImage = (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    
+
     // Nombre personalizado: ${toolId}.png
     const customFilename = `${toolId}.png`;
-    
+
     imagesService
       .uploadImage(formData, customFilename)
       .then((response) => {
@@ -218,7 +218,7 @@ const EditTool = () => {
       const formData = new FormData();
       formData.append("file", image);
       const customFilename = `${toolId}.png`;
-      
+
       imagesService
         .uploadImage(formData, customFilename)
         .then((response) => {
