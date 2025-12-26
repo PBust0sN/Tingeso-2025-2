@@ -23,6 +23,8 @@ spec:
               value: http://eureka-service:8761/eureka/
             - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
               value: "true"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Deureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/"
 ---
 apiVersion: v1
 kind: Service
