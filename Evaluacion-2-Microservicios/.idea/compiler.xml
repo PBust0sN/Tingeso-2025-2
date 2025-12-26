@@ -10,9 +10,32 @@
         <module name="gateway-service" />
         <module name="config-service" />
       </profile>
+      <profile name="Annotation profile for ms-users-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="ms-inventory-service" />
+        <module name="ms-users-service" />
+        <module name="ms-reports-service" />
+        <module name="ms-rates-service" />
+        <module name="ms-loans-service" />
+        <module name="ms-kardex-service" />
+        <module name="ms-clients-service" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="config-server" target="17" />
+      <module name="inventory-service" target="17" />
+      <module name="ms-clients" target="17" />
+      <module name="ms-inventory" target="17" />
+      <module name="ms-kardex" target="17" />
+      <module name="ms-loans" target="17" />
+      <module name="ms-rates" target="17" />
+      <module name="ms-reports" target="17" />
+      <module name="ms-users" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -21,6 +44,21 @@
       <module name="config-service" options="-parameters" />
       <module name="eureka-service" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="inventory-service" options="-parameters" />
+      <module name="ms-clients" options="-parameters" />
+      <module name="ms-clients-service" options="-parameters" />
+      <module name="ms-inventory" options="-parameters" />
+      <module name="ms-inventory-service" options="-parameters" />
+      <module name="ms-kardex" options="-parameters" />
+      <module name="ms-kardex-service" options="-parameters" />
+      <module name="ms-loans" options="-parameters" />
+      <module name="ms-loans-service" options="-parameters" />
+      <module name="ms-rates" options="-parameters" />
+      <module name="ms-rates-service" options="-parameters" />
+      <module name="ms-reports" options="-parameters" />
+      <module name="ms-reports-service" options="-parameters" />
+      <module name="ms-users" options="-parameters" />
+      <module name="ms-users-service" options="-parameters" />
     </option>
   </component>
 </project>
