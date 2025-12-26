@@ -15,9 +15,16 @@ spec:
       containers:
         - name: gateway-service
           image: pbust0sn/gateway-service:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service:8761/eureka/
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service:8081
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
 ---
 apiVersion: v1
 kind: Service
