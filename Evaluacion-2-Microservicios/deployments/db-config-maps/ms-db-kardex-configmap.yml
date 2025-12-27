@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kardex-db
+data:
+  host: mysql
+  name: bdkardex

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reports-db
+data:
+  host: mysql
+  name: bdreports
