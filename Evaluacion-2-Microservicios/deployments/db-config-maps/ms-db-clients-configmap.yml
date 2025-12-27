@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: clients-db
 data:
-  host: ms-db-clients
+  host: mysql-unified
   name: bdclients
-  port: 3306
+  port: "3306"

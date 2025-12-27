@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: reports-db
 data:
-  host: ms-db-reports
+  host: mysql-unified
   name: bdreports
-  port: 3311
+  port: "3306"

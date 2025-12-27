@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: inventory-db
 data:
-  host: ms-db-inventory
+  host: mysql-unified
   name: bdinventory
-  port: 3307
+  port: "3306"

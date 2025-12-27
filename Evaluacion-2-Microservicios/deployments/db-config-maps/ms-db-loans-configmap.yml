@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: loans-db
 data:
-  host: ms-db-loans
+  host: mysql-unified
   name: bdloans
-  port: 3309
+  port: "3306"

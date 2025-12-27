@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: kardex-db
 data:
-  host: ms-db-kardex
-  name: bdkardex}
-  port: 3308
+  host: mysql-unified
+  name: bdkardex
+  port: "3306"

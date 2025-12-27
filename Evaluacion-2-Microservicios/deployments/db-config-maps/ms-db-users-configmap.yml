@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: users-db
 data:
-  host: ms-db-users
+  host: mysql-unified
   name: bdusers
-  port: 3312
+  port: "3306"

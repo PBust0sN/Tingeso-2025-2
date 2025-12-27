@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: rates-db
 data:
-  host: ms-db-rates
+  host: mysql-unified
   name: bdrates
-  port: 3310
+  port: "3306"

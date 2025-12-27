@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Expose the port
-EXPOSE 8761
+EXPOSE 8092
 
 # Set the entrypoint
 ENTRYPOINT ["java", "-jar", "app.jar"]

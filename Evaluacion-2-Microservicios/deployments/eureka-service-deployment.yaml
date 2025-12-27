@@ -28,7 +28,12 @@ spec:
         - name: EUREKA_CLIENT_FETCH_REGISTRY
           value: "false"
         - name: JAVA_TOOL_OPTIONS
-          value: "-Deureka.instance.hostname=eureka-service"
+          value: "-Xmx192m -Deureka.instance.hostname=eureka-service"
+        resources:
+          limits:
+            memory: "256Mi"
+          requests:
+            memory: "200Mi"
 ---
 apiVersion: v1
 kind: Service
