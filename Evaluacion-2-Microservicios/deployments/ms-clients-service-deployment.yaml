@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-clients-service-deployment
+  labels:
+    app: ms-clients-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-clients-service-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-clients-service-deployment
+    spec:
+      containers:
+        - name: ms-orders
+          image: pbust0sn/ms-clients-service
+          ports:
+            - containerPort: 8090
+          env:
+            - name: SERVER_PORT
+              value: "0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: clients-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: clients-db
+                  key: port
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: clients-db
+                  key: name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: password

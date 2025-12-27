@@ -5,3 +5,4 @@ metadata:
 data:
   host: ms-db-rates
   name: bdrates
+  port: 3310

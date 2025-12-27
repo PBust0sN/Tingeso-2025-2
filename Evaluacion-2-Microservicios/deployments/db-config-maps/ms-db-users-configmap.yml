@@ -5,3 +5,4 @@ metadata:
 data:
   host: ms-db-users
   name: bdusers
+  port: 3312

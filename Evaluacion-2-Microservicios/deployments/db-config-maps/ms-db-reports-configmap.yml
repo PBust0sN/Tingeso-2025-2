@@ -5,3 +5,4 @@ metadata:
 data:
   host: ms-db-reports
   name: bdreports
+  port: 3311

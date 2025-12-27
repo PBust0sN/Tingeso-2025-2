@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-rates-service-deployment
+  labels:
+    app: ms-rates-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-rates-service-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-rates-service-deployment
+    spec:
+      containers:
+        - name: ms-orders
+          image: pbust0sn/ms-rates-service
+          ports:
+            - containerPort: 8094
+          env:
+            - name: SERVER_PORT
+              value: "0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: clients-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: clients-db
+                  key: port
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: clients-db
+                  key: name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: password

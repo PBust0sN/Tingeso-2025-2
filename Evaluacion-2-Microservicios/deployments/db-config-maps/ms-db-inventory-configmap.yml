@@ -5,3 +5,4 @@ metadata:
 data:
   host: ms-db-inventory
   name: bdinventory
+  port: 3307

@@ -4,4 +4,5 @@ metadata:
   name: kardex-db
 data:
   host: ms-db-kardex
-  name: bdkardex
+  name: bdkardex}
+  port: 3308

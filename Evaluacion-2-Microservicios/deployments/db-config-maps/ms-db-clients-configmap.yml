@@ -5,3 +5,4 @@ metadata:
 data:
   host: ms-db-clients
   name: bdclients
+  port: 3306
