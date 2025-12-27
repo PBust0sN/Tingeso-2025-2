@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: clients-db
 data:
-  host: mysql
+  host: ms-db-clients
   name: bdclients

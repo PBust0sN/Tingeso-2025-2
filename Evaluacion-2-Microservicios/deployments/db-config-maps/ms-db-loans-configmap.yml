@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: loans-db
 data:
-  host: mysql
+  host: ms-db-loans
   name: bdloans

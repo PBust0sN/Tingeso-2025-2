@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: inventory-db
 data:
-  host: mysql
+  host: ms-db-inventory
   name: bdinventory

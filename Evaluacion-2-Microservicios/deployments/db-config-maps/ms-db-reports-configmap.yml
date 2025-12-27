@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: reports-db
 data:
-  host: mysql
+  host: ms-db-reports
   name: bdreports
