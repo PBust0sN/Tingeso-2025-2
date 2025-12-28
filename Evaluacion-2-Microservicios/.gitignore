@@ -1,1 +1,4 @@
 skaffold.exe
+
+#jenkins.war (pipelines)
+jenkins.war
