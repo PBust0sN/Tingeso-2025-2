@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: ms-inventory-service
-          image: pbust0sn/ms-inventory-service
+          image: pbust0sn/ms-inventory-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8091
           env:
@@ -26,8 +27,12 @@ spec:
               value: http://eureka-service:8761/eureka/
             - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
               value: "true"
+            - name: SPRING_CLOUD_BOOTSTRAP_ENABLED
+              value: "false"
+            - name: SPRING_CLOUD_CONFIG_ENABLED
+              value: "false"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Xmx192m"
+              value: "-Xmx192m -Deureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/ -Deureka.instance.preferIpAddress=true"
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:

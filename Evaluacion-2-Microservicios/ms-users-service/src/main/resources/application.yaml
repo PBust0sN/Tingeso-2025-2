@@ -1,5 +1,12 @@
 spring:
   application:
     name: ms-users-service
-  config:
-    import: optional:configserver:${SPRING_CLOUD_CONFIG_URI:http://config-service:8081}
+
+eureka:
+  instance:
+    preferIpAddress: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS:true}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka-service:8761/eureka/}
