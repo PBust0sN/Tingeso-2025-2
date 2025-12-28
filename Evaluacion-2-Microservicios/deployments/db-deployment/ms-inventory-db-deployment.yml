@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-db-inventory
+  labels:
+    app: ms-db-inventory
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: ms-db-inventory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-db-inventory
+  labels:
+    app: ms-db-inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-db-inventory
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ms-db-inventory
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: ms-db-inventory
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-credentials
+              key: password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: inventory-db
+              key: name
+        ports:
+        - containerPort: 3306
+          name: ms-db-inventory
+        volumeMounts:
+        - name: ms-db-inventory-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: ms-db-inventory-persistent-storage
+        persistentVolumeClaim:
+          claimName: ms-db-inventory-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ms-db-inventory-pv-claim
+  labels:
+    app: ms-db-inventory
+    tier: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Mi

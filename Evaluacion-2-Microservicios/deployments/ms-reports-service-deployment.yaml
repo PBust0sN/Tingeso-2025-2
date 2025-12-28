@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-reports-service-deployment
+  labels:
+    app: ms-reports-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-reports-service-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-reports-service-deployment
+    spec:
+      containers:
+        - name: ms-reports-service
+          image: pbust0sn/ms-reports-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8095
+          env:
+            - name: SERVER_PORT
+              value: "0"
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service:8761/eureka/
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
+            - name: SPRING_CLOUD_BOOTSTRAP_ENABLED
+              value: "false"
+            - name: SPRING_CLOUD_CONFIG_ENABLED
+              value: "false"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xmx192m -Deureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/ -Deureka.instance.preferIpAddress=true"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: reports-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: reports-db
+                  key: port
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: reports-db
+                  key: name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: password
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://$(DB_HOST):$(DB_PORT)/$(DB_DBNAME)?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "$(DB_USER)"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "$(DB_PASSWORD)"
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "200Mi"

@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          default-label: main
+          default-label: eval2-ms-advance
           uri: https://github.com/PBust0sN/Tingeso-2025-2
           search-paths: Evaluacion-2-Microservicios/config-data
   application:

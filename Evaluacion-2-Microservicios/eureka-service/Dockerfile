@@ -23,7 +23,7 @@ WORKDIR /app
 # Copy the JAR file from build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose the port (default for Eureka Server is 8761)
+# Expose the port
 EXPOSE 8761
 
 # Set the entrypoint

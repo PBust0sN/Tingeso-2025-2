@@ -21,12 +21,17 @@ spec:
           env:
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: http://eureka-service:8761/eureka/
-            - name: SPRING_CLOUD_CONFIG_URI
-              value: http://config-service:8081
-            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
-              value: "true"
+            - name: SPRING_CLOUD_BOOTSTRAP_ENABLED
+              value: "false"
+            - name: SPRING_CLOUD_CONFIG_ENABLED
+              value: "false"
             - name: JAVA_TOOL_OPTIONS
-              value: "-Deureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/"
+              value: "-Xmx192m -Deureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/ -Deureka.instance.preferIpAddress=true"
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "200Mi"
 ---
 apiVersion: v1
 kind: Service

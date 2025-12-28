@@ -1,1 +1,7 @@
 MICROSERVICIOS
+
+# para reiniciar pods que hagan match con el string "ms-"
+
+for /f %i in ('kubectl get deploy -o name ^| findstr ms-') do kubectl rollout restart %i
+
+

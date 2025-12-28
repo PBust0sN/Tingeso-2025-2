@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-db-users
+  labels:
+    app: ms-db-users
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: ms-db-users
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-db-users
+  labels:
+    app: ms-db-users
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-db-users
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ms-db-users
+    spec:
+      containers:
+      - image: mysql:8.0
+        name: ms-db-users
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-credentials
+              key: password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: users-db
+              key: name
+        ports:
+        - containerPort: 3306
+          name: ms-db-users
+        volumeMounts:
+        - name: ms-db-users-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: ms-db-users-persistent-storage
+        persistentVolumeClaim:
+          claimName: ms-db-users-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ms-db-users-pv-claim
+  labels:
+    app: ms-db-users
+    tier: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Mi

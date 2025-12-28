@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: users-db
+data:
+  host: mysql-unified
+  name: bdusers
+  port: "3306"
