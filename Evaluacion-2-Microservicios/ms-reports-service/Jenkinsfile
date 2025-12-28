@@ -37,6 +37,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Rollout Deployment') {
+            steps {
+                script {
+                    bat "for /f %i in ('kubectl get deploy -o name ^| findstr ms-reports') do kubectl rollout restart %i"
+                }
+            }
+        }
     }
     
     post {
