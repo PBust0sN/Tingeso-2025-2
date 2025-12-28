@@ -1,0 +1,55 @@
+apiVersion: skaffold/v2beta29
+kind: Config
+metadata:
+  name: microservicios-app
+build:
+  local:
+    push: true
+  artifacts:
+    - image: pbust0sn/config-service
+      context: config-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/eureka-service
+      context: eureka-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/gateway-service
+      context: gateway-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-clients-service
+      context: ms-clients-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-inventory-service
+      context: ms-inventory-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-kardex-service
+      context: ms-kardex-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-loans-service
+      context: ms-loans-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-rates-service
+      context: ms-rates-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-reports-service
+      context: ms-reports-service
+      docker:
+        dockerfile: Dockerfile
+    - image: pbust0sn/ms-users-service
+      context: ms-users-service
+      docker:
+        dockerfile: Dockerfile
+
+deploy:
+  kubectl:
+    manifests:
+      - deployments/*.yaml
+      - deployments/db-config-maps/*.yml
+      - deployments/db-secrets/*.yml
