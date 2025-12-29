@@ -1,14 +1,18 @@
-# Etapa de construcción
-FROM node:22 as build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+# Usa una imagen base de Node.js
+FROM node:18-alpine
 
-# Etapa de producción
-FROM nginx:alpine
-# Copiamos el build al nginx interno de la imagen
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Establece el directorio de trabajo
+WORKDIR /app
+
+# Copia los archivos de tu aplicación al contenedor
+COPY package*.json ./
+COPY . .
+
+# Instala las dependencias
+RUN npm install
+
+# Expone el puerto 3000
+EXPOSE 3000
+
+# Comando para iniciar la aplicación
+CMD ["npm", "start"]
