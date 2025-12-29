@@ -1,15 +1,6 @@
 pipeline {
     agent any
     stages{
-        stage('Build Frontend'){
-            steps{
-                checkout scmGit(branches: [[name: '*/eval2-ms-advance']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PBust0sN/Tingeso-2025-2']])
-                dir("Evaluacion-2-Microservicios/microservicio-frontend"){
-                    bat 'npm install'
-                    bat 'npm run build'
-                }
-            }
-        }
         stage('Build And Push image to Docker Hub'){
             steps{
                 dir("Evaluacion-2-Microservicios/microservicio-frontend"){

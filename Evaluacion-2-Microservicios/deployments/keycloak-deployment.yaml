@@ -1,0 +1,58 @@
+# Keycloak Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: default
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.3.4
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+            - name: KEYCLOAK_IMPORT
+              value: /opt/keycloak/data/import/realm-export.json
+          ports:
+            - containerPort: 8080
+          args:
+            - start-dev
+          volumeMounts:
+            - name: realm-volume
+              mountPath: /opt/keycloak/data/import
+      volumes:
+        - name: realm-volume
+          hostPath:
+            path: /d/NIVEL 6/Tecnicas de ingenieria de software/Material/Tingeso-2025-2/Evaluacion-2-Microservicios/keycloak
+            type: Directory
+---
+# Keycloak Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: default
+  labels:
+    app: keycloak
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32000
+  selector:
+    app: keycloak

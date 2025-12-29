@@ -14,7 +14,7 @@ spec:
   type: LoadBalancer
   ports:
     - port: 80
-      targetPort: 3000
+      targetPort: 80
       protocol: TCP
       name: http
   selector:
@@ -43,7 +43,7 @@ spec:
         - name: microservicio-frontend
           image: pbust0sn/microservicio-frontend:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 80
               name: http
           resources:
             requests:
