@@ -14,24 +14,25 @@ public class ToolsLoansRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String INVENTORY_SERVICE_URL = "http://localhost:8082";
+    private final String GATEWAY_URL = "http://ms-inventory-service:8082";
+    private final String SERVICE_ENDPOINT = "/api/tools";
 
     // queryForObject - obtener relación herramienta-préstamo por ID
     public ToolsLoansModel getToolLoanById(Long id) {
-        String url = INVENTORY_SERVICE_URL + "/api/tools-loans/" + id;
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "-loans/" + id;
         return restTemplate.getForObject(url, ToolsLoansModel.class);
     }
 
     // queryForList - obtener herramientas de un préstamo
     public List<ToolsLoansModel> getToolLoansByLoanId(Long loanId) {
-        String url = INVENTORY_SERVICE_URL + "/api/tools-loans/loan/" + loanId;
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "-loans/loan/" + loanId;
         ToolsLoansModel[] toolsLoans = restTemplate.getForObject(url, ToolsLoansModel[].class);
         return Arrays.asList(toolsLoans != null ? toolsLoans : new ToolsLoansModel[0]);
     }
 
     // Crear relación herramienta-préstamo
     public ToolsLoansModel saveToolLoan(ToolsLoansModel toolsLoansModel) {
-        String url = INVENTORY_SERVICE_URL + "/api/tools-loans/";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "-loans/";
         return restTemplate.postForObject(url, toolsLoansModel, ToolsLoansModel.class);
     }
 }

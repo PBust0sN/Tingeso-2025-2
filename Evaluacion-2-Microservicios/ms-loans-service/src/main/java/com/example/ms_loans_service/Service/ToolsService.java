@@ -14,30 +14,31 @@ public class ToolsRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String TOOLS_SERVICE_URL = "http://localhost:8082";
+    private final String GATEWAY_URL = "http://ms-inventory-service:8082";
+    private final String SERVICE_ENDPOINT = "/api/tools";
 
     // queryForObject - obtener herramienta por ID
     public ToolsModel getToolById(Long id) {
-        String url = TOOLS_SERVICE_URL + "/api/tools/" + id;
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/" + id;
         return restTemplate.getForObject(url, ToolsModel.class);
     }
 
     // queryForList - obtener todas las herramientas
     public List<ToolsModel> getAllTools() {
-        String url = TOOLS_SERVICE_URL + "/api/tools/";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/";
         ToolsModel[] tools = restTemplate.getForObject(url, ToolsModel[].class);
         return Arrays.asList(tools != null ? tools : new ToolsModel[0]);
     }
 
     // Actualizar cantidad de herramienta
     public void updateToolQuantity(Long toolId, Long quantity) {
-        String url = TOOLS_SERVICE_URL + "/api/tools/" + toolId + "/updateQuantity";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/" + toolId + "/updateQuantity";
         restTemplate.postForObject(url, quantity, Void.class);
     }
 
     // Validar disponibilidad de herramienta
     public boolean isToolAvailable(Long toolId) {
-        String url = TOOLS_SERVICE_URL + "/api/tools/" + toolId + "/available";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/" + toolId + "/available";
         return Boolean.TRUE.equals(restTemplate.getForObject(url, Boolean.class));
     }
 }

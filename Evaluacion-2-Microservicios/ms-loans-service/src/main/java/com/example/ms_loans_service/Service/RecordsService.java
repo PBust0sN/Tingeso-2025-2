@@ -15,23 +15,24 @@ public class RecordsRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String KARDEX_SERVICE_URL = "http://localhost:8084";
+    private final String GATEWAY_URL = "http://ms-kardex-service:8084";
+    private final String SERVICE_ENDPOINT = "/api/records";
 
     // Crear registro
     public RecordsModel saveRecord(RecordsModel recordsModel) {
-        String url = KARDEX_SERVICE_URL + "/api/records/";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/";
         return restTemplate.postForObject(url, recordsModel, RecordsModel.class);
     }
 
     // queryForObject - obtener registro por ID
     public RecordsModel getRecordsById(Long id) {
-        String url = KARDEX_SERVICE_URL + "/api/records/" + id;
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/" + id;
         return restTemplate.getForObject(url, RecordsModel.class);
     }
 
     // queryForList - obtener todos los registros
     public List<RecordsModel> getAllRecords() {
-        String url = KARDEX_SERVICE_URL + "/api/records/";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/";
         RecordsModel[] records = restTemplate.getForObject(url, RecordsModel[].class);
         return Arrays.asList(records != null ? records : new RecordsModel[0]);
     }

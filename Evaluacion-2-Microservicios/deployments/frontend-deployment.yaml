@@ -1,0 +1,72 @@
+# Kubernetes Deployment for Frontend (React App)
+# Deploy with: kubectl apply -f frontend-deployment.yaml
+
+---
+# Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservicio-frontend
+  namespace: default
+  labels:
+    app: microservicio-frontend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app: microservicio-frontend
+
+---
+# Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservicio-frontend-deployment
+  namespace: default
+  labels:
+    app: microservicio-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservicio-frontend
+  template:
+    metadata:
+      labels:
+        app: microservicio-frontend
+    spec:
+      containers:
+        - name: microservicio-frontend
+          image: microservicio-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: VITE_MONOLITICO_BACKEND_SERVER
+              value: gateway-service
+            - name: VITE_MONOLITICO_BACKEND_PORT
+              value: "8090"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

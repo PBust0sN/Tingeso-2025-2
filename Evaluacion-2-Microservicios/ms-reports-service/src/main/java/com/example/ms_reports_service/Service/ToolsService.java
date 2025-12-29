@@ -14,17 +14,18 @@ public class ToolsRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String TOOLS_SERVICE_URL = "http://localhost:8082";
+    private final String GATEWAY_URL = "http://ms-inventory-service:8082";
+    private final String SERVICE_ENDPOINT = "/api/tools";
 
     // queryForObject - obtener herramienta por ID
     public ToolsModel getToolById(Long id) {
-        String url = TOOLS_SERVICE_URL + "/api/tools/" + id;
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/" + id;
         return restTemplate.getForObject(url, ToolsModel.class);
     }
 
     // queryForList - obtener todas las herramientas
     public List<ToolsModel> getAllTools() {
-        String url = TOOLS_SERVICE_URL + "/api/tools/";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/";
         ToolsModel[] tools = restTemplate.getForObject(url, ToolsModel[].class);
         return Arrays.asList(tools != null ? tools : new ToolsModel[0]);
     }

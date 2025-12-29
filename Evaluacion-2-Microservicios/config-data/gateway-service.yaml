@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
 
 spring:
   cloud:
@@ -8,15 +8,65 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: student-service
-          uri: lb://student-service
+        # Loans Microservice
+        - id: loans-service
+          uri: lb://ms-loans-service
           predicates:
-            - Path=/student/**
-        - id: book-service
-          uri: lb://book-service
+            - Path=/api/loans/**
+          filters:
+            - StripPrefix=2
+
+        # Clients Microservice
+        - id: clients-service
+          uri: lb://ms-clients-service
           predicates:
-            - Path=/book/**
-        - id: pet-service
-          uri: lb://pet-service
+            - Path=/api/clients/**
+          filters:
+            - StripPrefix=2
+
+        # Inventory/Tools Microservice
+        - id: inventory-service
+          uri: lb://ms-inventory-service
           predicates:
-            - Path=/pet/**
+            - Path=/api/tools/**,/api/inventory/**
+          filters:
+            - StripPrefix=2
+
+        # Rates/Fines Microservice
+        - id: rates-service
+          uri: lb://ms-rates-service
+          predicates:
+            - Path=/api/fines/**,/api/rates/**
+          filters:
+            - StripPrefix=2
+
+        # Kardex/Records Microservice
+        - id: kardex-service
+          uri: lb://ms-kardex-service
+          predicates:
+            - Path=/api/records/**,/api/kardex/**
+          filters:
+            - StripPrefix=2
+
+        # Reports Microservice
+        - id: reports-service
+          uri: lb://ms-reports-service
+          predicates:
+            - Path=/api/reports/**
+          filters:
+            - StripPrefix=2
+
+        # Users Microservice
+        - id: users-service
+          uri: lb://ms-users-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=2
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
