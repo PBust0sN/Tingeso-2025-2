@@ -1,4 +1,4 @@
-package com.example.monolitico.Entities;
+package com.example.ms_loans_service.Entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

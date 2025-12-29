@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_reports_service.Repository;
 
-import com.example.monolitico.Entities.ToolsRankingEntity;
+import com.example.ms_reports_service.Entities.ToolsRankingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

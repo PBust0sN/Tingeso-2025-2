@@ -1,4 +1,4 @@
-package com.example.monolitico.DTO;
+package com.example.ms_loans_service.DTO;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_inventory_service.Repository;
 
-import com.example.monolitico.Entities.ToolsLoansEntity;
+import com.example.ms_inventory_service.Entities.ToolsLoansEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

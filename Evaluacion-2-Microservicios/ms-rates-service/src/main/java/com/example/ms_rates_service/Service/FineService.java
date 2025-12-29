@@ -1,8 +1,8 @@
-package com.example.monolitico.Service;
+package com.example.ms_rates_service.Service;
 
-import com.example.monolitico.Entities.ClientEntity;
-import com.example.monolitico.Entities.FineEntity;
-import com.example.monolitico.Repositories.FineRepository;
+import com.example.ms_rates_service.Entities.ClientEntity;
+import com.example.ms_rates_service.Entities.FineEntity;
+import com.example.ms_rates_service.Repository.FineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

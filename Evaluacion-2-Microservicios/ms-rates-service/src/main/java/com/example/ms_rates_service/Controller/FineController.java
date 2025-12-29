@@ -1,9 +1,9 @@
-package com.example.monolitico.Controller;
+package com.example.ms_rates_service.Controller;
 
-import com.example.monolitico.Entities.ClientEntity;
-import com.example.monolitico.Entities.FineEntity;
-import com.example.monolitico.Repositories.FineRepository;
-import com.example.monolitico.Service.FineService;
+import com.example.ms_rates_service.Entities.ClientEntity;
+import com.example.ms_rates_service.Entities.FineEntity;
+import com.example.ms_rates_service.Repository.FineRepository;
+import com.example.ms_rates_service.Service.FineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

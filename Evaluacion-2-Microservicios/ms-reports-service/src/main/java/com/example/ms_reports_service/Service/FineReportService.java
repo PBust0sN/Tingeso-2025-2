@@ -1,8 +1,8 @@
-package com.example.monolitico.Service;
+package com.example.ms_reports_service.Service;
 
-import com.example.monolitico.Entities.FineReportEntity;
-import com.example.monolitico.Entities.ToolsRankingEntity;
-import com.example.monolitico.Repositories.FineReportRepository;
+import com.example.ms_reports_service.Entities.FineReportEntity;
+import com.example.ms_reports_service.Entities.ToolsRankingEntity;
+import com.example.ms_reports_service.Repository.FineReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

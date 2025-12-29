@@ -1,7 +1,7 @@
-package com.example.monolitico.DTO;
+package com.example.ms_loans_service.DTO;
 
-import com.example.monolitico.Entities.FineEntity;
-import com.example.monolitico.Entities.LoansEntity;
+import com.example.ms_loans_service.Entities.FineEntity;
+import com.example.ms_loans_service.Entities.LoansEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

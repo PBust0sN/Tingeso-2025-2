@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_loans_service.Repository;
 
-import com.example.monolitico.Entities.LoansEntity;
+import com.example.ms_loans_service.Entities.LoansEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

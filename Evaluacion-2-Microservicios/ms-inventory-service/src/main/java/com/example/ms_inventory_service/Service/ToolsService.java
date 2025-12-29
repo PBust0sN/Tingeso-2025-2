@@ -1,9 +1,9 @@
-package com.example.monolitico.Service;
+package com.example.ms_inventory_service.Service;
 
-import com.example.monolitico.Entities.RecordsEntity;
-import com.example.monolitico.Entities.StaffEntity;
-import com.example.monolitico.Entities.ToolsEntity;
-import com.example.monolitico.Repositories.ToolsRepository;
+import com.example.ms_inventory_service.Entities.RecordsEntity;
+import com.example.ms_inventory_service.Entities.StaffEntity;
+import com.example.ms_inventory_service.Entities.ToolsEntity;
+import com.example.ms_inventory_service.Repository.ToolsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

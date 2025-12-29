@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_inventory_service.Repository;
 
-import com.example.monolitico.Entities.ToolsEntity;
+import com.example.ms_inventory_service.Entities.ToolsEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

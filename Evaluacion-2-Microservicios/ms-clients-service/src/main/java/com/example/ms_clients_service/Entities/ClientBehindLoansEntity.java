@@ -1,4 +1,4 @@
-package com.example.monolitico.Entities;
+package com.example.ms_clients_service.Entities;
 
 
 import jakarta.persistence.*;

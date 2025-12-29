@@ -1,7 +1,7 @@
-package com.example.monolitico.Controller;
+package com.example.ms_reports_service.Controller;
 
-import com.example.monolitico.Entities.FineReportEntity;
-import com.example.monolitico.Service.FineReportService;
+import com.example.ms_reports_service.Entities.FineReportEntity;
+import com.example.ms_reports_service.Service.FineReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

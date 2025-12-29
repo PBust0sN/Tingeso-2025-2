@@ -1,4 +1,4 @@
-package com.example.monolitico.config;
+package com.example.ms_reports_service.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_clients_service.Repository;
 
-import com.example.monolitico.Entities.ClientBehindLoansEntity;
+import com.example.ms_clients_service.Entities.ClientBehindLoansEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,8 +1,8 @@
-package com.example.monolitico.Controller;
+package com.example.ms_reports_service.Controller;
 
-import com.example.monolitico.Entities.RecordsEntity;
-import com.example.monolitico.Entities.ReportsEntity;
-import com.example.monolitico.Service.ReportsServices;
+import com.example.ms_reports_service.Entities.RecordsEntity;
+import com.example.ms_reports_service.Entities.ReportsEntity;
+import com.example.ms_reports_service.Service.ReportsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

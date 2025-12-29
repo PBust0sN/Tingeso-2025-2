@@ -1,4 +1,4 @@
-package com.example.monolitico.Service;
+package com.example.ms_users_service.Service;
 
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

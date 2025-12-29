@@ -1,4 +1,4 @@
-package com.example.monolitico.Entities;
+package com.example.ms_reports_service.Entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

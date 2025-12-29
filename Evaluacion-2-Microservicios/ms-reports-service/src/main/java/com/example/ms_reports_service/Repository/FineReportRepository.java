@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_reports_service.Repository;
 
-import com.example.monolitico.Entities.FineReportEntity;
+import com.example.ms_reports_service.Entities.FineReportEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

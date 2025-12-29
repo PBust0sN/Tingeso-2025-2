@@ -1,7 +1,7 @@
-package com.example.monolitico.Controller;
+package com.example.ms_kardex_service.Controller;
 
-import com.example.monolitico.Entities.RecordsEntity;
-import com.example.monolitico.Service.RecordsServices;
+import com.example.ms_kardex_service.Entities.RecordsEntity;
+import com.example.ms_kardex_service.Service.RecordsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

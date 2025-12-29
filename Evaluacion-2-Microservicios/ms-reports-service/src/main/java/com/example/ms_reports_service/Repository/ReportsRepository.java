@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_reports_service.Repository;
 
-import com.example.monolitico.Entities.ReportsEntity;
+import com.example.ms_reports_service.Entities.ReportsEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

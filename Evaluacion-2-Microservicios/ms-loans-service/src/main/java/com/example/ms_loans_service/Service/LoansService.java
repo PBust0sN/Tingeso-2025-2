@@ -1,9 +1,9 @@
-package com.example.monolitico.Service;
+package com.example.ms_loans_service.Service;
 
-import com.example.monolitico.DTO.ReturnLoanDTO;
-import com.example.monolitico.Entities.*;
-import com.example.monolitico.Repositories.LoansRepository;
-import com.example.monolitico.Repositories.ToolsLoansRepository;
+import com.example.ms_loans_service.DTO.ReturnLoanDTO;
+import com.example.ms_loans_service.Entities.*;
+import com.example.ms_loans_service.Repositories.LoansRepository;
+import com.example.ms_loans_service.Repositories.ToolsLoansRepository;
 import com.sun.jdi.LongValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,21 +23,21 @@ public class LoansService {
     private LoansRepository loansRepository;
 
     @Autowired
-    ClientService clientService;
+    ClientRemoteService clientRemoteService;
 
     @Autowired
-    FineService fineService;
+    FineRemoteService fineRemoteService;
 
     @Autowired
-    ToolsService toolsService;
+    ToolsRemoteService toolsRemoteService;
 
     @Autowired
     ToolsLoansRepository toolsLoansRepository;
 
     @Autowired
-    ToolsLoansService toolsLoansService;
+    ToolsLoansRemoteService toolsLoansRemoteService;
     @Autowired
-    private RecordsServices recordsServices;
+    private RecordsRemoteService recordsRemoteService;
 
     //getter of all loans
     public List<LoansEntity> getAllLoans() {
@@ -62,7 +62,7 @@ public class LoansService {
         System.out.println(days);
 
         // get client
-        ClientEntity client = clientService.getClientById(client_id);
+        ClientEntity client = clientRemoteService.getClientById(client_id);
 
         // Verification 1: avaliable client
         //if (!client.getAvaliable()) {
@@ -75,12 +75,12 @@ public class LoansService {
         //}
 
         // Verification 3: fine by reposition
-        if (fineService.hasFinesOfToolReposition(client_id)) {
+        if (fineRemoteService.hasFinesOfToolReposition(client_id)) {
             errors.add("Client has fines for tool replacement.");
         }
 
         // Verification 4: behind loans
-        if (clientService.hasExpiredLoansById(client_id)) {
+        if (clientRemoteService.hasExpiredLoansById(client_id)) {
             errors.add("Client has expired loans.");
         }
         // Verification 5: client state
@@ -88,7 +88,7 @@ public class LoansService {
             errors.add("Client has fines to be pay");
         }
         // Verification 6: number of loans
-        if(clientService.findALlLoansByClientId(client.getClient_id()).size()>=5){
+        if(clientRemoteService.findALlLoansByClientId(client.getClient_id()).size()>=5){
             errors.add("Client has already max out the number of loans he can have.");
         }
         // if we encounter errors then we don't continue
@@ -126,7 +126,7 @@ public class LoansService {
             //is the tool loaned to much?
             //the criteria: if a tool is present in more than the actual stock, then
             //the tool cant be loan
-            Long loanNumber = Long.valueOf(toolsLoansService.getLoansIDsByToolId(tool_id).size());
+            Long loanNumber = Long.valueOf(toolsLoansRemoteService.getLoansIDsByToolId(tool_id).size());
             if(loanNumber>=tool.getStock()){
                 errors.add("Too many " + tool.getToolName() + " are loan, cant loan more.");
             }
@@ -138,7 +138,7 @@ public class LoansService {
                 errors.add("Tool " + tool.getToolName() + " hans't disponibility.");
             }
 
-            if (clientService.HasTheSameToolInLoanByClientId(client_id, tool_id)) {
+            if (clientRemoteService.HasTheSameToolInLoanByClientId(client_id, tool_id)) {
                 errors.add("Client already has a loan with tool: " + tool.getToolName());
             } else {
                 amount += tool.getLoanFee();
@@ -160,12 +160,12 @@ public class LoansService {
             ToolsEntity tool = toolsService.getToolsById(tool_id);
             tool.setStock(tool.getStock() - 1);
             tool.setLoanCount(tool.getLoanCount() + 1);
-            toolsService.updateTool(tool);
+            toolsRemoteService.updateTool(tool);
 
             ToolsLoansEntity toolsLoansEntity = new ToolsLoansEntity();
             toolsLoansEntity.setToolId(tool_id);
             toolsLoansEntity.setLoanId(loansEntity.getLoanId());
-            toolsLoansService.saveToolsLoans(toolsLoansEntity);
+            toolsLoansRemoteService.saveToolsLoans(toolsLoansEntity);
         }
 
         // Registrar movimiento en Kardex
@@ -175,7 +175,7 @@ public class LoansService {
         record.setLoanId(loansEntity.getLoanId());
         record.setClientId(client_id);
         record.setRecordAmount(amount);
-        recordsServices.saveRecord(record);
+        recordsRemoteService.saveRecord(record);
 
         System.out.println(errors);
         return errors;
@@ -210,7 +210,7 @@ public class LoansService {
         // we have to update the tools state
         List<Long> toolsId = toolsLoansRepository.findByLoanId(loansEntity.getLoanId());
         for (Long toolId : toolsId) {
-            ToolsEntity toolsEntity = toolsService.getToolsById(toolId);
+            ToolsEntity toolsEntity = toolsRemoteService.getToolsById(toolId);
 
             if ("Dañada".equals(toolsEntity.getInitialState())) {
                 toolsEntity.setInitialState("Bueno");
@@ -226,7 +226,7 @@ public class LoansService {
             }
             //we add up to the stock
             toolsEntity.setStock(toolsEntity.getStock() + 1);
-            toolsService.updateTool(toolsEntity);
+            toolsRemoteService.updateTool(toolsEntity);
         }
         //NOTE: the extra chargues only account for the repo ammount other costs
         //are held by fines
@@ -240,7 +240,7 @@ public class LoansService {
         record.setRecordDate(Date.valueOf(date.toLocalDate()));
         record.setLoanId(loansEntity.getLoanId());
         record.setClientId(loansEntity.getClientId());
-        recordsServices.saveRecord(record);
+        recordsRemoteService.saveRecord(record);
 
         // save loan
         //once is return the loan isnt active no more
@@ -282,17 +282,17 @@ public class LoansService {
         List<Long> tools = toolsLoansRepository.findByLoanId(id);
         Long repofine = 0L;
         for(Long toolId : tools){
-            if(toolsService.getToolsById(toolId).getInitialState().equals("Dañada")) {
-                repofine += toolsService.getToolsById(toolId).getRepositionFee();
+            if(toolsRemoteService.getToolsById(toolId).getInitialState().equals("Dañada")) {
+                repofine += toolsRemoteService.getToolsById(toolId).getRepositionFee();
 
                 //record to the cardex of a damaged tool
                 RecordsEntity record = new RecordsEntity();
                 record.setRecordType("DownTool");
-                record.setRecordAmount(toolsService.getToolsById(toolId).getRepositionFee());
+                record.setRecordAmount(toolsRemoteService.getToolsById(toolId).getRepositionFee());
                 record.setToolId(toolId);
                 record.setLoanId(id);
                 record.setRecordDate(Date.valueOf(LocalDate.now()));
-                recordsServices.saveRecord(record);
+                recordsRemoteService.saveRecord(record);
             }
         }
 
@@ -305,12 +305,12 @@ public class LoansService {
             LocalDateTime date = LocalDateTime.now();
             newFine.setDate(Date.valueOf(date.toLocalDate()));
             newFine.setLoanId(id);
-            fineService.saveFine(newFine);
+            fineRemoteService.saveFine(newFine);
             //if a client has a pending fine, then we mark it as "restringido"
 
-            ClientEntity clientEntity = clientService.getClientById(clientId);
+            ClientEntity clientEntity = clientRemoteService.getClientById(clientId);
             clientEntity.setState("restringido");
-            clientService.updateClient(clientEntity);
+            clientRemoteService.updateClient(clientEntity);
 
             dto.setRepoAmount(repofine);
             dto.setRepoFine(newFine);

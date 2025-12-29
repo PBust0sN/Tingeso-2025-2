@@ -1,7 +1,7 @@
-package com.example.monolitico.Service;
+package com.example.ms_clients_service.Service;
 
-import com.example.monolitico.Entities.ClientBehindLoansEntity;
-import com.example.monolitico.Repositories.ClientBehindLoansRepository;
+import com.example.ms_clients_service.Entities.ClientBehindLoansEntity;
+import com.example.ms_clients_service.Repository.ClientBehindLoansRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

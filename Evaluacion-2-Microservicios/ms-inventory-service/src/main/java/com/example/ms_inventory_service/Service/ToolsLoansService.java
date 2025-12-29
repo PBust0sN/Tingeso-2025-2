@@ -1,7 +1,7 @@
-package com.example.monolitico.Service;
+package com.example.ms_inventory_service.Service;
 
-import com.example.monolitico.Entities.ToolsLoansEntity;
-import com.example.monolitico.Repositories.ToolsLoansRepository;
+import com.example.ms_inventory_service.Entities.ToolsLoansEntity;
+import com.example.ms_inventory_service.Repository.ToolsLoansRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

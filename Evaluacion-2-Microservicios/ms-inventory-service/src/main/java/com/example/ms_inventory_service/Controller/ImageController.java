@@ -1,6 +1,6 @@
-package com.example.monolitico.Controller;
+package com.example.ms_inventory_service.Controller;
 
-import com.example.monolitico.Service.ImageService;
+import com.example.ms_inventory_service.Service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

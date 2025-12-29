@@ -1,8 +1,8 @@
-package com.example.monolitico.Service;
+package com.example.ms_kardex_service.Service;
 
-import com.example.monolitico.Controller.RecordsController;
-import com.example.monolitico.Entities.RecordsEntity;
-import com.example.monolitico.Repositories.RecordsRepository;
+import com.example.ms_kardex_service.Controller.RecordsController;
+import com.example.ms_kardex_service.Entities.RecordsEntity;
+import com.example.ms_kardex_service.Repository.RecordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
-package com.example.monolitico.Service;
+package com.example.ms_reports_service.Service;
 
-import com.example.monolitico.Entities.*;
-import com.example.monolitico.Repositories.ReportsRepository;
+import com.example.ms_reports_service.Entities.*;
+import com.example.ms_reports_service.Repositories.ReportsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ import java.util.List;
 @Service
 public class ReportsServices {
     @Autowired
-    LoansService loansService;
+    LoansRemoteService loansRemoteService;
 
     @Autowired
-    ClientService clientService;
+    ClientRemoteService clientRemoteService;
 
     @Autowired
-    ToolsService toolsService;
+    ToolsRemoteService toolsRemoteService;
     @Autowired
     private ReportsRepository reportsRepository;
 

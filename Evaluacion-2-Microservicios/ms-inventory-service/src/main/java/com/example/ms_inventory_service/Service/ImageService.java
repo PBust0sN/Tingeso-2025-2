@@ -1,4 +1,4 @@
-package com.example.monolitico.Service;
+package com.example.ms_inventory_service.Service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_kardex_service.Repository;
 
-import com.example.monolitico.Entities.RecordsEntity;
+import com.example.ms_kardex_service.Entities.RecordsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

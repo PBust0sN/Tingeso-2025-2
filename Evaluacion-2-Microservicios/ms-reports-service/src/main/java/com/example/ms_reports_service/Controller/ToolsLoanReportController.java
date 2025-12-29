@@ -1,8 +1,8 @@
-package com.example.monolitico.Controller;
+package com.example.ms_reports_service.Controller;
 
-import com.example.monolitico.Entities.ToolsLoanReportEntity;
-import com.example.monolitico.Entities.ToolsRankingEntity;
-import com.example.monolitico.Service.ToolsLoanReportService;
+import com.example.ms_reports_service.Entities.ToolsLoanReportEntity;
+import com.example.ms_reports_service.Entities.ToolsRankingEntity;
+import com.example.ms_reports_service.Service.ToolsLoanReportService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

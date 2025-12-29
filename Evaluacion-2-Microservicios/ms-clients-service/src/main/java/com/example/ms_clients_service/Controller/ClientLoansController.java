@@ -1,8 +1,8 @@
-package com.example.monolitico.Controller;
+package com.example.ms_clients_service.Controller;
 
-import com.example.monolitico.Entities.ClientEntity;
-import com.example.monolitico.Entities.ClientLoansEntity;
-import com.example.monolitico.Service.ClientLoansService;
+import com.example.ms_clients_service.Entities.ClientEntity;
+import com.example.ms_clients_service.Entities.ClientLoansEntity;
+import com.example.ms_clients_service.Service.ClientLoansService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

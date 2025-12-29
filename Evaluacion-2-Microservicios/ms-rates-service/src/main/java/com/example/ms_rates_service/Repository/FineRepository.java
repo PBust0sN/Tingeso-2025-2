@@ -1,6 +1,6 @@
-package com.example.monolitico.Repositories;
+package com.example.ms_rates_service.Repository;
 
-import com.example.monolitico.Entities.FineEntity;
+import com.example.ms_rates_service.Entities.FineEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

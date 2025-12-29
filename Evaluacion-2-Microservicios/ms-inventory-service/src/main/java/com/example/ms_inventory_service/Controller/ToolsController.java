@@ -1,7 +1,7 @@
-package com.example.monolitico.Controller;
+package com.example.ms_inventory_service.Controller;
 
-import com.example.monolitico.Entities.ToolsEntity;
-import com.example.monolitico.Service.ToolsService;
+import com.example.ms_inventory_service.Entities.ToolsEntity;
+import com.example.ms_inventory_service.Service.ToolsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

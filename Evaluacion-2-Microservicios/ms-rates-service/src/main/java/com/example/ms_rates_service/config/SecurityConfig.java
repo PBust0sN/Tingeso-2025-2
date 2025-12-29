@@ -1,4 +1,4 @@
-package com.example.monolitico.config;
+package com.example.ms_rates_service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

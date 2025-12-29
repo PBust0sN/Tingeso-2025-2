@@ -1,9 +1,9 @@
-package com.example.monolitico.Controller;
+package com.example.ms_loans_service.Controller;
 
-import com.example.monolitico.DTO.ReturnLoanDTO;
-import com.example.monolitico.DTO.NewLoanDTO;
-import com.example.monolitico.Entities.LoansEntity;
-import com.example.monolitico.Service.LoansService;
+import com.example.ms_loans_service.DTO.ReturnLoanDTO;
+import com.example.ms_loans_service.DTO.NewLoanDTO;
+import com.example.ms_loans_service.Entities.LoansEntity;
+import com.example.ms_loans_service.Service.LoansService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
