@@ -41,32 +41,16 @@ spec:
     spec:
       containers:
         - name: microservicio-frontend
-          image: microservicio-frontend:latest
-          imagePullPolicy: IfNotPresent
+          image: node:18-alpine
+          command: ["sh", "-c"]
+          args: ["npm install && npm start"]
+          workingDir: /app
           ports:
             - containerPort: 3000
               name: http
-          env:
-            - name: VITE_MONOLITICO_BACKEND_SERVER
-              value: gateway-service
-            - name: VITE_MONOLITICO_BACKEND_PORT
-              value: "8090"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "250m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
+          volumeMounts:
+            - name: app-source
+              mountPath: /app
+      volumes:
+        - name: app-source
+          emptyDir: {}
