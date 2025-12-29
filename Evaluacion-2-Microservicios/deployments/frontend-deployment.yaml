@@ -41,16 +41,14 @@ spec:
     spec:
       containers:
         - name: microservicio-frontend
-          image: node:18-alpine
-          command: ["sh", "-c"]
-          args: ["npm install && npm start"]
-          workingDir: /app
+          image: pbust0sn/microservicio-frontend:latest
           ports:
             - containerPort: 3000
               name: http
-          volumeMounts:
-            - name: app-source
-              mountPath: /app
-      volumes:
-        - name: app-source
-          emptyDir: {}
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
