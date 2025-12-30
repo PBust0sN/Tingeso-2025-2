@@ -37,9 +37,9 @@ spec:
         - containerPort: 3306
         resources:
           limits:
-            memory: "512Mi"
-          requests:
             memory: "256Mi"
+          requests:
+            memory: "200Mi"
         volumeMounts:
         - name: mysql-initdb
           mountPath: /docker-entrypoint-initdb.d

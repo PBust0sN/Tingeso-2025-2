@@ -31,14 +31,21 @@ spec:
             - containerPort: 8080
           args:
             - start-dev
+            - --import-realm
           volumeMounts:
             - name: realm-volume
               mountPath: /opt/keycloak/data/import
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "4"
+            limits:
+              memory: "1G"
+              cpu: "8"
       volumes:
         - name: realm-volume
-          hostPath:
-            path: /d/NIVEL 6/Tecnicas de ingenieria de software/Material/Tingeso-2025-2/Evaluacion-2-Microservicios/keycloak
-            type: Directory
+          configMap:
+            name: keycloak-realm-config
 ---
 # Keycloak Service
 apiVersion: v1
