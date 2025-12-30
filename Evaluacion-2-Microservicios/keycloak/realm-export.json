@@ -814,20 +814,27 @@
       "description": "",
       "rootUrl": "http://microservicio-frontend:80",
       "adminUrl": "",
-      "baseUrl": "",
+      "baseUrl": "http://microservicio-frontend:80",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://microservicio-frontend:80/*"
+        "http://microservicio-frontend:80/*",
+        "http://microservicio-frontend/*",
+        "http://localhost:5173/*",
+        "http://localhost:3000/*"
       ],
       "webOrigins": [
-        "http://microservicio-frontend:80"
+        "http://microservicio-frontend:80",
+        "http://microservicio-frontend",
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
-      "consentRequired": true,
+      "consentRequired": false,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
