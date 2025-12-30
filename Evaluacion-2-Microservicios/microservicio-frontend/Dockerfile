@@ -11,12 +11,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the application with default env vars
+# Set the environment to production and build the application
 ENV NODE_ENV=production
-ENV REACT_APP_KEYCLOAK_URL=http://keycloak:8080
-ENV REACT_APP_KEYCLOAK_REALM=toolRent
-ENV REACT_APP_KEYCLOAK_CLIENT_ID=toolRent-Frontend
-
 RUN npm run build
 
 # Use NGINX as the base image for serving the built application
@@ -28,15 +24,14 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy the NGINX configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy the entrypoint script
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
-
 # Remove the default backup configuration file
 RUN rm -f /etc/nginx/conf.d/default.conf.bak
+
+# List the contents of the directory to verify the build output
+RUN ls -la /usr/share/nginx/html/
 
 # Expose the port where NGINX will serve the application
 EXPOSE 80
 
-# Use the entrypoint script
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# Command to start NGINX
+CMD ["nginx", "-g", "daemon off;"]

@@ -45,13 +45,6 @@ spec:
           ports:
             - containerPort: 80
               name: http
-          env:
-            - name: REACT_APP_KEYCLOAK_URL
-              value: "http://keycloak:8080"
-            - name: REACT_APP_KEYCLOAK_REALM
-              value: "toolRent"
-            - name: REACT_APP_KEYCLOAK_CLIENT_ID
-              value: "toolRent-Frontend"
           resources:
             requests:
               memory: "200Mi"
