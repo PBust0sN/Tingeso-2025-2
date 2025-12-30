@@ -11,8 +11,17 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Set the environment to production and build the application
+# Set environment variables for build
+ARG REACT_APP_KEYCLOAK_URL=http://keycloak:8080
+ARG REACT_APP_KEYCLOAK_REALM=toolRent
+ARG REACT_APP_KEYCLOAK_CLIENT_ID=toolRent-Frontend
+
 ENV NODE_ENV=production
+ENV REACT_APP_KEYCLOAK_URL=${REACT_APP_KEYCLOAK_URL}
+ENV REACT_APP_KEYCLOAK_REALM=${REACT_APP_KEYCLOAK_REALM}
+ENV REACT_APP_KEYCLOAK_CLIENT_ID=${REACT_APP_KEYCLOAK_CLIENT_ID}
+
+# Build the application
 RUN npm run build
 
 # Use NGINX as the base image for serving the built application

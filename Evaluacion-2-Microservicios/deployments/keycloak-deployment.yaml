@@ -21,13 +21,15 @@ spec:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.3.4
           env:
-            - name: KEYCLOAK_ADMIN
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
               value: admin
-            - name: KEYCLOAK_ADMIN_PASSWORD
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: admin
             - name: KEYCLOAK_IMPORT
               value: /opt/keycloak/data/import/realm-export.json
-          ports:
+            - name: KC_LOG_LEVEL
+              value: DEBUG
+
             - containerPort: 8080
           args:
             - start-dev

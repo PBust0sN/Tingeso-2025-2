@@ -1,12 +1,15 @@
 import Keycloak from "keycloak-js";
 
 const keycloak = new Keycloak({
-  url: "http://192.168.49.2:32000",
-  realm: "toolRent",
-  clientId: "toolRent-Frontend",
+  url: process.env.REACT_APP_KEYCLOAK_URL || "http://keycloak:8080",
+  realm: process.env.REACT_APP_KEYCLOAK_REALM || "toolRent",
+  clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID || "toolRent-Frontend",
 });
 
 console.log('Keycloak instance created:', keycloak);
+console.log('Keycloak URL:', keycloak.authServerUrl);
+console.log('Keycloak Realm:', keycloak.realm);
+console.log('Keycloak Client ID:', keycloak.clientId);
 
 
 export function initKeycloak(onAuthenticatedCallback) {

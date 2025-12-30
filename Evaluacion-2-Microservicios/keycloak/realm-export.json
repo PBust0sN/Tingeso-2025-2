@@ -812,7 +812,7 @@
       "clientId": "toolRent-Frontend",
       "name": "",
       "description": "",
-      "rootUrl": "http://localhost:5173",
+      "rootUrl": "http://microservicio-frontend:80",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
@@ -820,10 +820,10 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:5173/*"
+        "http://microservicio-frontend:80/*"
       ],
       "webOrigins": [
-        "http://localhost:5173"
+        "http://microservicio-frontend:80"
       ],
       "notBefore": 0,
       "bearerOnly": false,
