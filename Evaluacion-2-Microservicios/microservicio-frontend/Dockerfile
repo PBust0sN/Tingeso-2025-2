@@ -28,23 +28,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy the NGINX configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Create an entrypoint script that handles runtime configuration
-RUN cat > /docker-entrypoint.sh << 'EOF'
-#!/bin/sh
-KEYCLOAK_URL=${REACT_APP_KEYCLOAK_URL:-http://keycloak:8080}
-KEYCLOAK_REALM=${REACT_APP_KEYCLOAK_REALM:-toolRent}
-KEYCLOAK_CLIENT_ID=${REACT_APP_KEYCLOAK_CLIENT_ID:-toolRent-Frontend}
-
-cat > /usr/share/nginx/html/keycloak-config.js << INNER_EOF
-window.KEYCLOAK_CONFIG = {
-  url: "$KEYCLOAK_URL",
-  realm: "$KEYCLOAK_REALM",
-  clientId: "$KEYCLOAK_CLIENT_ID"
-};
-INNER_EOF
-
-exec nginx -g "daemon off;"
-EOF
+# Copy the entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # Remove the default backup configuration file
