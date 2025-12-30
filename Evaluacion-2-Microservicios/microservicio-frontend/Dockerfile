@@ -29,22 +29,23 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Create an entrypoint script that handles runtime configuration
-RUN echo '#!/bin/sh\n\
-KEYCLOAK_URL=${REACT_APP_KEYCLOAK_URL:-http://keycloak:8080}\n\
-KEYCLOAK_REALM=${REACT_APP_KEYCLOAK_REALM:-toolRent}\n\
-KEYCLOAK_CLIENT_ID=${REACT_APP_KEYCLOAK_CLIENT_ID:-toolRent-Frontend}\n\
-\n\
-# Create a config file for the app\n\
-cat > /usr/share/nginx/html/keycloak-config.js <<EOF\n\
-window.KEYCLOAK_CONFIG = {\n\
-  url: "$KEYCLOAK_URL",\n\
-  realm: "$KEYCLOAK_REALM",\n\
-  clientId: "$KEYCLOAK_CLIENT_ID"\n\
-};\n\
-EOF\n\
-\n\
-exec nginx -g "daemon off;"\n\
-' > /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
+RUN cat > /docker-entrypoint.sh << 'EOF'
+#!/bin/sh
+KEYCLOAK_URL=${REACT_APP_KEYCLOAK_URL:-http://keycloak:8080}
+KEYCLOAK_REALM=${REACT_APP_KEYCLOAK_REALM:-toolRent}
+KEYCLOAK_CLIENT_ID=${REACT_APP_KEYCLOAK_CLIENT_ID:-toolRent-Frontend}
+
+cat > /usr/share/nginx/html/keycloak-config.js << INNER_EOF
+window.KEYCLOAK_CONFIG = {
+  url: "$KEYCLOAK_URL",
+  realm: "$KEYCLOAK_REALM",
+  clientId: "$KEYCLOAK_CLIENT_ID"
+};
+INNER_EOF
+
+exec nginx -g "daemon off;"
+EOF
+RUN chmod +x /docker-entrypoint.sh
 
 # Remove the default backup configuration file
 RUN rm -f /etc/nginx/conf.d/default.conf.bak
