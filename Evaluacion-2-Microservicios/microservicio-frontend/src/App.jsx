@@ -4,7 +4,8 @@ import NavBar from "./components/NavBar"
 import Home from "./components/Home";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useKeycloak } from "@react-keycloak/web";
+import { useState, useEffect } from 'react';
+import keycloak from './services/keycloak';
 import ToolList from './components/ToolList';
 import ClientList from './components/ClientList';
 import AddTool from './components/AddTool';
@@ -36,127 +37,132 @@ import AdminList from './components/AdminList';
 import AddAdmin from './components/AddAdmin';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
+import LoadingScreen from './components/LoadingScreen';
 
 
 function App() {
-  const { keycloak } = useKeycloak();
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    console.log('[App] Inicializando Keycloak...');
+    
+    // Usar Promise.race para forzar timeout
+    const initPromise = keycloak.init({
+      onLoad: null,
+      checkLoginIframe: false,
+      silentCheckSsoFallback: false,
+      enableLogging: true,
+      pkceMethod: 'S256'  // Habilitar PKCE S256 con HTTPS
+    });
+
+    const timeoutPromise = new Promise((resolve) => {
+      setTimeout(() => {
+        console.warn('[App] Timeout de 3 segundos alcanzado, continuando...');
+        resolve(false);
+      }, 3000);
+    });
+
+    Promise.race([initPromise, timeoutPromise])
+      .then((authenticated) => {
+        console.log('[App] Keycloak inicializado. Autenticado:', authenticated);
+        setIsInitialized(true);
+      })
+      .catch((error) => {
+        console.error('[App] Error inicializando Keycloak:', error);
+        setIsInitialized(true);
+      });
+  }, []);
+
+  if (!isInitialized) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  console.log('[AppContent] authenticated:', keycloak?.authenticated);
+
+  // Si no está autenticado, mostrar solo Home sin Router
+  if (!keycloak?.authenticated) {
+    console.log('[AppContent] Usuario no autenticado, mostrando pantalla de login');
+    return (
+      <div className="container">
+        <NavBar />
+        <Home />
+      </div>
+    );
+  }
+
+  console.log('[AppContent] Usuario autenticado, renderizando app');
 
   const PrivateRoute = ({ element, rolesAllowed }) => {
-    if(!keycloak.authenticated){
-      return (<Box sx={{ position: "relative", minHeight: "100vh" }}>
-      {/* Fondo difuminado */}
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url("/fondo.jpg")`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          filter: "blur(8px)",
-          zIndex: 0,
-        }}
-      />
-      {/* Frame del login */}
-      <Box
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Paper
-          elevation={6}
-          sx={{
-            p: 4,
-            minWidth: 350,
-            maxWidth: 450,
-            width: "90%",
-            background: "rgba(255,255,255,0.85)",
-            color: "#222",
-            borderRadius: "8px",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-            textAlign: "center",
-          }}
-        >
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Inicia Sesión para ver esta pagina
-            </Typography>
-        </Paper>
-      </Box>
-    </Box>
-  );
-    }
-    const roles = keycloak.tokenParsed?.realm_access?.roles || [];
+    const roles = keycloak?.tokenParsed?.realm_access?.roles || [];
+    
     if (rolesAllowed && !rolesAllowed.some(r => roles.includes(r))) {
       return (
-    <Box sx={{ position: "relative", minHeight: "100vh" }}>
-      {/* Fondo difuminado */}
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url("/fondo.jpg")`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          filter: "blur(8px)",
-          zIndex: 0,
-        }}
-      />
-      {/* Frame del login */}
-      <Box
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Paper
-          elevation={6}
-          sx={{
-            p: 4,
-            minWidth: 350,
-            maxWidth: 450,
-            width: "90%",
-            background: "rgba(255,255,255,0.85)",
-            color: "#222",
-            borderRadius: "8px",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-            textAlign: "center",
-          }}
-        >
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              No tienes permiso para ver esta pagina
-            </Typography>
-        </Paper>
-      </Box>
-    </Box>
-  );
+        <Box sx={{ position: "relative", minHeight: "100vh" }}>
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url("/fondo.jpg")`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              filter: "blur(8px)",
+              zIndex: 0,
+            }}
+          />
+          <Box
+            sx={{
+              position: "relative",
+              zIndex: 1,
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Paper
+              elevation={6}
+              sx={{
+                p: 4,
+                minWidth: 350,
+                maxWidth: 450,
+                width: "90%",
+                background: "rgba(255,255,255,0.85)",
+                color: "#222",
+                borderRadius: "8px",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h6" sx={{ mt: 2 }}>
+                No tienes permiso para ver esta página
+              </Typography>
+            </Paper>
+          </Box>
+        </Box>
+      );
     }
+    
     return element;
   };
   
 
   return (
-    <Router>
-      <div className="container">
-        <NavBar />
-        <Routes>
+    <div className="container">
+      <NavBar />
+      <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -282,10 +288,8 @@ function App() {
             element={<PrivateRoute element={<FineListId />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
           />
         </Routes>
-
       </div>
-    </Router>
-  );
-}
-
-export default App
+    );
+  }
+  
+  export default App

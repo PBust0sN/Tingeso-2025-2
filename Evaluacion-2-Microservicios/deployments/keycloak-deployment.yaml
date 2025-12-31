@@ -27,14 +27,33 @@ spec:
               value: admin
             - name: KEYCLOAK_IMPORT
               value: /opt/keycloak/data/import/realm-export.json
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+            - name: KC_HOSTNAME_STRICT_BACKCHANNEL
+              value: "false"
+            - name: KC_HTTP_ENABLED
+              value: "false"
+            - name: KC_HTTPS_ENABLED
+              value: "true"
+            - name: KC_HTTPS_PORT
+              value: "8443"
+            - name: KC_HTTPS_CERTIFICATE_FILE
+              value: /etc/keycloak/certs/tls.crt
+            - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+              value: /etc/keycloak/certs/tls.key
+            - name: KC_PROXY
+              value: edge
           ports:
             - containerPort: 8080
+            - containerPort: 8443
           args:
             - start-dev
             - --import-realm
           volumeMounts:
             - name: realm-volume
               mountPath: /opt/keycloak/data/import
+            - name: keycloak-certs
+              mountPath: /etc/keycloak/certs
           resources:
             requests:
               memory: "512Mi"
@@ -46,6 +65,9 @@ spec:
         - name: realm-volume
           configMap:
             name: keycloak-realm-config
+        - name: keycloak-certs
+          secret:
+            secretName: keycloak-tls
 ---
 # Keycloak Service
 apiVersion: v1
@@ -60,6 +82,13 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 32000
+      protocol: TCP
+      name: http
+      nodePort: 30081
+    - port: 8443
+      targetPort: 8443
+      protocol: TCP
+      name: https
+      nodePort: 30443
   selector:
     app: keycloak

@@ -1,24 +1,22 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
+import keycloak from "../services/keycloak";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 
 const Login = () => {
-  const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
 
-  console.log('Keycloak initialized?', initialized);
   console.log('Keycloak instance:', keycloak);
   console.log('Is authenticated?', keycloak?.authenticated);
   
   useEffect(() => {
-    if (initialized && keycloak.authenticated) {
+    if (keycloak.authenticated) {
       navigate("/home");
     }
-  }, [initialized, keycloak.authenticated, navigate]);
+  }, [keycloak.authenticated, navigate]);
 
-  if (!initialized) return (
+  if (!keycloak.token) return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
       {/* background */}
       <Box
@@ -68,7 +66,6 @@ const Login = () => {
   );
 
   if (!keycloak.authenticated) {
-    keycloak.login();
     return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
       {/*background */}
@@ -113,6 +110,24 @@ const Login = () => {
             textAlign: "center",
           }}
         >
+          <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold' }}>
+            Iniciar Sesión
+          </Typography>
+          <button 
+            onClick={() => keycloak.login()}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: 'bold'
+            }}
+          >
+            Iniciar Sesión con Keycloak
+          </button>
         </Paper>
       </Box>
     </Box>

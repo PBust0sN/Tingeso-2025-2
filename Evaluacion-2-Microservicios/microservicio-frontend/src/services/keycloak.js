@@ -1,27 +1,22 @@
 import Keycloak from "keycloak-js";
 
-const keycloak = new Keycloak({
-  url: "http://192.168.49.2:32000",
+// Detectar ambiente por hostname
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const keycloakUrl = isLocalhost 
+  ? "http://localhost:8080"
+  : "https://192.168.39.157:30443";
+
+const keycloakConfig = {
+  url: keycloakUrl,
   realm: "toolRent",
   clientId: "toolRent-Frontend",
-});
+};
 
-console.log('Keycloak instance created:', keycloak);
+console.log('[Keycloak] URL:', keycloakUrl);
+console.log('[Keycloak] Config:', keycloakConfig);
 
+const keycloak = new Keycloak(keycloakConfig);
 
-export function initKeycloak(onAuthenticatedCallback) {
-  keycloak.init({ onLoad: 'login-required', checkLoginIframe: false })
-    .then(authenticated => {
-      if (!authenticated) {
-        console.warn('User is not authenticated');
-      } else {
-        console.log('Authenticated!', keycloak.token);
-      }
-      onAuthenticatedCallback();
-    })
-    .catch(err => {
-      console.error('Keycloak init failed', err);
-    });
-}
+console.log('[Keycloak] Instance creada');
 
 export default keycloak;
