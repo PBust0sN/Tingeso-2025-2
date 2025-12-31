@@ -17,6 +17,23 @@ spec:
       labels:
         app: keycloak
     spec:
+      initContainers:
+        - name: import-realm
+          image: quay.io/keycloak/keycloak:26.3.4
+          command: ["/bin/bash"]
+          args:
+            - -c
+            - |
+              IMPORT_MARKER="/opt/keycloak/data/h2/.import_done"
+              if [ ! -f "$IMPORT_MARKER" ]; then
+                echo "First startup: will import realm"
+                touch "$IMPORT_MARKER"
+              else
+                echo "Realm already imported. Skipping."
+              fi
+          volumeMounts:
+            - name: keycloak-data
+              mountPath: /opt/keycloak/data/h2
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.3.4
@@ -43,24 +60,30 @@ spec:
               value: /etc/keycloak/certs/tls.key
             - name: KC_PROXY
               value: edge
+            - name: KC_DB
+              value: dev-file
+            - name: KC_DB_URL_DATABASE
+              value: /opt/keycloak/data/h2/keycloak
           ports:
             - containerPort: 8080
             - containerPort: 8443
           args:
             - start-dev
-            - --import-realm
+            - --import-realm 
           volumeMounts:
             - name: realm-volume
               mountPath: /opt/keycloak/data/import
             - name: keycloak-certs
               mountPath: /etc/keycloak/certs
+            - name: keycloak-data
+              mountPath: /opt/keycloak/data/h2
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "4"
+              memory: "1Gi"
+              cpu: "2"
             limits:
-              memory: "1G"
-              cpu: "8"
+              memory: "2Gi"
+              cpu: "4"
       volumes:
         - name: realm-volume
           configMap:
@@ -68,6 +91,9 @@ spec:
         - name: keycloak-certs
           secret:
             secretName: keycloak-tls
+        - name: keycloak-data
+          persistentVolumeClaim:
+            claimName: keycloak-pvc
 ---
 # Keycloak Service
 apiVersion: v1

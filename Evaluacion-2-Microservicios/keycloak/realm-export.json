@@ -434,6 +434,32 @@
     }
   },
   "groups": [],
+  "users": [
+    {
+      "id": "gonzalo-user-001",
+      "username": "gonzalo",
+      "email": "gonzalo@example.com",
+      "firstName": "Gonzalo",
+      "lastName": "Usuario",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "default-roles-toolrent",
+        "ADMIN"
+      ],
+      "clientRoles": {},
+      "notBefore": 0,
+      "groups": []
+    }
+  ],
   "defaultRole": {
     "id": "a0e47ab6-acef-4690-b909-133906f827fa",
     "name": "default-roles-toolrent",
@@ -812,7 +838,7 @@
       "clientId": "toolRent-Frontend",
       "name": "",
       "description": "",
-      "rootUrl": "http://192.168.39.157:30080",
+      "rootUrl": "",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
@@ -820,27 +846,12 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
-        "http://localhost:5173/",
-        "http://localhost:5173/*",
-        "http://localhost:3000/",
-        "http://localhost:3000/*",
-        "http://localhost/",
-        "http://localhost/*",
-        "http://127.0.0.1/",
-        "http://127.0.0.1/*",
-        "http://192.168.39.157:30080/",
-        "http://192.168.39.157:30080/*",
-        "http://192.168.49.2:32000/",
-        "http://192.168.49.2:32000/*"
+        "https://192.168.39.157:30080/*",
+        "https://192.168.39.157:30443/*"
       ],
       "webOrigins": [
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://localhost",
-        "http://127.0.0.1",
-        "http://192.168.39.157:30080",
-        "http://192.168.49.2:32000",
-        "*"
+        "https://192.168.39.157:30080",
+        "https://192.168.39.157:30443"
       ],
       "notBefore": 0,
       "bearerOnly": false,
