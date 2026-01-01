@@ -45,6 +45,10 @@ spec:
         - name: gateway-certs
           secret:
             secretName: gateway-tls
+            defaultMode: 0644
+            items:
+              - key: tls.p12
+                path: tls.p12
 ---
 apiVersion: v1
 kind: Service
