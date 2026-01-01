@@ -16,9 +16,35 @@ spec:
     spec:
       containers:
         - name: gateway-service
-          image: polloh/gateway-server
+          image: pbust0s/gateway-service:latest
+          env:
+            - name: SERVER_SSL_ENABLED
+              value: "true"
+            - name: SERVER_SSL_KEY_STORE
+              value: /etc/gateway/certs/tls.p12
+            - name: SERVER_SSL_KEY_STORE_PASSWORD
+              value: changeit
+            - name: SERVER_SSL_KEY_STORE_TYPE
+              value: PKCS12
           ports:
             - containerPort: 8080
+              name: http
+            - containerPort: 8443
+              name: https
+          volumeMounts:
+            - name: gateway-certs
+              mountPath: /etc/gateway/certs
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+      volumes:
+        - name: gateway-certs
+          secret:
+            secretName: gateway-tls
 ---
 apiVersion: v1
 kind: Service
@@ -33,4 +59,11 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: LoadBalancer
+      name: http
+      nodePort: 30082
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
+      name: https
+      nodePort: 30444
+  type: NodePort

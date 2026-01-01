@@ -1,4 +1,9 @@
-FROM openjdk:17
-ARG JAR_FILE=./target/*.jar
-COPY ${JAR_FILE} gateway-server.jar
-ENTRYPOINT ["java","-jar","/gateway-server.jar"]
+FROM maven:3.9.5-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar gateway-service.jar
+ENTRYPOINT ["java","-jar","/app/gateway-service.jar"]
