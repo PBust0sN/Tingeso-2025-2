@@ -31,9 +31,6 @@ spec:
               name: http
             - containerPort: 8443
               name: https
-          volumeMounts:
-            - name: gateway-certs
-              mountPath: /etc/gateway/certs
           resources:
             requests:
               memory: "500Mi"
@@ -41,14 +38,6 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "500m"
-      volumes:
-        - name: gateway-certs
-          secret:
-            secretName: gateway-tls
-            defaultMode: 0644
-            items:
-              - key: tls.p12
-                path: tls.p12
 ---
 apiVersion: v1
 kind: Service
