@@ -42,4 +42,16 @@ public class LoansRemoteService {
         String url = GATEWAY_URL + SERVICE_ENDPOINT + "/";
         return restTemplate.postForObject(url, loansModel, LoansModel.class);
     }
+
+    // Obtener herramientas asociadas a un préstamo desde el microservicio de loans
+    public List<Long> getToolsByLoanId(Long loanId) {
+        String url = GATEWAY_URL + "/api/tools/loan/" + loanId;
+        try {
+            Long[] tools = restTemplate.getForObject(url, Long[].class);
+            return Arrays.asList(tools != null ? tools : new Long[0]);
+        } catch (Exception e) {
+            System.err.println("Error obteniendo herramientas para el préstamo: " + e.getMessage());
+            return Arrays.asList();
+        }
+    }
 }

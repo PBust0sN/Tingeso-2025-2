@@ -1,16 +1,13 @@
 package com.example.ms_clients_service.Service;
 
 import com.example.ms_clients_service.Entities.ClientEntity;
-import com.example.ms_clients_service.Entities.LoansEntity;
-import com.example.ms_clients_service.Entities.ToolsEntity;
+import com.example.ms_clients_service.Models.LoansModel;
 import com.example.ms_clients_service.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,8 +21,9 @@ public class ClientService {
 
     @Autowired
     private KeycloakService keycloakService;
+
     @Autowired
-    private ToolsLoansRepository toolsLoansRepository;
+    private LoansRemoteService loansRemoteService;
 
     //Getter of all clients
     public List<ClientEntity> getAllClients(){
@@ -68,7 +66,7 @@ public class ClientService {
     //calculate if the client has expired loans
     public boolean hasExpiredLoansById(Long id){
         //first we find all teh pending loans of a client
-        List<LoansEntity> loans = clientRepository.getAllLoansByClientId(id);
+        List<LoansModel> loans = clientRepository.getAllLoansByClientId(id);
 
         System.out.println("Loans: " + loans);
         if(loans.isEmpty()){
@@ -76,7 +74,7 @@ public class ClientService {
             return false;
         }
         //then we substract the return date minus delivery date
-        for(LoansEntity loan : loans){
+        for(LoansModel loan : loans){
             //formating the delivery date
             LocalDate localDate1 = loan.getDeliveryDate();
 
@@ -99,7 +97,7 @@ public class ClientService {
         List<Long> activeLoans = clientLoansRepository.findLoansIdsByClientId(clientId);
 
         for(Long loanId : activeLoans){
-            List<Long> tools = toolsLoansRepository.findByLoanId(loanId);
+            List<Long> tools = getToolsFromLoan(loanId);
             for(Long toolId1 : tools){
                 if(toolId1.equals(toolId)){
                     return true;
@@ -113,7 +111,12 @@ public class ClientService {
         return clientRepository.findByRut(rut);
     }
 
-    public List<LoansEntity> findALlLoansByClientId(Long clientId){
+    public List<LoansModel> findALlLoansByClientId(Long clientId){
         return clientRepository.getAllLoansByClientId(clientId);
+    }
+
+    // Obtener herramientas de un préstamo específico
+    public List<Long> getToolsFromLoan(Long loanId) {
+        return loansRemoteService.getToolsByLoanId(loanId);
     }
 }

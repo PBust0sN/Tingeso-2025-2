@@ -10,29 +10,20 @@
         <module name="gateway-service" />
         <module name="config-service" />
       </profile>
-      <profile name="Annotation profile for ms-rates-service" enabled="true">
+      <profile name="Annotation profile for ms-users-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
+        <module name="ms-inventory-service" />
+        <module name="ms-users-service" />
+        <module name="ms-reports-service" />
         <module name="ms-rates-service" />
         <module name="ms-loans-service" />
-      </profile>
-      <profile name="Annotation profile for ms-reports-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
-        </processorPath>
-        <module name="ms-clients-service" />
-        <module name="ms-inventory-service" />
-        <module name="ms-reports-service" />
-        <module name="ms-users-service" />
         <module name="ms-kardex-service" />
+        <module name="ms-clients-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

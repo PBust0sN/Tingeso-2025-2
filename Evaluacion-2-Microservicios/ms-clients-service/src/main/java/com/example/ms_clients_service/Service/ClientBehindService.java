@@ -2,7 +2,6 @@ package com.example.ms_clients_service.Service;
 
 import com.example.ms_clients_service.Entities.ClientBehindEntity;
 import com.example.ms_clients_service.Repository.ClientBehindRepository;
-import com.example.ms_clients_service.Repository.ToolsRankingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

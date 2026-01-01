@@ -1,18 +1,22 @@
 import axios from "axios";
 import keycloak from "./services/keycloak";
 
-const monoliticoBackendServer = import.meta.env.VITE_MONOLITICO_BACKEND_SERVER;
-const monoliticoBackendport = import.meta.env.VITE_MONOLITICO_BACKEND_PORT;
+// Usar variables de entorno para la URL del gateway
+const gatewayServer = import.meta.env.VITE_MONOLITICO_BACKEND_SERVER || 'toolrent.local';
+const gatewayPort = import.meta.env.VITE_MONOLITICO_BACKEND_PORT || '8090';
+const gatewayProtocol = import.meta.env.VITE_MONOLITICO_BACKEND_PROTOCOL || 'https';
 
-console.log('Backend Server:', monoliticoBackendServer);
-console.log('Backend Port:', monoliticoBackendport);
+// Construir baseURL completa para el gateway (SIN /api, los servicios agregan eso)
+const baseURL = `${gatewayProtocol}://${gatewayServer}:${gatewayPort}`;
 
 const api = axios.create({
-    baseURL: `http://${monoliticoBackendServer}:${monoliticoBackendport}`,
+    baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json'
     }
 });
+
+console.log('API Gateway URL configurada:', baseURL);
 
 /**
  * Interceptor de peticiones para agregar el token JWT de Keycloak

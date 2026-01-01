@@ -1,11 +1,14 @@
 package com.example.ms_reports_service.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -20,6 +23,28 @@ import java.util.Map;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri:https://192.168.39.157:30443/realms/toolRent}")
+    private String issuerUri;
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        System.out.println("Creating JwtDecoder bean with issuer URI: " + issuerUri);
+        
+        try {
+            return NimbusJwtDecoder.withIssuerLocation(issuerUri).build();
+        } catch (Exception e) {
+            System.err.println("Error creating JwtDecoder with issuer location: " + e.getMessage());
+            try {
+                String jwksEndpoint = issuerUri.replaceAll("/realms/.*", "/realms/master/protocol/openid-connect/certs");
+                System.out.println("Fallback: Using JWKS endpoint: " + jwksEndpoint);
+                return NimbusJwtDecoder.withJwkSetUri(jwksEndpoint).build();
+            } catch (Exception e2) {
+                System.err.println("Failed to create fallback JwtDecoder: " + e2.getMessage());
+                throw new IllegalArgumentException("Cannot create JwtDecoder bean", e);
+            }
+        }
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -59,10 +84,20 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173",
+            "http://localhost:3000",
+            "https://192.168.39.157",
+            "https://192.168.39.157:32194",
+            "https://192.168.39.157:30443",
+            "https://192.168.39.157:8443",
+            "https://gateway-service:8090"
+        ));
+        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS","PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Content-Type", "Authorization", "X-Total-Count"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

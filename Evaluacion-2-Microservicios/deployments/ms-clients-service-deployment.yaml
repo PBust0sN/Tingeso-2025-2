@@ -22,7 +22,7 @@ spec:
             - containerPort: 8090
           env:
             - name: SERVER_PORT
-              value: "0"
+              value: "8090"
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: http://eureka-service:8761/eureka/
             - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS

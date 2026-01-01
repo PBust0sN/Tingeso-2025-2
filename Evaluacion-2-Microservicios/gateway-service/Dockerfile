@@ -23,6 +23,13 @@ WORKDIR /app
 # Copy the JAR file from build stage
 COPY --from=build /app/target/*.jar app.jar
 
+# Create directory for SSL certificates
+RUN mkdir -p /app/certs
+
+# Copy SSL certificates
+COPY certs/tls.crt /app/certs/tls.crt
+COPY certs/tls.key /app/certs/tls.key
+
 # Expose the port (default for Spring Cloud Gateway is 8080)
 EXPOSE 8080
 
