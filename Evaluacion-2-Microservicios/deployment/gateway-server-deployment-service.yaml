@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: gateway-service
-          image: pbust0s/gateway-service:latest
+          image: pbust0sn/gateway-service:latest
           env:
             - name: SERVER_SSL_ENABLED
               value: "true"
