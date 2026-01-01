@@ -4,16 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoders;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import javax.net.ssl.SSLContext;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 @Configuration
@@ -29,31 +24,14 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers("/public/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/images/**").permitAll()
-                        .pathMatchers("/api/**").authenticated()
+                        .pathMatchers("/api/**").permitAll()
                         .anyExchange().permitAll()
-                )
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt -> jwt.jwtDecoder(jwtDecoder()))
                 );
 
         return http.build();
     }
 
-    @Bean
-    public ReactiveJwtDecoder jwtDecoder() {
-        String issuerUri = "https://192.168.39.157:30443/realms/toolRent";
-        
-        // Ignorar validación SSL para certificados autofirmados en desarrollo
-        try {
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, new javax.net.ssl.TrustManager[]{new TrustAllTrustManager()}, new java.security.SecureRandom());
-            javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            // Si falla, continuar sin SSL bypass
-        }
-        
-        return ReactiveJwtDecoders.fromIssuerLocation(issuerUri);
-    }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
