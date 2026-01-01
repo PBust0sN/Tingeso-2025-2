@@ -37,13 +37,13 @@ spring:
             maxAge: 3600
       routes:
         - id: clients-service
-          uri: lb://ms-clients-service
+          uri: http://ms-clients-service:8080
           predicates:
             - Path=/api/clients/**
           filters:
             - RewritePath=/api/clients(?<segment>/?.*), $\{segment}
         - id: clients-service-options
-          uri: lb://ms-clients-service
+          uri: http://ms-clients-service:8080
           predicates:
             - Path=/api/clients/**
             - Method=OPTIONS

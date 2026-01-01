@@ -26,6 +26,10 @@ spec:
               value: changeit
             - name: SERVER_SSL_KEY_STORE_TYPE
               value: PKCS12
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+            - name: JAVA_OPTS
+              value: "-Dcom.sun.security.enableInternalSSLStub=false -Djdk.internal.httpclient.disableHostnameVerification=true"
           ports:
             - containerPort: 8080
               name: http
@@ -55,8 +59,8 @@ spec:
       name: http
       nodePort: 30082
     - protocol: TCP
-      port: 8443
-      targetPort: 8443
+      port: 8433
+      targetPort: 8433
       name: https
       nodePort: 30444
   type: NodePort
