@@ -1,0 +1,32 @@
+server:
+  port: 8080
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka-server-service:8761/eureka/
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://192.168.39.157:30443/realms/toolRent
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+        default-filters:
+          - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: '*'
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: clients-service
+          uri: lb://ms-clients-service
+          predicates:
+            - Path=/api/clients,/api/clients/**

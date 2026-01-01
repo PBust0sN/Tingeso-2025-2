@@ -2,9 +2,9 @@ import axios from "axios";
 import keycloak from "./services/keycloak";
 
 // Usar variables de entorno para la URL del gateway
-const gatewayServer = import.meta.env.VITE_MONOLITICO_BACKEND_SERVER || 'toolrent.local';
-const gatewayPort = import.meta.env.VITE_MONOLITICO_BACKEND_PORT || '8090';
-const gatewayProtocol = import.meta.env.VITE_MONOLITICO_BACKEND_PROTOCOL || 'https';
+const gatewayServer = import.meta.env.VITE_MONOLITICO_BACKEND_SERVER;
+const gatewayPort = import.meta.env.VITE_MONOLITICO_BACKEND_PORT;
+const gatewayProtocol = import.meta.env.VITE_MONOLITICO_BACKEND_PROTOCOL;
 
 // Construir baseURL completa para el gateway (SIN /api, los servicios agregan eso)
 const baseURL = `${gatewayProtocol}://${gatewayServer}:${gatewayPort}`;

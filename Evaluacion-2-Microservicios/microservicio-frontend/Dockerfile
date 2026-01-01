@@ -24,21 +24,11 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy the NGINX configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Create the directory for SSL certificates
-RUN mkdir -p /etc/nginx/certs
-
-# Copy SSL certificates (self-signed for development)
-COPY certs/tls.crt /etc/nginx/certs/tls.crt
-COPY certs/tls.key /etc/nginx/certs/tls.key
-
 # Remove the default backup configuration file
 RUN rm -f /etc/nginx/conf.d/default.conf.bak
 
 # List the contents of the directory to verify the build output
 RUN ls -la /usr/share/nginx/html/
-
-# Expose the port where NGINX will serve the application
-EXPOSE 80
 
 # Command to start NGINX
 CMD ["nginx", "-g", "daemon off;"]

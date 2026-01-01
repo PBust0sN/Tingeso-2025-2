@@ -17,9 +17,9 @@ public class ClientController {
     ClientService clientService;
 
     @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ClientEntity>> getAllClients() {
-        List<ClientEntity> clients = clientService.getAllClients();
+            List<ClientEntity> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
     }
 
