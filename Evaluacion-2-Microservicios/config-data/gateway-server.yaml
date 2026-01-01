@@ -12,6 +12,8 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://192.168.39.157:30443/realms/toolRent
+  main:
+    web-application-type: reactive
   cloud:
     gateway:
       discovery:
@@ -46,4 +48,11 @@ spring:
         - id: clients-service
           uri: lb://ms-clients-service
           predicates:
-            - Path=/api/clients,/api/clients/**
+            - Path=/api/clients/**
+          filters:
+            - RewritePath=/api/clients(?<segment>/?.*), $\{segment}
+        - id: clients-service-options
+          uri: lb://ms-clients-service
+          predicates:
+            - Path=/api/clients/**
+            - Method=OPTIONS
