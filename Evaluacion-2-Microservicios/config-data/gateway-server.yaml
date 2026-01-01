@@ -19,17 +19,11 @@ spring:
       discovery:
         locator:
           enabled: true
-        default-filters:
-          - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
       globalcors:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - "https://192.168.39.157"
-              - "https://192.168.39.157:30443"
-              - "https://192.168.39.157:30444"
-              - "http://localhost:5173"
-              - "http://localhost:3000"
+              - "*"
             allowedMethods:
               - GET
               - POST
@@ -38,11 +32,8 @@ spring:
               - OPTIONS
               - PATCH
             allowedHeaders:
-              - Authorization
-              - Content-Type
-              - X-Requested-With
-              - Accept
-            allowCredentials: true
+              - "*"
+            allowCredentials: false
             maxAge: 3600
       routes:
         - id: clients-service
