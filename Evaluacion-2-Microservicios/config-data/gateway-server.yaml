@@ -1,5 +1,9 @@
 server:
   port: 8433
+  ssl:
+    key-store: /etc/gateway/certs/tls.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
 eureka:
   client:
     fetch-registry: true
