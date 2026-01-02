@@ -6,7 +6,7 @@ const uploadImage = (data, filename) => {
         params.append('filename', filename);
     }
     
-    return httpClient.post(`/api/images/upload${filename ? '?filename=' + filename : ''}`, data, {
+    return httpClient.post(`/images/upload${filename ? '?filename=' + filename : ''}`, data, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -14,7 +14,7 @@ const uploadImage = (data, filename) => {
 }
 
 const getImage = imageName => {
-    return httpClient.get(`/api/images/${imageName}`, { responseType: 'blob' });
+    return httpClient.get(`/images/${imageName}`, { responseType: 'blob' });
 }
 
 export default { uploadImage, getImage };

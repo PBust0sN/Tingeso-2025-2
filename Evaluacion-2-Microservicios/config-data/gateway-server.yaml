@@ -13,9 +13,6 @@ eureka:
 spring:
   main:
     web-application-type: reactive
-  web:
-    resources:
-      static-locations: file:/app/static/uploads/
   cloud:
     gateway:
       discovery:
@@ -44,9 +41,3 @@ spring:
             - Path=/api/clients/**
           filters:
             - RewritePath=/api/clients(?<segment>/?.*), /clients${segment}
-        - id: images-static
-          uri: file:///app/static/uploads/
-          predicates:
-            - Path=/api/images/**
-          filters:
-            - StripPrefix=2

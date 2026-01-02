@@ -42,6 +42,13 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "500m"
+          volumeMounts:
+            - name: uploads
+              mountPath: /app/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: gateway-uploads-pvc
 ---
 apiVersion: v1
 kind: Service

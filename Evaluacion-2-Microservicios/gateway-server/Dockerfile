@@ -9,5 +9,6 @@ COPY --from=build /app/target/*.jar gateway-service.jar
 RUN mkdir -p /etc/gateway/certs
 COPY --from=build /app/certs/tls.p12 /etc/gateway/certs/tls.p12
 RUN chmod 644 /etc/gateway/certs/tls.p12
+
 RUN ls -la /etc/gateway/certs/
 ENTRYPOINT ["java","-jar","/app/gateway-service.jar"]
