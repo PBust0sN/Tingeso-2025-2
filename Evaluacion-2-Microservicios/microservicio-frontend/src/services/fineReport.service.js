@@ -1,11 +1,11 @@
 import httpClient from "../http-common";
 
 const getAll = () => {
-    return httpClient.get('/api/fineReport/');
+    return httpClient.get('/fineReport/');
 }
 
 const create = data => {
-    return httpClient.post('/api/fineReport/', data);
+    return httpClient.post('/fineReport/', data);
 }
 
 const remove = id => {

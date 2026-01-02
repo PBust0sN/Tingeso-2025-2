@@ -1,13 +1,9 @@
 import axios from "axios";
 import keycloak from "./services/keycloak";
 
-// Usar variables de entorno para la URL del gateway
-const gatewayServer = import.meta.env.VITE_MONOLITICO_BACKEND_SERVER;
-const gatewayPort = import.meta.env.VITE_MONOLITICO_BACKEND_PORT;
-const gatewayProtocol = import.meta.env.VITE_MONOLITICO_BACKEND_PROTOCOL;
-
-// Construir baseURL completa para el gateway (SIN /api, los servicios agregan eso)
-const baseURL = `${gatewayProtocol}://${gatewayServer}:${gatewayPort}`;
+// Usar /api como baseURL - nginx lo proxy a gateway-service:8433
+// El navegador no necesita conocer la URL absoluta, nginx maneja el proxy
+const baseURL = '/api';
 
 const api = axios.create({
     baseURL: baseURL,

@@ -1,19 +1,19 @@
 import httpClient from "../http-common";
 
 const getAll = () => {
-    return httpClient.get('/api/loans/');
+    return httpClient.get('/loans/');
 }
 
 const create = data => {
-    return httpClient.post('/api/loans/', data);
+    return httpClient.post('/loans/', data);
 }
 
 const newLoan = data => {
-    return httpClient.post('/api/loans/new', data);
+    return httpClient.post('/loans/new', data);
 }
 
 const returnLoan = data => {
-    return httpClient.post('/api/loans/return', data);
+    return httpClient.post('/loans/return', data);
 }
 
 const get = id => {
@@ -21,7 +21,7 @@ const get = id => {
 }
 
 const update = data => {
-    return httpClient.put('/api/loans/', data);
+    return httpClient.put('/loans/', data);
 }
 
 const remove = id => {
@@ -35,7 +35,7 @@ const calculateCost = id => {
 
 // Send the full loan object in the request body so backend can validate dates
 const chechDates = data => {
-    return httpClient.post('/api/loans/checkdates', data);
+    return httpClient.post('/loans/checkdates', data);
 }
 
 export default { getAll, get, create, newLoan, returnLoan, update, remove, calculateCost, chechDates};

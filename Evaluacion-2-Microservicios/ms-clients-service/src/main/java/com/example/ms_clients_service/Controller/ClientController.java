@@ -10,13 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/clients")
 @CrossOrigin("*")
 public class ClientController {
     @Autowired
     ClientService clientService;
 
-    @GetMapping
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK - ms-clients-service is running");
+    }
+
+    
+    @GetMapping("/")
     public ResponseEntity<List<ClientEntity>> getAllClients() {
             List<ClientEntity> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);

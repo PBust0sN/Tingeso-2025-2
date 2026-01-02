@@ -48,7 +48,7 @@ function App() {
     
     // Usar Promise.race para forzar timeout
     const initPromise = keycloak.init({
-      onLoad: null,
+      onLoad: 'login-required',  // CAMBIO: Requiere login automáticamente
       checkLoginIframe: false,
       silentCheckSsoFallback: false,
       enableLogging: true,

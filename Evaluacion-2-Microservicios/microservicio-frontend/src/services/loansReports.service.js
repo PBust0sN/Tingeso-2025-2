@@ -1,11 +1,11 @@
 import httpClient from "../http-common";
 
 const getAll = () => {
-    return httpClient.get('/api/loansReport/');
+    return httpClient.get('/loansReport/');
 }
 
 const create = data => {
-    return httpClient.post('/api/loansReport/', data);
+    return httpClient.post('/loansReport/', data);
 }
 
 const remove = id => {

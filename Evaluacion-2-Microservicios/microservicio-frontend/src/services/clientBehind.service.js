@@ -1,11 +1,11 @@
 import httpClient from "../http-common";
 
 const getAll = () => {
-    return httpClient.get('/api/clientsBehind/');
+    return httpClient.get('/clientsBehind/');
 }
 
 const create = data => {
-    return httpClient.post('/api/clientsBehind/', data);
+    return httpClient.post('/clientsBehind/', data);
 }
 
 const remove = id => {
