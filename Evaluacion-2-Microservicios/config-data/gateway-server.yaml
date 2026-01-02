@@ -41,3 +41,9 @@ spring:
             - Path=/api/clients/**
           filters:
             - RewritePath=/api/clients(?<segment>/?.*), /clients${segment}
+        - id: kardex-service
+          uri: lb://ms-kardex-service
+          predicates:
+            - Path=/api/kardex/**
+          filters:
+            - RewritePath=/api/kardex(?<segment>/?.*), /kardex${segment}

@@ -9,7 +9,7 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/tools/loan/${id}`);
+    return httpClient.get(`/tools/loan/${id}`);
 }
 
 const update = data => {
@@ -17,12 +17,12 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/tools/loan/${id}`
+    return httpClient.delete(`/tools/loan/${id}`
     );
 }
 
 const getToolsIdByLoanId = id => {
-    return httpClient.get(`/api/tools/loan/toolsIDs/${id}`);
+    return httpClient.get(`/tools/loan/toolsIDs/${id}`);
 }
 
 

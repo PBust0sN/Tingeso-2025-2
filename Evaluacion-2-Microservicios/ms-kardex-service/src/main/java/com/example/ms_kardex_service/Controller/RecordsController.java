@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/records")
+@RequestMapping("/records")
 @CrossOrigin("*")
 public class RecordsController {
     @Autowired

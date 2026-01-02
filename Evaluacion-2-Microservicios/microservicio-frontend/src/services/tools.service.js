@@ -9,7 +9,7 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/tools/${id}`);
+    return httpClient.get(`/tools/${id}`);
 }
 
 const update = data => {
@@ -17,16 +17,16 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/tools/${id}`
+    return httpClient.delete(`/tools/${id}`
     );
 }
 
 const updateState = (id, state) => {
-    return httpClient.put(`/api/tools/update/state/${id}?state=${state}`);
+    return httpClient.put(`/tools/update/state/${id}?state=${state}`);
 }
 
 const updateStock = id => {
-    return httpClient.put(`/api/tools/update/stock/${id}`);
+    return httpClient.put(`/tools/update/stock/${id}`);
 }
 
 const getTenTools = () => {

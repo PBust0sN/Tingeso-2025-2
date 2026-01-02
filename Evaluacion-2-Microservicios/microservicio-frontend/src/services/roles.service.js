@@ -9,7 +9,7 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/roles/${id}`);
+    return httpClient.get(`/roles/${id}`);
 }
 
 const update = data => {
@@ -17,7 +17,7 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/roles/${id}`
+    return httpClient.delete(`/roles/${id}`
     );
 }
 

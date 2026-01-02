@@ -9,11 +9,11 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/reports/${id}`);
+    return httpClient.get(`/reports/${id}`);
 }
 
 const getAllByClientId = id => {
-    return httpClient.get(`/api/reports/get-all-client/${id}`);
+    return httpClient.get(`/reports/get-all-client/${id}`);
 }
 
 const update = data => {
@@ -21,7 +21,7 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/reports/${id}`
+    return httpClient.delete(`/reports/${id}`
     );
 }
 

@@ -5,7 +5,7 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/toolsReport/${id}`);
+    return httpClient.get(`/toolsReport/${id}`);
 }
 
 export default {get, create};

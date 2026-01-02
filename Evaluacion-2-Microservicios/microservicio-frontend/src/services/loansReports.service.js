@@ -9,14 +9,14 @@ const create = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/loansReport/${id}`);
+    return httpClient.delete(`/loansReport/${id}`);
 }
 
 const getAllByReportId = id => {
-    return httpClient.get(`/api/loansReport/${id}`);
+    return httpClient.get(`/loansReport/${id}`);
 }
 
 const getById = id => {
-    return httpClient.get(`/api/loansReport/getbyid/${id}`);   
+    return httpClient.get(`/loansReport/getbyid/${id}`);   
 }
 export default { getAll, create, remove, getAllByReportId, getById};

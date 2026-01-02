@@ -9,12 +9,12 @@ const create = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/toolsRanking/${id}`
+    return httpClient.delete(`/toolsRanking/${id}`
     );
 }
 
 const getAllByReportId = id => {
-    return httpClient.get(`/api/toolsRanking/${id}`);
+    return httpClient.get(`/toolsRanking/${id}`);
 }
 
 export default { getAll, create, remove, getAllByReportId};

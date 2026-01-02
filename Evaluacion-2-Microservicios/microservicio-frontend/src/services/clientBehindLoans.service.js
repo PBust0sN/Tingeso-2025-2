@@ -6,7 +6,7 @@ const create = data => {
 
 
 const getAllLoansIdByClientBehindId = id => {
-    return httpClient.get(`/api/clientsBehindLoans/${id}`);
+    return httpClient.get(`/clientsBehindLoans/${id}`);
 }
 
 export default { create, getAllLoansIdByClientBehindId};

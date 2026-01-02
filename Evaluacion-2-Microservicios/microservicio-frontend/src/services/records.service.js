@@ -9,7 +9,7 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/records/${id}`);
+    return httpClient.get(`/records/${id}`);
 }
 
 const update = data => {
@@ -17,7 +17,7 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/records/${id}`
+    return httpClient.delete(`/records/${id}`
     );
 }
 

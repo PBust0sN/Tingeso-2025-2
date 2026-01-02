@@ -9,11 +9,11 @@ const create = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/clientsBehind/${id}`);
+    return httpClient.delete(`/clientsBehind/${id}`);
 }
 
 const getAllByReportId = id => {
-    return httpClient.get(`/api/clientsBehind/${id}`);
+    return httpClient.get(`/clientsBehind/${id}`);
 }
 
 export default { getAll, create, remove, getAllByReportId};

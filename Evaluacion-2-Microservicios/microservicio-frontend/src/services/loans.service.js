@@ -17,7 +17,7 @@ const returnLoan = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/loans/${id}`);
+    return httpClient.get(`/loans/${id}`);
 }
 
 const update = data => {
@@ -25,12 +25,12 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/loans/${id}`
+    return httpClient.delete(`/loans/${id}`
     );
 }
 
 const calculateCost = id => {
-    return httpClient.get(`/api/loans/calculate/cost/${id}`);
+    return httpClient.get(`/loans/calculate/cost/${id}`);
 }
 
 // Send the full loan object in the request body so backend can validate dates

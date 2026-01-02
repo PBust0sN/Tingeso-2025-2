@@ -9,15 +9,15 @@ const create = data => {
 }
 
 const get = id => {
-    return httpClient.get(`/api/fine/${id}`);
+    return httpClient.get(`/fine/${id}`);
 }
 
 const pay = (client_id,fine_id) => {
-    return httpClient.post(`/api/fine/pay/${client_id}/${fine_id}`);
+    return httpClient.post(`/fine/pay/${client_id}/${fine_id}`);
 }
 
 const getAllByClientId = id => {
-    return httpClient.get(`/api/fine/get-all-clients/${id}`);
+    return httpClient.get(`/fine/get-all-clients/${id}`);
 }
 
 const update = data => {
@@ -25,7 +25,7 @@ const update = data => {
 }
 
 const remove = id => {
-    return httpClient.delete(`/api/fine/${id}`
+    return httpClient.delete(`/fine/${id}`
     );
 }
 

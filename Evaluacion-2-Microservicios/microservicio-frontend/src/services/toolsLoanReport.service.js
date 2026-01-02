@@ -5,7 +5,7 @@ const create = data => {
 }
 
 const getToolsIdByLoanId = id => {
-    return httpClient.get(`/api/toolsloansreports/getools/${id}`);
+    return httpClient.get(`/toolsloansreports/getools/${id}`);
 }
 
 
