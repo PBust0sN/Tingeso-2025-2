@@ -39,11 +39,7 @@ spring:
           uri: lb://ms-clients-service
           predicates:
             - Path=/clients/**
-          filters:
-            - RewritePath=/clients(?<segment>/?.*), /clients${segment}
         - id: kardex-service
           uri: lb://ms-kardex-service
           predicates:
             - Path=/records/**
-          filters:
-            - RewritePath=/records(?<segment>/?.*), /records${segment}
