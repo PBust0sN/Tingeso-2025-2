@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/api/images")
+@RequestMapping("/images")
 @CrossOrigin("*")
 public class ImageController {
 
