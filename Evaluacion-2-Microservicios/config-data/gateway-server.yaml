@@ -1,9 +1,5 @@
 server:
-  port: 8433
-  ssl:
-    key-store: /etc/gateway/certs/tls.p12
-    key-store-password: changeit
-    key-store-type: PKCS12
+  port: 8080
 eureka:
   client:
     fetch-registry: true
@@ -41,9 +37,3 @@ spring:
             - Path=/api/clients/**
           filters:
             - RewritePath=/api/clients(?<segment>/?.*), /clients${segment}
-        - id: images-service
-          uri: lb://ms-clients-service
-          predicates:
-            - Path=/api/images/**
-          filters:
-            - RewritePath=/api/images(?<segment>/?.*), /images${segment}
