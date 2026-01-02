@@ -46,3 +46,14 @@ spring:
           predicates:
             - Path=/api/clients/**
             - Method=OPTIONS
+        - id: images-service
+          uri: lb://ms-clients-service
+          predicates:
+            - Path=/api/images/**
+          filters:
+            - RewritePath=/api/images(?<segment>/?.*), /images$\{segment}
+        - id: images-service-options
+          uri: lb://ms-clients-service
+          predicates:
+            - Path=/api/images/**
+            - Method=OPTIONS
