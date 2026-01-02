@@ -1,9 +1,9 @@
 import axios from "axios";
 import keycloak from "./services/keycloak";
 
-// Usar /api como baseURL - nginx lo proxy a gateway-service:8433
+// Usar / como baseURL - nginx lo proxy a gateway-service:8433
 // El navegador no necesita conocer la URL absoluta, nginx maneja el proxy
-const baseURL = '/api';
+const baseURL = '/';
 
 const api = axios.create({
     baseURL: baseURL,
