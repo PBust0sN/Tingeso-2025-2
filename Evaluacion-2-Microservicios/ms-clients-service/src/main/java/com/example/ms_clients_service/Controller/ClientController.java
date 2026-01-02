@@ -4,7 +4,6 @@ import com.example.ms_clients_service.Entities.ClientEntity;
 import com.example.ms_clients_service.Service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

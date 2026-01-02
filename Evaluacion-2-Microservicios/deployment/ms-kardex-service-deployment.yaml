@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-kardex-service-deployment
+  labels:
+    app: ms-kardex-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-kardex-service-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-kardex-service-deployment
+    spec:
+      containers:
+        - name: ms-kardex-service
+          image: pbust0sn/ms-kardex-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8091
+          env:
+            - name: SERVER_PORT
+              value: "0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: kardex-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: kardex-db
+                  key: port
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: kardex-db
+                  key: name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: password
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://$(DB_HOST):$(DB_PORT)/$(DB_DBNAME)?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "$(DB_USER)"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "$(DB_PASSWORD)"
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "200Mi"

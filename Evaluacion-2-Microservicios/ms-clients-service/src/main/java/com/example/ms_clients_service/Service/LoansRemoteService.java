@@ -14,7 +14,7 @@ public class LoansRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String GATEWAY_URL = "http://ms-loans-service:8080";
+    private final String GATEWAY_URL = "https://gateway-service:8080";
     private final String SERVICE_ENDPOINT = "/api/loans";
 
     // queryForObject - obtener préstamo por ID

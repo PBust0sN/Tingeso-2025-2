@@ -1,6 +1,5 @@
 package com.example.ms_clients_service.Controller;
 
-import com.example.ms_clients_service.Entities.ClientEntity;
 import com.example.ms_clients_service.Entities.ClientLoansEntity;
 import com.example.ms_clients_service.Service.ClientLoansService;
 import org.springframework.beans.factory.annotation.Autowired;

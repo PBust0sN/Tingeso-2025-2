@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>ms-clients-service</artifactId>
+	<artifactId>ms-kardex-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-clients-service</name>
+	<name>ms-kardex-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
