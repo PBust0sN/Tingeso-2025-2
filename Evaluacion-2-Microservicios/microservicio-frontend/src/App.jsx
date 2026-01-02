@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect } from 'react';
 import keycloak from './services/keycloak';
+import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
 import ToolList from './components/ToolList';
 import ClientList from './components/ClientList';
 import AddTool from './components/AddTool';
@@ -46,25 +47,16 @@ function App() {
   useEffect(() => {
     console.log('[App] Inicializando Keycloak...');
     
-    // Usar Promise.race para forzar timeout
-    const initPromise = keycloak.init({
-      onLoad: 'login-required',  // CAMBIO: Requiere login automáticamente
+    keycloak.init({
+      onLoad: 'check-sso',
       checkLoginIframe: false,
       silentCheckSsoFallback: false,
       enableLogging: true,
-      pkceMethod: 'S256'  // Habilitar PKCE S256 con HTTPS
-    });
-
-    const timeoutPromise = new Promise((resolve) => {
-      setTimeout(() => {
-        console.warn('[App] Timeout de 3 segundos alcanzado, continuando...');
-        resolve(false);
-      }, 3000);
-    });
-
-    Promise.race([initPromise, timeoutPromise])
+      pkceMethod: 'S256'
+    })
       .then((authenticated) => {
         console.log('[App] Keycloak inicializado. Autenticado:', authenticated);
+        console.log('[App] Token:', keycloak.token);
         setIsInitialized(true);
       })
       .catch((error) => {
@@ -78,13 +70,17 @@ function App() {
   }
 
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <ReactKeycloakProvider authClient={keycloak}>
+      <Router>
+        <AppContent />
+      </Router>
+    </ReactKeycloakProvider>
   );
 }
 
 function AppContent() {
+  const { keycloak } = useKeycloak();
+  
   console.log('[AppContent] authenticated:', keycloak?.authenticated);
 
   // Si no está autenticado, mostrar solo Home sin Router
