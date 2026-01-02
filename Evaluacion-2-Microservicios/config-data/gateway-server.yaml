@@ -1,5 +1,9 @@
 server:
-  port: 8080
+  port: 8433
+  ssl:
+    key-store: /etc/gateway/certs/tls.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
 eureka:
   client:
     fetch-registry: true
@@ -9,6 +13,9 @@ eureka:
 spring:
   main:
     web-application-type: reactive
+  web:
+    resources:
+      static-locations: file:/app/static/uploads/
   cloud:
     gateway:
       discovery:
@@ -37,3 +44,9 @@ spring:
             - Path=/api/clients/**
           filters:
             - RewritePath=/api/clients(?<segment>/?.*), /clients${segment}
+        - id: images-static
+          uri: file:///app/static/uploads/
+          predicates:
+            - Path=/api/images/**
+          filters:
+            - StripPrefix=2
