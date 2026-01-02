@@ -40,20 +40,10 @@ spring:
           predicates:
             - Path=/api/clients/**
           filters:
-            - RewritePath=/api/clients(?<segment>/?.*), /clients$\{segment}
-        - id: clients-service-options
-          uri: lb://ms-clients-service
-          predicates:
-            - Path=/api/clients/**
-            - Method=OPTIONS
+            - RewritePath=/api/clients(?<segment>/?.*), /clients${segment}
         - id: images-service
           uri: lb://ms-clients-service
           predicates:
             - Path=/api/images/**
           filters:
-            - RewritePath=/api/images(?<segment>/?.*), /images$\{segment}
-        - id: images-service-options
-          uri: lb://ms-clients-service
-          predicates:
-            - Path=/api/images/**
-            - Method=OPTIONS
+            - RewritePath=/api/images(?<segment>/?.*), /images${segment}
