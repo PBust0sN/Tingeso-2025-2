@@ -44,6 +44,6 @@ spring:
         - id: kardex-service
           uri: lb://ms-kardex-service
           predicates:
-            - Path=/api/kardex/**
+            - Path=/api/records/**
           filters:
-            - RewritePath=/api/kardex(?<segment>/?.*), /kardex${segment}
+            - RewritePath=/api/records(?<segment>/?.*), /records${segment}
