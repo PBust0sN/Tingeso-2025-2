@@ -1,0 +1,8 @@
+# gateway
+cd "/media/patricio/EXTERNO/NIVEL 6/Tecnicas de ingenieria de software/Material/Tingeso-2025-2/Evaluacion-2-Microservicios/gateway-server" && docker build -t gateway-service:latest . && docker tag gateway-service:latest pbust0sn/gateway-service:latest && docker push pbust0sn/gateway-service:latest && kubectl rollout restart deployment/gateway-service-deployment
+
+# ms-clients
+cd "/media/patricio/EXTERNO/NIVEL 6/Tecnicas de ingenieria de software/Material/Tingeso-2025-2/Evaluacion-2-Microservicios/ms-clients-service" && docker build -t ms-clients-service:latest . && docker tag ms-clients-service:latest pbust0sn/ms-clients-service:latest && docker push pbust0sn/ms-clients-service:latest && kubectl rollout restart deployment/ms-clients-service-deployment
+
+# ms-inventory
+cd "/media/patricio/EXTERNO/NIVEL 6/Tecnicas de ingenieria de software/Material/Tingeso-2025-2/Evaluacion-2-Microservicios/ms-inventory-service" && docker build -t ms-inventory-service:latest . && docker tag ms-inventory-service:latest pbust0sn/ms-inventory-service:latest && docker push pbust0sn/ms-inventory-service:latest && kubectl rollout restart deployment/gateway-service-deployment

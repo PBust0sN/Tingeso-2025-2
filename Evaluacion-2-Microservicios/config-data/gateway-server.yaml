@@ -43,3 +43,7 @@ spring:
           uri: lb://ms-kardex-service
           predicates:
             - Path=/records/**
+        - id: inventory-service
+          uri: lb://ms-inventory-service
+          predicates:
+            - Path=/tools/**
