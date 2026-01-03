@@ -33,9 +33,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "https://192.168.39.157",
-                "https://192.168.39.157:30080",
-                "https://192.168.39.157:30443",
+                "https://192.168.39.192",
+                "https://192.168.39.192:30080",
+                "https://192.168.39.192:30443",
                 "http://localhost:5173",
                 "http://localhost:3000"
         ));

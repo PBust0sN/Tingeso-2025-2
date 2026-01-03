@@ -4,7 +4,7 @@ import Keycloak from "keycloak-js";
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const keycloakUrl = isLocalhost 
   ? "http://localhost:8080"
-  : "https://192.168.39.157:30443";
+  : "https://192.168.39.192:30443";
 
 const keycloakConfig = {
   url: keycloakUrl,

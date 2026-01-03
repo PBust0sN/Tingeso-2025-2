@@ -8,7 +8,7 @@ data:
     # HTTPS server (escucha en puerto 443 del contenedor)
     server {
         listen 443 ssl;
-        server_name 192.168.39.157 toolrent.local localhost;
+        server_name 192.168.39.192 toolrent.local localhost;
     
         # Configuración SSL
         ssl_certificate /etc/nginx/certs/tls.crt;

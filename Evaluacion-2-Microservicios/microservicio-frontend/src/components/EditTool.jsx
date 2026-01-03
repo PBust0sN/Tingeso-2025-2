@@ -183,14 +183,11 @@ const EditTool = () => {
   };
 
   const uploadImage = (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
     // Nombre personalizado: ${toolId}.png
     const customFilename = `${toolId}.png`;
 
     imagesService
-      .uploadImage(formData, customFilename)
+      .uploadImage(file, customFilename)
       .then((response) => {
         console.log("Imagen subida exitosamente:", response.data);
         console.log("Imagen guardada como:", response.data.filename);
@@ -215,12 +212,10 @@ const EditTool = () => {
 
     // Subir imagen si fue seleccionada
     if (image) {
-      const formData = new FormData();
-      formData.append("file", image);
       const customFilename = `${toolId}.png`;
 
       imagesService
-        .uploadImage(formData, customFilename)
+        .uploadImage(image, customFilename)
         .then((response) => {
           console.log("Imagen subida exitosamente:", response.data);
           // Después de subir la imagen, guardar la herramienta

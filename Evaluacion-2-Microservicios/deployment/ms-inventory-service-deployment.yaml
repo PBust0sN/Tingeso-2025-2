@@ -55,7 +55,3 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: "$(DB_PASSWORD)"
           resources:
-            limits:
-              memory: "256Mi"
-            requests:
-              memory: "200Mi"

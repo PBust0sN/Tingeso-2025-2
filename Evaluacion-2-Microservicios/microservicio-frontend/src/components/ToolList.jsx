@@ -32,13 +32,14 @@ const ToolList = () => {
     toolsService
       .getAll()
       .then((response) => {
-        setTools(response.data);
+        setTools(Array.isArray(response.data) ? response.data : []);
       })
       .catch((error) => {
         console.log(
           "Se ha producido un error al intentar mostrar listado de herramientas.",
           error
         );
+        setTools([]);
       });
   };
 

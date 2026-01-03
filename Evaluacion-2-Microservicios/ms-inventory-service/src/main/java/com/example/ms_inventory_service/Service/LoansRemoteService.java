@@ -14,7 +14,7 @@ public class LoansRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String GATEWAY_URL = "http://gateway-service:8080";
+    private final String GATEWAY_URL = "https://gateway-service.default.svc.cluster.local:8433";
     private final String SERVICE_ENDPOINT = "/loans";
 
     // queryForObject - obtener préstamo por ID

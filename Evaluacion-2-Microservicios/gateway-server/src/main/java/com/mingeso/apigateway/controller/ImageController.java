@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,6 +51,45 @@ public class ImageController {
                     .body(new ByteArrayResource(imageBytes));
         } catch (IOException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Upload and save an image
+     * POST /images/upload?filename=myimage.png
+     */
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(
+            @RequestParam String filename,
+            @RequestParam MultipartFile file) {
+        try {
+            // Validate filename to prevent directory traversal
+            if (filename.contains("..") || filename.contains("/")) {
+                return ResponseEntity.badRequest().body("Invalid filename");
+            }
+
+            // Create uploads directory if it doesn't exist
+            Path uploadDirPath = Paths.get(UPLOAD_DIR);
+            if (!Files.exists(uploadDirPath)) {
+                Files.createDirectories(uploadDirPath);
+            }
+
+            // Save the file
+            Path filePath = uploadDirPath.resolve(filename).normalize();
+
+            // Verify the path is within the upload directory
+            if (!filePath.getParent().equals(uploadDirPath.normalize())) {
+                return ResponseEntity.badRequest().body("Invalid file path");
+            }
+
+            // Save file to disk
+            Files.write(filePath, file.getBytes());
+
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"Image uploaded successfully\", \"filename\": \"" + filename + "\"}");
+        } catch (IOException e) {
+            return ResponseEntity.status(500)
+                    .body("{\"error\": \"Failed to upload image: " + e.getMessage() + "\"}");
         }
     }
 

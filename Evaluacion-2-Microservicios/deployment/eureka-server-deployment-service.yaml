@@ -19,6 +19,7 @@ spec:
           image: pbust0sn/eureka-service:latest
           ports:
             - containerPort: 8761
+          resources:
 ---
 apiVersion: v1
 kind: Service

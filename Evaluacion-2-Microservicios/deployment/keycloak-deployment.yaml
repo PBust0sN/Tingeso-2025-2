@@ -17,23 +17,6 @@ spec:
       labels:
         app: keycloak
     spec:
-      initContainers:
-        - name: import-realm
-          image: quay.io/keycloak/keycloak:26.3.4
-          command: ["/bin/bash"]
-          args:
-            - -c
-            - |
-              IMPORT_MARKER="/opt/keycloak/data/h2/.import_done"
-              if [ ! -f "$IMPORT_MARKER" ]; then
-                echo "First startup: will import realm"
-                touch "$IMPORT_MARKER"
-              else
-                echo "Realm already imported. Skipping."
-              fi
-          volumeMounts:
-            - name: keycloak-data
-              mountPath: /opt/keycloak/data/h2
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.3.4
@@ -79,11 +62,11 @@ spec:
               mountPath: /opt/keycloak/data/h2
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "2"
+              memory: "384Mi"
+              cpu: "1"
             limits:
-              memory: "2Gi"
-              cpu: "4"
+              memory: "512Mi"
+              cpu: "2"
       volumes:
         - name: realm-volume
           configMap:

@@ -14,7 +14,7 @@ public class RecordsRemoteService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String RECORDS_SERVICE_URL = "https://gateway-service:8080/records";
+    private static final String RECORDS_SERVICE_URL = "https://gateway-service.default.svc.cluster.local:8433/records";
 
     public List<RecordsModel> getAllRecords() {
         try {

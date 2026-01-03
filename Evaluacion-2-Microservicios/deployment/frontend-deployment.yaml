@@ -50,12 +50,6 @@ spec:
             - name: frontend-certs
               mountPath: /etc/nginx/certs
           resources:
-            requests:
-              memory: "200Mi"
-              cpu: "250m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
       volumes:
         - name: frontend-certs
           secret:
