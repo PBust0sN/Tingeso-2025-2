@@ -4,6 +4,9 @@ server:
     key-store: /etc/gateway/certs/tls.p12
     key-store-password: changeit
     key-store-type: PKCS12
+app:
+  upload:
+    dir: /app/uploads
 eureka:
   client:
     fetch-registry: true
@@ -47,3 +50,9 @@ spring:
           uri: lb://ms-inventory-service
           predicates:
             - Path=/tools/**
+        - id: images-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/images/**
+          filters:
+            - StripPrefix=0
