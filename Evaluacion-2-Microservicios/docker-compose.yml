@@ -21,7 +21,7 @@ services:
     image: pbust0sn/gateway-service:latest
     container_name: gateway-service
     ports:
-      - "8080:8080"
+      - "8090:8090"
     networks:
       - microservices-network
     depends_on:

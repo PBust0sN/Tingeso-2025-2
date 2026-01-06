@@ -1,0 +1,291 @@
+import './App.css'
+import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom'
+import NavBar from "./components/NavBar"
+import Home from "./components/Home";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import { useState, useEffect } from 'react';
+import keycloak from './services/keycloak';
+import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
+import ToolList from './components/ToolList';
+import ClientList from './components/ClientList';
+import AddTool from './components/AddTool';
+import EditTool from './components/EditTool';
+import EditClient from './components/EditClient';
+import AddClient from './components/AddClient';
+import LoanList from './components/LoanList';
+import NewLoan from './components/NewLoan';
+import LoanInfo from './components/LoanInfo';
+import RecordList from './components/RecordList';
+import Login  from './components/Login';
+import Typography from "@mui/material/Typography";
+import PreReturnLoan from './components/PreReturnLoan';
+import ReturnLoan from './components/ReturnLoan';
+import ListLoanId from './components/ListLoanId';
+import FineList from './components/FineList';
+import AddReport from './components/AddReport';
+import MyReports from './components/MyReports';
+import NewLoanReport from './components/NewLoanReport';
+import ViewLoanReports from './components/ViewLoanReports';
+import NewRakingTool from './components/NewRakingTool';
+import ViewRankingReport from './components/ViewRankingReport';
+import NewClientBehindReport from './components/NewClientBehindReport';
+import ViewClientBehindReport from './components/ViewClientBehindReport';
+import ViewReportsById from './components/ViewReportsById';
+import FineListId from './components/FineListId';
+import EmployeeList from './components/EmployeeList';
+import AdminList from './components/AdminList';
+import AddAdmin from './components/AddAdmin';
+import AddEmployee from './components/AddEmployee';
+import EditEmployee from './components/EditEmployee';
+import LoadingScreen from './components/LoadingScreen';
+
+
+function App() {
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    console.log('[App] Inicializando Keycloak...');
+    
+    keycloak.init({
+      onLoad: 'check-sso',
+      checkLoginIframe: false,
+      silentCheckSsoFallback: false,
+      enableLogging: true,
+      pkceMethod: 'S256'
+    })
+      .then((authenticated) => {
+        console.log('[App] Keycloak inicializado. Autenticado:', authenticated);
+        console.log('[App] Token:', keycloak.token);
+        setIsInitialized(true);
+      })
+      .catch((error) => {
+        console.error('[App] Error inicializando Keycloak:', error);
+        setIsInitialized(true);
+      });
+  }, []);
+
+  if (!isInitialized) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <ReactKeycloakProvider authClient={keycloak}>
+      <Router>
+        <AppContent />
+      </Router>
+    </ReactKeycloakProvider>
+  );
+}
+
+function AppContent() {
+  const { keycloak } = useKeycloak();
+  
+  console.log('[AppContent] authenticated:', keycloak?.authenticated);
+
+  // Si no está autenticado, mostrar solo Home sin Router
+  if (!keycloak?.authenticated) {
+    console.log('[AppContent] Usuario no autenticado, mostrando pantalla de login');
+    return (
+      <div className="container">
+        <NavBar />
+        <Home />
+      </div>
+    );
+  }
+
+  console.log('[AppContent] Usuario autenticado, renderizando app');
+
+  const PrivateRoute = ({ element, rolesAllowed }) => {
+    const roles = keycloak?.tokenParsed?.realm_access?.roles || [];
+    
+    if (rolesAllowed && !rolesAllowed.some(r => roles.includes(r))) {
+      return (
+        <Box sx={{ position: "relative", minHeight: "100vh" }}>
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url("/fondo.jpg")`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              filter: "blur(8px)",
+              zIndex: 0,
+            }}
+          />
+          <Box
+            sx={{
+              position: "relative",
+              zIndex: 1,
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Paper
+              elevation={6}
+              sx={{
+                p: 4,
+                minWidth: 350,
+                maxWidth: 450,
+                width: "90%",
+                background: "rgba(255,255,255,0.85)",
+                color: "#222",
+                borderRadius: "8px",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h6" sx={{ mt: 2 }}>
+                No tienes permiso para ver esta página
+              </Typography>
+            </Paper>
+          </Box>
+        </Box>
+      );
+    }
+    
+    return element;
+  };
+  
+
+  return (
+    <div className="container">
+      <NavBar />
+      <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route
+            path="/tool/list"
+            element={<PrivateRoute element={<ToolList />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/client/list"
+            element={<PrivateRoute element={<ClientList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/employee/list"
+            element={<PrivateRoute element={<EmployeeList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/admin/list"
+            element={<PrivateRoute element={<AdminList />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/tool/add"
+            element={<PrivateRoute element={<AddTool />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/tool/edit/:toolId"
+            element={<PrivateRoute element={<EditTool />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/client/edit/:client_id"
+            element={<PrivateRoute element={<EditClient />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/client/add/"
+            element={<PrivateRoute element={<AddClient />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/admin/add"
+            element={<PrivateRoute element={<AddAdmin />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/employee/add"
+            element={<PrivateRoute element={<AddEmployee />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/list/"
+            element={<PrivateRoute element={<LoanList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/employee/edit/:client_id"
+            element={<PrivateRoute element={<EditEmployee />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/new/:client_id"
+            element={<PrivateRoute element={<NewLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/info/:loan_id"
+            element={<PrivateRoute element={<LoanInfo />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/record/list"
+            element={<PrivateRoute element={<RecordList />} rolesAllowed={["ADMIN"]} />}
+          />
+          <Route
+            path="/loan/list/:client_id"
+            element={<PrivateRoute element={<ListLoanId />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/return/id/:client_id/:loan_id"
+            element={<PrivateRoute element={<PreReturnLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/loan/return/id/:client_id/:loan_id/summary"
+            element={<PrivateRoute element={<ReturnLoan />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/fine/list"
+            element={<PrivateRoute element={<FineList />} rolesAllowed={["STAFF","ADMIN"]} />}
+          />
+          <Route
+            path="/reports/create"
+            element={<PrivateRoute element={<AddReport />} rolesAllowed={["STAFF","ADMIN","CLIENT"]} />}
+          />
+          <Route
+            path="/reports/create/:clientId"
+            element={<PrivateRoute element={<AddReport />} rolesAllowed={["STAFF","ADMIN","CLIENT"]} />}
+          />
+          <Route
+            path="/myreports"
+            element={<PrivateRoute element={<MyReports />} rolesAllowed={["STAFF","ADMIN","CLIENT"]} />}
+          />
+          <Route
+            path="/report/loans-by-client"
+            element={<PrivateRoute element={<NewLoanReport />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/viewLoanreports/:reportId"
+            element={<PrivateRoute element={<ViewLoanReports />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/report/top-tools"
+            element={<PrivateRoute element={<NewRakingTool />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/report/behind-loans"
+            element={<PrivateRoute element={<NewClientBehindReport />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/viewrankingreport/:reportId"
+            element={<PrivateRoute element={<ViewRankingReport />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/viewclientbehind/:reportId"
+            element={<PrivateRoute element={<ViewClientBehindReport />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/reports/:client_id"
+            element={<PrivateRoute element={<ViewReportsById />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/fines/:client_id"
+            element={<PrivateRoute element={<FineListId />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+        </Routes>
+      </div>
+    );
+  }
+  
+  export default App

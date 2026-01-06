@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unified-db-init
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS bdclients;
+    CREATE DATABASE IF NOT EXISTS bdinventory;
+    CREATE DATABASE IF NOT EXISTS bdkardex;
+    CREATE DATABASE IF NOT EXISTS bdloans;
+    CREATE DATABASE IF NOT EXISTS bdrates;
+    CREATE DATABASE IF NOT EXISTS bdreports;
+    CREATE DATABASE IF NOT EXISTS bdusers;
+    GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
+    FLUSH PRIVILEGES;

@@ -1,0 +1,12 @@
+import httpClient from "../http-common";
+
+const create = data => {
+    return httpClient.post('/clientsBehindLoans/', data);
+}
+
+
+const getAllLoansIdByClientBehindId = id => {
+    return httpClient.get(`/clientsBehindLoans/${id}`);
+}
+
+export default { create, getAllLoansIdByClientBehindId};

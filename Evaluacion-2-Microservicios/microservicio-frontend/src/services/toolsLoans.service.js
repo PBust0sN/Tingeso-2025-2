@@ -1,0 +1,29 @@
+import httpClient from "../http-common";
+
+const getAll = () => {
+    return httpClient.get('/tools/loan/');
+}
+
+const create = data => {
+    return httpClient.post('/tools/loan/', data);
+}
+
+const get = id => {
+    return httpClient.get(`/tools/loan/${id}`);
+}
+
+const update = data => {
+    return httpClient.put('/tools/loan/', data);
+}
+
+const remove = id => {
+    return httpClient.delete(`/tools/loan/${id}`
+    );
+}
+
+const getToolsIdByLoanId = id => {
+    return httpClient.get(`/tools/loan/toolsIDs/${id}`);
+}
+
+
+export default { getAll, get, create, update, remove, getToolsIdByLoanId};

@@ -14,14 +14,14 @@ pipeline {
         
         stage('Build Maven') {
             steps {
-                bat 'cd Evaluacion-2-Microservicios\\ms-inventory-service && mvn clean package -DskipTests'
+                bat 'cd Evaluacion-2-Microservicios\\ms-clients-service && mvn clean package -DskipTests'
             }
         }
         
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat 'cd Evaluacion-2-Microservicios\\ms-inventory-service && docker build -t pbust0sn/ms-inventory-service:latest .'
+                    bat 'cd Evaluacion-2-Microservicios\\ms-clients-service && docker build -t pbust0sn/ms-clients-service:latest .'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'dock', variable: 'DOCKER_TOKEN')]) {
                         bat 'echo %DOCKER_TOKEN% | docker login -u pbust0sn --password-stdin'
-                        bat 'docker push pbust0sn/ms-inventory-service:latest'
+                        bat 'docker push pbust0sn/ms-clients-service:latest'
                         bat 'docker logout'
                     }
                 }
@@ -41,7 +41,7 @@ pipeline {
         stage('Rollout Deployment') {
             steps {
                 script {
-                    bat "for /f %i in ('kubectl get deploy -o name ^| findstr ms-inventory') do kubectl rollout restart %i"
+                    bat "for /f %i in ('kubectl get deploy -o name ^| findstr ms-clients') do kubectl rollout restart %i"
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
     
     post {
         success {
-            echo 'Docker image ms-inventory-service pushed successfully to Docker Hub'
+            echo 'Docker image ms-clients-service pushed successfully to Docker Hub'
         }
         failure {
             echo 'Failed to push Docker image'

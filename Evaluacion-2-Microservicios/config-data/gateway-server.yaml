@@ -1,0 +1,70 @@
+server:
+  port: 8433
+  ssl:
+    key-store: /etc/gateway/certs/tls.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+app:
+  upload:
+    dir: /app/uploads
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+spring:
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders:
+              - "*"
+            allowCredentials: false
+            maxAge: 3600
+      routes:
+        - id: clients-service
+          uri: lb://ms-clients-service
+          predicates:
+            - Path=/clients/**
+        - id: kardex-service
+          uri: lb://ms-kardex-service
+          predicates:
+            - Path=/records/**
+        - id: inventory-service
+          uri: lb://ms-inventory-service
+          predicates:
+            - Path=/tools/**
+        - id: fine-service
+          uri: lb://ms-rates-service
+          predicates:
+            - Path=/fine/**
+        - id: reports-service
+          uri: lb://ms-reports-service
+          predicates:
+            - Path=/reports/**
+        - id: images-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/images/**
+          filters:
+            - StripPrefix=1
+        - id: loans-service
+          uri: lb://ms-loans-service
+          predicates:
+            - Path=/loans/**

@@ -1,0 +1,62 @@
+package com.example.ms_rates_service.Controller;
+
+import com.example.ms_rates_service.Entities.FineEntity;
+import com.example.ms_rates_service.Repository.FineRepository;
+import com.example.ms_rates_service.Service.FineService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/fine")
+@CrossOrigin("*")
+public class FineController {
+    @Autowired
+    private FineService fineService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FineEntity> getFineById(@PathVariable Long id){
+        FineEntity fine = fineService.getFineById(id);
+        return ResponseEntity.ok(fine);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<FineEntity>> getAllFine(){
+        List<FineEntity> fines = fineService.getAllFine();
+        return ResponseEntity.ok(fines);
+    }
+
+    @GetMapping("/get-all-clients/{id}")
+    public ResponseEntity<List<FineEntity>> getAllClientsById(@PathVariable Long id){
+        List<FineEntity> fines = fineService.getAllFinesByClientId(id);
+        return ResponseEntity.ok(fines);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<FineEntity> createFine(@RequestBody FineEntity fineEntity){
+        FineEntity newFine = fineService.saveFine(fineEntity);
+        return ResponseEntity.ok(newFine);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<FineEntity> updateFine(@RequestBody FineEntity fineEntity){
+        FineEntity updatefine = fineService.updateFine(fineEntity);
+        return ResponseEntity.ok(updatefine);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<FineEntity> deleteFine(@PathVariable Long id) throws Exception {
+        var isDeleted = fineService.deleteFineById(id);
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @PostMapping("/pay/{client_id}/{fine_id}")
+    public ResponseEntity<Void> payFine(@PathVariable Long client_id, @PathVariable Long fine_id){
+        fineService.payFine(client_id,fine_id);
+        return ResponseEntity.ok().build();
+    }
+}

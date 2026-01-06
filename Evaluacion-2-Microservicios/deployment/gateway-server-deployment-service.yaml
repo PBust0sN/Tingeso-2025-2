@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service-deployment
+  labels:
+    app: gateway-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: gateway-service-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway-service-deployment
+    spec:
+      initContainers:
+        - name: wait-for-config-service
+          image: curlimages/curl:latest
+          command: ['sh', '-c', 'until curl -f http://config-service:8081/actuator/health; do echo "Esperando a config-service..."; sleep 5; done']
+        - name: wait-for-eureka-service
+          image: curlimages/curl:latest
+          command: ['sh', '-c', 'until curl -f http://eureka-service:8761/eureka/; do echo "Esperando a eureka-service..."; sleep 5; done']
+      containers:
+        - name: gateway-service
+          image: pbust0sn/gateway-service:latest
+          env:
+            - name: SERVER_SSL_ENABLED
+              value: "true"
+            - name: SERVER_SSL_KEY_STORE
+              value: /etc/gateway/certs/tls.p12
+            - name: SERVER_SSL_KEY_STORE_PASSWORD
+              value: changeit
+            - name: SERVER_SSL_KEY_STORE_TYPE
+              value: PKCS12
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
+            - name: JAVA_OPTS
+              value: "-Dcom.sun.security.enableInternalSSLStub=false -Djdk.internal.httpclient.disableHostnameVerification=true"
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8433
+              name: https
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 40
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "1"
+            limits:
+              memory: "384Mi"
+              cpu: "2"
+          volumeMounts:
+            - name: uploads
+              mountPath: /app/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: gateway-uploads-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  labels:
+    app: gateway-service
+spec:
+  selector:
+    app: gateway-service-deployment
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: http
+      nodePort: 30082
+    - protocol: TCP
+      port: 8433
+      targetPort: 8433
+      name: https
+      nodePort: 30444
+  type: NodePort

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-unified
+  labels:
+    app: mysql-unified
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-unified
+  template:
+    metadata:
+      labels:
+        app: mysql-unified
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-credentials
+              key: password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: password
+        ports:
+        - containerPort: 3306
+        resources:
+          limits:
+            memory: "512Mi"
+          requests:
+            memory: "384Mi"
+        volumeMounts:
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-initdb
+        configMap:
+          name: unified-db-init
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-unified
+spec:
+  selector:
+    app: mysql-unified
+  ports:
+  - port: 3306
+    targetPort: 3306

@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    stages{
+        stage('Build And Push image to Docker Hub'){
+            steps{
+                dir("Evaluacion-2-Microservicios/microservicio-frontend"){
+                    script{
+                       withCredentials([string(credentialsId: 'dock', variable: 'DOCKER_TOKEN')]) {
+                        bat 'echo %DOCKER_TOKEN% | docker login -u pbust0sn --password-stdin'
+                        bat 'docker build -t pbust0sn/microservicio-frontend:latest .'
+                        bat 'docker push pbust0sn/microservicio-frontend:latest'
+                        bat 'docker logout'
+                        }
+                    }
+
+                }
+            }
+        }
+
+        stage('Rollout Deployment') {
+            steps {
+                script {
+                    bat "for /f %i in ('kubectl get deploy -o name ^| findstr front') do kubectl rollout restart %i"
+                }
+            }
+        }
+    }
+}

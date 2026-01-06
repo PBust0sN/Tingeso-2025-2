@@ -1,0 +1,41 @@
+import httpClient from "../http-common";
+
+const getAll = () => {
+    return httpClient.get('/loans/');
+}
+
+const create = data => {
+    return httpClient.post('/loans/', data);
+}
+
+const newLoan = data => {
+    return httpClient.post('/loans/new', data);
+}
+
+const returnLoan = data => {
+    return httpClient.post('/loans/return', data);
+}
+
+const get = id => {
+    return httpClient.get(`/loans/${id}`);
+}
+
+const update = data => {
+    return httpClient.put('/loans/', data);
+}
+
+const remove = id => {
+    return httpClient.delete(`/loans/${id}`
+    );
+}
+
+const calculateCost = id => {
+    return httpClient.get(`/loans/calculate/cost/${id}`);
+}
+
+// Send the full loan object in the request body so backend can validate dates
+const chechDates = data => {
+    return httpClient.post('/loans/checkdates', data);
+}
+
+export default { getAll, get, create, newLoan, returnLoan, update, remove, calculateCost, chechDates};
