@@ -14,10 +14,6 @@ spec:
       labels:
         app: eureka-service-deployment
     spec:
-      initContainers:
-        - name: wait-for-config-service
-          image: curlimages/curl:latest
-          command: ['sh', '-c', 'until curl -f http://config-service:8081/actuator/health; do echo "Esperando a config-service..."; sleep 5; done']
       containers:
         - name: eureka-service
           image: pbust0sn/eureka-service:latest
@@ -54,4 +50,4 @@ spec:
     - protocol: TCP
       port: 8761
       targetPort: 8761
-  type: LoadBalancer
+  type: nodePort
