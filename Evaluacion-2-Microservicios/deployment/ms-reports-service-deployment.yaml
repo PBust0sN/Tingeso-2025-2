@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-reports-service-deployment
+  labels:
+    app: ms-reports-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-reports-service-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-reports-service-deployment
+    spec:
+      initContainers:
+        - name: wait-for-config-service
+          image: curlimages/curl:latest
+          command: ['sh', '-c', 'until curl -f http://config-server:8888/actuator/health; do echo "Esperando a config-service..."; sleep 5; done']
+      containers:
+        - name: ms-reports-service
+          image: pbust0sn/ms-reports-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+          env:
+            - name: SERVER_PORT
+              value: "0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: reports-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: reports-db
+                  key: port
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: reports-db
+                  key: name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-root-credentials
+                  key: password
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://$(DB_HOST):$(DB_PORT)/$(DB_DBNAME)?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "$(DB_USER)"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "$(DB_PASSWORD)"
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 40
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "1"
+            limits:
+              memory: "384Mi"
+              cpu: "2"

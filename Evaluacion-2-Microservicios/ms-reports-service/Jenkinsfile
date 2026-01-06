@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    
+    tools {
+        maven 'maven'
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/eval2-ms-advance']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PBust0sN/Tingeso-2025-2']])
+            }
+        }
+        
+        stage('Build Maven') {
+            steps {
+                bat 'cd Evaluacion-2-Microservicios\\ms-kardex-service && mvn clean package -DskipTests'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    bat 'cd Evaluacion-2-Microservicios\\ms-kardex-service && docker build -t pbust0sn/ms-kardex-service:latest .'
+                }
+            }
+        }
+        
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dock', variable: 'DOCKER_TOKEN')]) {
+                        bat 'echo %DOCKER_TOKEN% | docker login -u pbust0sn --password-stdin'
+                        bat 'docker push pbust0sn/ms-kardex-service:latest'
+                        bat 'docker logout'
+                    }
+                }
+            }
+        }
+
+        stage('Rollout Deployment') {
+            steps {
+                script {
+                    bat "for /f %i in ('kubectl get deploy -o name ^| findstr ms-kardex') do kubectl rollout restart %i"
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Docker image ms-kardex-service pushed successfully to Docker Hub'
+        }
+        failure {
+            echo 'Failed to push Docker image'
+        }
+    }
+}

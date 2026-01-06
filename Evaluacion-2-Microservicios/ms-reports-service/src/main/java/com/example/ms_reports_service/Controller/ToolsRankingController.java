@@ -1,0 +1,42 @@
+package com.example.ms_reports_service.Controller;
+
+import com.example.ms_reports_service.Entities.ToolsRankingEntity;
+import com.example.ms_reports_service.Service.ToolsRankingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("//toolsRanking")
+@CrossOrigin("*")
+public class ToolsRankingController {
+    @Autowired
+    private ToolsRankingService toolsRankingService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ToolsRankingEntity>> getToolsRankingById(@PathVariable("id") Long id) {
+        List<ToolsRankingEntity> toolsRankingEntities = toolsRankingService.getToolsRankingByReportId(id);
+        return ResponseEntity.ok(toolsRankingEntities);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<ToolsRankingEntity>> getAllToolsRanking(){
+        List<ToolsRankingEntity>  toolsRankingEntities = toolsRankingService.getAllToolsRanking();
+        return ResponseEntity.ok(toolsRankingEntities);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<ToolsRankingEntity> createToolsRanking(@RequestBody ToolsRankingEntity toolsRankingEntity){
+        ToolsRankingEntity newToolsRanking =  toolsRankingService.createToolsRanking(toolsRankingEntity);
+        return ResponseEntity.ok(newToolsRanking);
+    }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<ToolsRankingEntity> deleteToolsRanking(@PathVariable("id") Long id) throws Exception{
+        var isDeleted =  toolsRankingService.deleteToolsRankingById(id);
+        return ResponseEntity.noContent().build();
+    }
+}

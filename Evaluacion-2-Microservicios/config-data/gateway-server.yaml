@@ -50,6 +50,14 @@ spring:
           uri: lb://ms-inventory-service
           predicates:
             - Path=/tools/**
+        - id: fine-service
+          uri: lb://ms-rates-service
+          predicates:
+            - Path=/fine/**
+        - id: reports-service
+          uri: lb://ms-reports-service
+          predicates:
+            - Path=/reports/**
         - id: images-service
           uri: http://localhost:8080
           predicates:

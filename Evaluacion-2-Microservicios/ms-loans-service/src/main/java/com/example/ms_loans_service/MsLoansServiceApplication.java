@@ -8,10 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-public class MsKardexServiceApplication {
+public class MsLoansServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsKardexServiceApplication.class, args);
+		SpringApplication.run(MsLoansServiceApplication.class, args);
 	}
 
 }
