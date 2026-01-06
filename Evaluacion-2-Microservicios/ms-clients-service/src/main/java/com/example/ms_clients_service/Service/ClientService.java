@@ -32,15 +32,28 @@ public class ClientService {
 
     //save a client into the data base
     public ClientEntity saveClient(ClientEntity clientEntity){
-        ClientEntity client = clientRepository.save(clientEntity);
-        keycloakService.createUserInKeycloak(
-                client.getName(),
-                client.getMail(),
-                client.getPassword(),
-                client.getClient_id(),
-                client.getRole()
-        );
-        return client;
+        try {
+            ClientEntity client = clientRepository.save(clientEntity);
+            try {
+                keycloakService.createUserInKeycloak(
+                        client.getName(),
+                        client.getMail(),
+                        client.getPassword(),
+                        client.getClient_id(),
+                        client.getRole()
+                );
+            } catch (Exception e) {
+                // Si falla Keycloak, registramos el error pero el cliente se creó en BD
+                System.err.println("Advertencia: Cliente creado en BD pero falló la creación en Keycloak: " + e.getMessage());
+                e.printStackTrace();
+                // Puedes optar por relanzar la excepción si prefieres que fracase completamente
+                throw new RuntimeException("Error al crear usuario en Keycloak: " + e.getMessage(), e);
+            }
+            return client;
+        } catch (Exception e) {
+            System.err.println("Error al guardar cliente: " + e.getMessage());
+            throw new RuntimeException("Error al crear cliente: " + e.getMessage(), e);
+        }
     }
 
     //get a client by his id field

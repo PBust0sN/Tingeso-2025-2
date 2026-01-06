@@ -56,3 +56,7 @@ spring:
             - Path=/images/**
           filters:
             - StripPrefix=1
+        - id: loans-service
+          uri: lb://ms-loans-service
+          predicates:
+            - Path=/loans/**

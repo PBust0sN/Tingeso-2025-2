@@ -143,13 +143,10 @@ const AddTool = () => {
   };
 
   const uploadImage = (file, toolId) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    
     // Nombre personalizado: ${toolId}.png
     const customFilename = `${toolId}.png`;
     
-    return imagesService.uploadImage(formData, customFilename);
+    return imagesService.uploadImage(file, customFilename);
   };
 
   const saveTool = async (e) => {

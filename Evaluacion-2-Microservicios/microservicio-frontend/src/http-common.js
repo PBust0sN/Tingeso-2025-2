@@ -19,6 +19,11 @@ console.log('API Gateway URL configurada:', baseURL);
  */
 api.interceptors.request.use(async (config) => {
   try {
+    // Si es FormData, no forzar Content-Type para que axios maneje el boundary
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+
     if (keycloak && keycloak.authenticated) {
       // Actualizar token si está por expirar en 30 segundos
       const refreshed = await keycloak.updateToken(30);

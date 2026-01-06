@@ -147,7 +147,6 @@ const EditTool = () => {
     const files = e.dataTransfer.files;
     if (files && files[0]) {
       const file = files[0];
-      // validar que sea imagen
       if (file.type.startsWith("image/")) {
         setImage(file);
         const reader = new FileReader();
@@ -155,8 +154,6 @@ const EditTool = () => {
           setPreview(reader.result);
         };
         reader.readAsDataURL(file);
-        // Subir la imagen usando imagesService
-        uploadImage(file);
       } else {
         alert("Por favor, selecciona un archivo de imagen.");
       }
@@ -174,28 +171,10 @@ const EditTool = () => {
           setPreview(reader.result);
         };
         reader.readAsDataURL(file);
-        // Subir la imagen usando imagesService
-        uploadImage(file);
       } else {
         alert("Por favor, selecciona un archivo de imagen.");
       }
     }
-  };
-
-  const uploadImage = (file) => {
-    // Nombre personalizado: ${toolId}.png
-    const customFilename = `${toolId}.png`;
-
-    imagesService
-      .uploadImage(file, customFilename)
-      .then((response) => {
-        console.log("Imagen subida exitosamente:", response.data);
-        console.log("Imagen guardada como:", response.data.filename);
-      })
-      .catch((error) => {
-        console.log("Error al subir la imagen:", error);
-        alert("Error al subir la imagen");
-      });
   };
 
   const saveTool = (e) => {
