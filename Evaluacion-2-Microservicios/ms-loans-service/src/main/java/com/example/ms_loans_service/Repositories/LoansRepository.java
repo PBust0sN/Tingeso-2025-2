@@ -1,4 +1,4 @@
-package com.example.ms_loans_service.Repository;
+package com.example.ms_loans_service.Repositories;
 
 import com.example.ms_loans_service.Entities.LoansEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

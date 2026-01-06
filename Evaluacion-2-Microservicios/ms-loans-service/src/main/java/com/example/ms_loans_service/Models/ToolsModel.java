@@ -11,10 +11,13 @@ public class ToolsModel {
 
     private Long toolId;
     private String toolName;
+    private String initialState;
+    private String disponibility;
     private String category;
-    private Double repositionFee;
-    private String state;
-    private Long quantity;
-    private Double dailyRate;
-    private String image;
+    private Long loanFee;
+    private Long repositionFee;
+    private Long diaryFineFee;
+    private Long stock;
+    private Long loanCount;
+    private Long lowDmgFee;
 }

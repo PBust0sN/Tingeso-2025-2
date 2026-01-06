@@ -1,4 +1,4 @@
-package com.example.ms_kardex_service.config;
+package com.example.ms_loans_service.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.ms_kardex_service;
+package com.example.ms_loans_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

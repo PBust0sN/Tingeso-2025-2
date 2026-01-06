@@ -51,14 +51,14 @@ public class ClientRemoteService {
 
     // Actualizar información del cliente
     public ClientModel updateClient(ClientModel clientModel) {
-        String url = CLIENTS_SERVICE_URL + "/api/clients/";
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/";
         restTemplate.put(url, clientModel);
         return clientModel;
     }
 
     // Buscar cliente por RUT
     public ClientModel findByRut(String rut) {
-        String url = CLIENTS_SERVICE_URL + "/api/clients/rut/" + rut;
+        String url = GATEWAY_URL + SERVICE_ENDPOINT + "/rut/" + rut;
         return restTemplate.getForObject(url, ClientModel.class);
     }
 }

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -12,9 +12,10 @@ import java.time.LocalDate;
 public class RecordsModel {
 
     private Long recordId;
+    private Date recordDate;
+    private String recordType;
+    private Long recordAmount;
+    private Long clientId;
+    private Long loanId;
     private Long toolId;
-    private Long staffId;
-    private String action;
-    private LocalDate recordDate;
-    private String description;
 }

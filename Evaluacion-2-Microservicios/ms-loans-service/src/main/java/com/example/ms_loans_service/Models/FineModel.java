@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
@@ -12,9 +12,10 @@ import java.time.LocalDate;
 public class FineModel {
 
     private Long fineId;
+    private Long amount;
+    private String type;
     private Long clientId;
-    private Double amount;
-    private LocalDate fineDate;
-    private String description;
-    private Boolean paid;
+    private Long loanId;
+    private String state;
+    private Date date;
 }

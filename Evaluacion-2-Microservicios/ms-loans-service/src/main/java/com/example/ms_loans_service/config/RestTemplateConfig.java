@@ -1,4 +1,4 @@
-package com.example.ms_clients_service.config;
+package com.example.ms_loans_service.config;
 
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
