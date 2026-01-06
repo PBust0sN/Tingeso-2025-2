@@ -55,4 +55,4 @@ spring:
           predicates:
             - Path=/images/**
           filters:
-            - StripPrefix=0
+            - StripPrefix=1
