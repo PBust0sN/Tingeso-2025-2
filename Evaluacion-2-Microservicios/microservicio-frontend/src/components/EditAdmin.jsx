@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -17,12 +17,39 @@ const EditAdmin = () => {
   const [rut, setRut] = useState("");
   const [state, setState] = useState("");
   const [password, setPassword] = useState("");
+  const { client_id } = useParams();
   const navigate = useNavigate();
 
   // Errors state
   const [errorsList, setErrorsList] = useState([]);
   const [fieldErrors, setFieldErrors] = useState({});
   const [clients, setClients] = useState([]);
+
+  useEffect(() => {
+    clientService
+      .getAll()
+      .then((res) => setClients(res.data || []))
+      .catch(() => setClients([]));
+  }, []);
+
+  useEffect(() => {
+    if (client_id) {
+      clientService
+        .get(client_id)
+        .then((client) => {
+          setRut((client.data.rut || "").replace(/\./g, ""));
+          setName(client.data.name || "");
+          setLastName(client.data.last_name || "");
+          setMail(client.data.mail || "");
+          setPhoneNumber(client.data.phone_number || "");
+          setState(client.data.state || "activo");
+          // Password is usually not retrieved for security reasons
+        })
+        .catch((error) => {
+          console.log("Se ha producido un error.", error);
+        });
+    }
+  }, [client_id]);
 
   const normalizeRut = (r) => (r || "").replace(/\./g, "").trim().toLowerCase();
 
@@ -57,12 +84,12 @@ const EditAdmin = () => {
       }
     }
 
-    if (!password || password.length < 6) {
-      errors.push("Password obligatorio (mínimo 6 caracteres).");
-      fErrors.password = true;
+    if ((!client_id && (!password || password.length < 6)) || (password && password.length < 6)) {
+        errors.push("Password obligatorio (mínimo 6 caracteres).");
+        fErrors.password = true;
     }
 
-    if (!phone_number || !/^\d+$/.test(phone_number)) {
+    if (!phone_number || !/^\d+$/.test(phone_number)) { 
       errors.push("Phone Number obligatorio y sólo debe contener dígitos.");
       fErrors.phone_number = true;
     }
@@ -70,7 +97,11 @@ const EditAdmin = () => {
     // check RUT uniqueness
     const newRutNorm = normalizeRut(rut);
     if (newRutNorm) {
-      const exists = clients.some((c) => normalizeRut(c.rut) === newRutNorm);
+      const exists = clients.some(
+        (c) => 
+            normalizeRut(c.rut) === newRutNorm && 
+            String(c.client_id) !== String(client_id)
+        );
       if (exists) {
         errors.push("El RUT ya existe en la base de datos.");
         fErrors.rut = true;
@@ -93,11 +124,12 @@ const EditAdmin = () => {
     }
 
     const client = {
+      client_id,
       rut: normalizeRut(rut),
       name,
       last_name,
       mail,
-      state: "activo",
+      state,
       phone_number,
       password,
       role: "ADMIN",
@@ -105,13 +137,13 @@ const EditAdmin = () => {
 
     console.log(client);
     clientService
-      .create(client)
+      .update(client)
       .then((response) => {
-        console.log("Admin añadido.", response.data);
+        console.log("Admin actualizado.", response.data);
         navigate("/admin/list");
       })
       .catch((error) => {
-        console.log("Ha ocurrido un error al intentar crear nuevo cliente.", error);
+        console.log("Ha ocurrido un error al intentar actualizar el cliente.", error);
       });
   };
 
@@ -163,7 +195,7 @@ const EditAdmin = () => {
             justifyContent="center"
             component="form"
           >
-            <h3>Nuevo Admin</h3>
+            <h3>Editar Admin</h3>
             <hr />
 
             {/* error list */}
@@ -275,7 +307,7 @@ const EditAdmin = () => {
               </Button>
             </FormControl>
             <hr />
-            <Link to="/client/list">Back to List</Link>
+            <Link to="/admin/list">Back to List</Link>
           </Box>
         </Paper>
       </Box>
