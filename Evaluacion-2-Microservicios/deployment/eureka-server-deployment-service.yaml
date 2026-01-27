@@ -14,10 +14,6 @@ spec:
       labels:
         app: eureka-service-deployment
     spec:
-      initContainers:
-        - name: wait-for-config-service
-          image: curlimages/curl:latest
-          command: ['sh', '-c', 'until curl -f http://config-service:8081/actuator/health; do echo "Esperando a config-service..."; sleep 5; done']
       containers:
         - name: eureka-service
           image: pbust0sn/eureka-service:latest
@@ -25,7 +21,7 @@ spec:
             - containerPort: 8761
           readinessProbe:
             httpGet:
-              path: /eureka/
+              path: /actuator/health
               port: 8761
             initialDelaySeconds: 20
             periodSeconds: 10
@@ -33,7 +29,7 @@ spec:
             failureThreshold: 3
           livenessProbe:
             httpGet:
-              path: /eureka/
+              path: /actuator/health
               port: 8761
             initialDelaySeconds: 30
             periodSeconds: 15

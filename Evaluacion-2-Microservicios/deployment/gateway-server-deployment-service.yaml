@@ -14,13 +14,6 @@ spec:
       labels:
         app: gateway-service-deployment
     spec:
-      initContainers:
-        - name: wait-for-config-service
-          image: curlimages/curl:latest
-          command: ['sh', '-c', 'until curl -f http://config-service:8081/actuator/health; do echo "Esperando a config-service..."; sleep 5; done']
-        - name: wait-for-eureka-service
-          image: curlimages/curl:latest
-          command: ['sh', '-c', 'until curl -f http://eureka-service:8761/eureka/; do echo "Esperando a eureka-service..."; sleep 5; done']
       containers:
         - name: gateway-service
           image: pbust0sn/gateway-service:latest
@@ -42,24 +35,6 @@ spec:
               name: http
             - containerPort: 8433
               name: https
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-              scheme: HTTP
-            initialDelaySeconds: 40
-            periodSeconds: 15
-            timeoutSeconds: 5
-            failureThreshold: 3
           resources:
             requests:
               memory: "256Mi"
