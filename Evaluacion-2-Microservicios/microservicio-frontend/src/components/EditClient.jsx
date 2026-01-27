@@ -45,6 +45,7 @@ const EditClient = () => {
           setMail(client.data.mail || "");
           setState(client.data.state || "activo");
           setPhoneNumber(client.data.phone_number || "");
+          setRole(client.data.role || "");
         })
         .catch((error) => {
           console.log("Se ha producido un error.", error);
