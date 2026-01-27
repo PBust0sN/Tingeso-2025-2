@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages{
+        stage('Build Frontend'){
+            steps{
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/PBust0sN/Tingeso-2025-2']])
+                dir("Evaluacion-1-Monolitico/monoliticoFrontend"){
+                    bat 'npm install'
+                    bat 'npm run build'
+                }
+            }
+        }
+        stage('Build And Push image to Docker Hub'){
+            steps{
+                dir("Evaluacion-1-Monolitico/monoliticoFrontend"){
+                    script{
+                       withCredentials([string(credentialsId: 'dock', variable: 'DOCKER_TOKEN')]) {
+                        bat 'echo %DOCKER_TOKEN% | docker login -u pbust0sn --password-stdin'
+                        bat 'docker build -t pbust0sn/toolrent-frontend:latest .'
+                        bat 'docker push pbust0sn/toolrent-frontend:latest'
+                        bat 'docker logout'
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
