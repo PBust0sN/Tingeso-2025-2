@@ -48,7 +48,7 @@ OU = Development
 CN = $IP
 
 [v3_req]
-keyUsage = keyEncipherment, dataEncipherment
+keyUsage = critical, digitalSignature, keyEncipherment, dataEncipherment
 extendedKeyUsage = serverAuth
 subjectAltName = DNS:$HOSTNAME,DNS:localhost,IP:$IP,IP:127.0.0.1
 EOF
