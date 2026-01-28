@@ -121,7 +121,7 @@ services:
       LC_ALL: C.UTF-8
     ports:
       - "8443:8443"
-      - "8080:8080"   
+      - "80000:8080"   
     restart: always
     depends_on:
       - mysql
