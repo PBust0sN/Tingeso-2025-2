@@ -120,6 +120,7 @@ services:
       LANG: C.UTF-8
       LC_ALL: C.UTF-8
     ports:
+      - "8433:8433"
       - "8080:8080"   
     restart: always
     depends_on:
