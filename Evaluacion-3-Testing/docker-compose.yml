@@ -118,10 +118,7 @@ services:
       KC_DB_PASSWORD: admin
       KC_HOSTNAME: 15.229.27.254
       LANG: C.UTF-8
-      LC_ALL: C.UTF-8
-    ports:
-      - "8443:8443"
-      - "80000:8080"   
+      LC_ALL: C.UTF-8 
     restart: always
     depends_on:
       - mysql
