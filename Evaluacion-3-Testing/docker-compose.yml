@@ -108,7 +108,7 @@ services:
   # ===================
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.4
-    command: start-dev --import-realm --https-certificate-file=/etc/keycloak/certs/tls.crt --https-certificate-key-file=/etc/keycloak/certs/tls.key
+    command: start-dev --import-realm --https-certificate-file=/etc/letsencrypt/live/toolrent-tingeso.duckdns.org/fullchain.pem --https-certificate-key-file=/etc/letsencrypt/live/toolrent-tingeso.duckdns.org/privkey.pem
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
