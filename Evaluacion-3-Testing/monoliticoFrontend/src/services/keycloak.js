@@ -1,7 +1,7 @@
 import Keycloak from "keycloak-js";
 
 const keycloak = new Keycloak({
-  url: "http://15.229.27.254:8080",
+  url: "https://auth.toolrent-tingeso.duckdns.org/",
   realm: "toolRent",
   clientId: "toolRent-Frontend",
 });
