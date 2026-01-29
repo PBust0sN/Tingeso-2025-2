@@ -108,7 +108,7 @@ services:
   # ===================
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.4
-    command: start-dev --import-realm --http-enabled=true  --hostname-strict=true --proxy=edge 
+    command: start-dev --import-realm --http-enabled=true
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
