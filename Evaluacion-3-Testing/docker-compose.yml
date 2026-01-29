@@ -120,6 +120,9 @@ services:
       KC_HOSTNAME: auth.toolrent-tingeso.duckdns.org
       LANG: C.UTF-8
       LC_ALL: C.UTF-8 
+      KC_HTTP_ENABLED: true
+      KC_PROXY: edge
+      KC_HOSTNAME_STRICT: true
     restart: always
     depends_on:
       - mysql
