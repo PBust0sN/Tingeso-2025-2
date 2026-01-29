@@ -124,7 +124,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - ./keycloak/certs:/etc/keycloak/certs:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
     networks:
       - mynet
