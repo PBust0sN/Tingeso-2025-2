@@ -8,9 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 console.log('Keycloak instance at index:', keycloak);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <ReactKeycloakProvider authClient={keycloak}>
-      <App />
-    </ReactKeycloakProvider>
-  </BrowserRouter>
+  <ReactKeycloakProvider authClient={keycloak}>
+    <App />
+  </ReactKeycloakProvider>
 )
