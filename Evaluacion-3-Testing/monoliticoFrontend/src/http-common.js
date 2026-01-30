@@ -9,7 +9,7 @@ console.log(monoliticoBackendServer)
 console.log(monoliticoBackendport)
 
 const api = axios.create({
-    baseURL: `http://${monoliticoBackendServer}:${monoliticoBackendport}`,
+    baseURL: import.meta.env.VITE_API_BASE,
     headers: {
         'Content-Type': 'application/json'
     }
