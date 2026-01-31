@@ -26,8 +26,8 @@ services:
     pull_policy: always
     environment:
       DB_HOST: mysql
-      KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
-      REDIRECT_URI: http://localhost:5173*
+      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
+      REDIRECT_URI: https://auth.toolrent-tingeso.duckdns.org*
       IMAGE_UPLOAD_DIR: /uploads
     depends_on:
       - mysql
@@ -43,8 +43,8 @@ services:
     pull_policy: always
     environment:
       DB_HOST: mysql
-      KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
-      REDIRECT_URI: http://localhost:5173*
+      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
+      REDIRECT_URI: https://auth.toolrent-tingeso.duckdns.org*
       IMAGE_UPLOAD_DIR: /uploads
     depends_on:
       - mysql
@@ -60,8 +60,8 @@ services:
     pull_policy: always
     environment:
       DB_HOST: mysql
-      KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/toolRent
-      REDIRECT_URI: http://localhost:5173*
+      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
+      REDIRECT_URI: https://auth.toolrent-tingeso.duckdns.org*
       IMAGE_UPLOAD_DIR: /uploads
     depends_on:
       - mysql
