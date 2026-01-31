@@ -23,7 +23,6 @@ services:
   # ===================
   backend1:
     build: ./monoliticoBackend
-    pull_policy: always
     environment:
       DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
@@ -41,7 +40,6 @@ services:
 
   backend2:
     build: ./monoliticoBackend
-    pull_policy: always
     environment:
       DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
@@ -59,7 +57,6 @@ services:
 
   backend3:
     build: ./monoliticoBackend
-    pull_policy: always
     environment:
       DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
