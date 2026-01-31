@@ -17,7 +17,6 @@ public class ToolsController {
     @Autowired
     ToolsService toolsService;
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<ToolsEntity>> getAllTools() {
         List<ToolsEntity> tools = toolsService.getAllTools();
