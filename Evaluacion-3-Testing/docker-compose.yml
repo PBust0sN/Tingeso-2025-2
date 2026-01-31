@@ -117,7 +117,7 @@ services:
       KC_DB_URL_DATABASE: keycloakdb
       KC_DB_USERNAME: root
       KC_DB_PASSWORD: admin
-      KC_HOSTNAME: toolrent-tingeso.duckdns.org
+      KC_HOSTNAME: auth.toolrent-tingeso.duckdns.org
       LANG: C.UTF-8
       LC_ALL: C.UTF-8 
       KC_HTTP_ENABLED: "true"
