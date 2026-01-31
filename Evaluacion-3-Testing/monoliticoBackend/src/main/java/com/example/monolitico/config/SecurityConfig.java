@@ -9,6 +9,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 public class SecurityConfig {
@@ -21,7 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain permitAllSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .// ❌ nada de sesiones
+            // ❌ nada de sesiones
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
@@ -50,6 +52,16 @@ public class SecurityConfig {
             );
 
         return http.build();
+    }
+
+    /**
+     * Provide a JwtAuthenticationConverter used by tests and optionally by
+     * the resource server configuration if enabled. For testing we return
+     * a simple converter; production code may customize authority mapping.
+     */
+    @Bean
+    public JwtAuthenticationConverter jwtAuthConverter() {
+        return new JwtAuthenticationConverter();
     }
 
     /**
