@@ -26,8 +26,7 @@ services:
     pull_policy: always
     environment:
       DB_HOST: mysql
-      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      REDIRECT_URI: https://toolrent-tingeso.duckdns.org
+      DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
@@ -45,8 +44,7 @@ services:
     pull_policy: always
     environment:
       DB_HOST: mysql
-      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      REDIRECT_URI: https://toolrent-tingeso.duckdns.org
+      IMAGE_UPLOAD_DIR: /uploads
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
@@ -64,8 +62,6 @@ services:
     pull_policy: always
     environment:
       DB_HOST: mysql
-      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      REDIRECT_URI: https://toolrent-tingeso.duckdns.org
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
