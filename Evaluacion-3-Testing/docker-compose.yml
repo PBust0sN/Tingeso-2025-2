@@ -29,6 +29,7 @@ services:
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: disabled
     depends_on:
       - mysql
       - keycloak
@@ -46,6 +47,7 @@ services:
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: disabled
     depends_on:
       - mysql
       - keycloak
@@ -63,6 +65,7 @@ services:
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: disabled
     depends_on:
       - mysql
       - keycloak
