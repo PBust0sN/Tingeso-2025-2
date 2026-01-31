@@ -2,10 +2,13 @@ package com.example.monolitico.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,31 +27,52 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().configurationSource(corsConfigurationSource()) // habilita CORS
-                .and()
-                .csrf().disable()
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("GET", "/api/images/**").permitAll() // Permitir GET de imágenes sin autenticación
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/public/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/images/**").permitAll()
+                .requestMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
+            )
+            .oauth2ResourceServer(oauth2 ->
+                oauth2.jwt(jwt -> jwt
+                    .decoder(jwtDecoder())
+                    .jwtAuthenticationConverter(jwtAuthConverter())
                 )
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter()))
-                );
+            );
 
         return http.build();
     }
 
+    /**
+     * 🔐 FIX CLAVE:
+     * Forzamos el issuer exacto para evitar
+     * "The iss claim is not valid"
+     */
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return JwtDecoders.fromIssuerLocation(
+            "https://auth.toolrent-tingeso.duckdns.org/realms/toolRent"
+        );
+    }
+
+    /**
+     * 🔑 Extrae roles desde realm_access.roles
+     */
     public JwtAuthenticationConverter jwtAuthConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
-            Map<String, Object> realmAccess = (Map<String, Object>) jwt.getClaims().get("realm_access");
+
+            Map<String, Object> realmAccess =
+                (Map<String, Object>) jwt.getClaims().get("realm_access");
 
             if (realmAccess != null && realmAccess.get("roles") instanceof List<?>) {
                 List<?> roles = (List<?>) realmAccess.get("roles");
-                roles.forEach(r -> authorities.add(new SimpleGrantedAuthority("ROLE_" + r)));
+                roles.forEach(r ->
+                    authorities.add(new SimpleGrantedAuthority("ROLE_" + r))
+                );
             }
 
             return authorities;
@@ -56,15 +80,25 @@ public class SecurityConfig {
         return converter;
     }
 
+    /**
+     * 🌍 CORS
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://toolrent-tingeso.duckdns.org", "http://toolrent-tingeso.duckdns.org", "http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedOrigins(List.of(
+            "https://toolrent-tingeso.duckdns.org",
+            "http://toolrent-tingeso.duckdns.org",
+            "http://localhost:5173"
+        ));
+        configuration.setAllowedMethods(List.of(
+            "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

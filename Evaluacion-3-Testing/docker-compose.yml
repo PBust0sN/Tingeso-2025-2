@@ -22,6 +22,7 @@ services:
   # BACKEND (3 instancias)
   # ===================
   backend1:
+    build: ./monoliticoBackend
     image: pbust0sn/toolrent-backend:latest
     pull_policy: always
     environment:
@@ -39,6 +40,7 @@ services:
     restart: unless-stopped
 
   backend2:
+    build: ./monoliticoBackend
     image: pbust0sn/toolrent-backend:latest
     pull_policy: always
     environment:
@@ -56,6 +58,7 @@ services:
     restart: unless-stopped
 
   backend3:
+    build: ./monoliticoBackend
     image: pbust0sn/toolrent-backend:latest
     pull_policy: always
     environment:
