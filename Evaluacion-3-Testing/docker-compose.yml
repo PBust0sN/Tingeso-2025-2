@@ -23,7 +23,6 @@ services:
   # ===================
   backend1:
     build: ./monoliticoBackend
-    image: pbust0sn/toolrent-backend:latest
     pull_policy: always
     environment:
       DB_HOST: mysql
@@ -43,7 +42,6 @@ services:
 
   backend2:
     build: ./monoliticoBackend
-    image: pbust0sn/toolrent-backend:latest
     pull_policy: always
     environment:
       DB_HOST: mysql
@@ -63,7 +61,6 @@ services:
 
   backend3:
     build: ./monoliticoBackend
-    image: pbust0sn/toolrent-backend:latest
     pull_policy: always
     environment:
       DB_HOST: mysql
