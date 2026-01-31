@@ -30,21 +30,9 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
-            ;
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return http.build();
-    }
-
-    /**
-     * Lee el issuer desde la variable de entorno / property `KEYCLOAK_ISSUER_URI`.
-     * Esto evita hardcodear el issuer y permite que la validación coincida
-     * con el `iss` del token que provee Keycloak.
-     */
-    @Bean
-    public JwtDecoder jwtDecoder(
-        @Value("${KEYCLOAK_ISSUER_URI:https://auth.toolrent-tingeso.duckdns.org/realms/toolRent}") String issuerUri
-    ) {
-        return JwtDecoders.fromIssuerLocation(issuerUri);
     }
 
     /**
