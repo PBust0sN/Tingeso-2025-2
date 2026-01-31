@@ -25,38 +25,6 @@ import java.util.Map;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-
-        return http.build();
-    }
-
-    /**
-     * Extrae roles desde realm_access.roles
-     */
-    public JwtAuthenticationConverter jwtAuthConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            Collection<GrantedAuthority> authorities = new ArrayList<>();
-
-            Map<String, Object> realmAccess =
-                (Map<String, Object>) jwt.getClaims().get("realm_access");
-
-            if (realmAccess != null && realmAccess.get("roles") instanceof List<?>) {
-                List<?> roles = (List<?>) realmAccess.get("roles");
-                roles.forEach(r ->
-                    authorities.add(new SimpleGrantedAuthority("ROLE_" + r))
-                );
-            }
-
-            return authorities;
-        });
-        return converter;
-    }
 
     /**
      * CORS
