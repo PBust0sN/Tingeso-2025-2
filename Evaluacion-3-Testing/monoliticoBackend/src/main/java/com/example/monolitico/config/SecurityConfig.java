@@ -21,11 +21,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain permitAllSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .// ❌ nada de sesiones
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            // ❌ nada de CSRF
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+
+            // ❌ nada de login form
+            .formLogin(form -> form.disable())
+
+            // ❌ nada de basic auth
             .httpBasic(basic -> basic.disable())
-            .oauth2ResourceServer(oauth2 -> oauth2.disable());
+
+            // ❌ nada de logout
+            .logout(logout -> logout.disable())
+
+            // ❌ nada de request cache (ESTE ERA EL PROBLEMA)
+            .requestCache(cache -> cache.disable())
+
+            // ❌ nada de OAuth2
+            .oauth2ResourceServer(oauth2 -> oauth2.disable())
+
+            // ✅ todo permitido
+            .authorizeHttpRequests(auth ->
+                auth.anyRequest().permitAll()
+            );
 
         return http.build();
     }
