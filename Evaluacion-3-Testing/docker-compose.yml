@@ -27,7 +27,7 @@ services:
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      REDIRECT_URI: https://auth.toolrent-tingeso.duckdns.org*
+      REDIRECT_URI: https://toolrent-tingeso.duckdns.org*
       IMAGE_UPLOAD_DIR: /uploads
     depends_on:
       - mysql
@@ -44,7 +44,7 @@ services:
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      REDIRECT_URI: https://auth.toolrent-tingeso.duckdns.org*
+      REDIRECT_URI: https://toolrent-tingeso.duckdns.org*
       IMAGE_UPLOAD_DIR: /uploads
     depends_on:
       - mysql
@@ -61,7 +61,7 @@ services:
     environment:
       DB_HOST: mysql
       KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      REDIRECT_URI: https://auth.toolrent-tingeso.duckdns.org*
+      REDIRECT_URI: https://toolrent-tingeso.duckdns.org*
       IMAGE_UPLOAD_DIR: /uploads
     depends_on:
       - mysql
