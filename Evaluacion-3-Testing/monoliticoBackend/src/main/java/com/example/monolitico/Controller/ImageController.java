@@ -19,7 +19,6 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/upload")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
                                          @RequestParam(value = "filename", required = false) String filename) {
