@@ -1,5 +1,6 @@
 package com.example.monolitico.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,19 +36,19 @@ public class SecurityConfig {
     }
 
     /**
-     * 🔐 FIX CLAVE:
-     * Forzamos el issuer exacto para evitar
-     * "The iss claim is not valid"
+     * Lee el issuer desde la variable de entorno / property `KEYCLOAK_ISSUER_URI`.
+     * Esto evita hardcodear el issuer y permite que la validación coincida
+     * con el `iss` del token que provee Keycloak.
      */
     @Bean
-    public JwtDecoder jwtDecoder() {
-        return JwtDecoders.fromIssuerLocation(
-            "https://auth.toolrent-tingeso.duckdns.org/realms/toolRent"
-        );
+    public JwtDecoder jwtDecoder(
+        @Value("${KEYCLOAK_ISSUER_URI:https://auth.toolrent-tingeso.duckdns.org/realms/toolRent}") String issuerUri
+    ) {
+        return JwtDecoders.fromIssuerLocation(issuerUri);
     }
 
     /**
-     * 🔑 Extrae roles desde realm_access.roles
+     * Extrae roles desde realm_access.roles
      */
     public JwtAuthenticationConverter jwtAuthConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
@@ -70,7 +71,7 @@ public class SecurityConfig {
     }
 
     /**
-     * 🌍 CORS
+     * CORS
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
