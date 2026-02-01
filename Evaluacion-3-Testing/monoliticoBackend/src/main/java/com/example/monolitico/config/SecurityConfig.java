@@ -2,7 +2,7 @@ package com.example.monolitico.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,82 +12,59 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import java.util.Map;
 
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    /**
-     * Explicit SecurityFilterChain that permits all requests.
-     * This overrides any auto-configured security and is intended
-     * for debugging; remove when restoring real security.
-     */
     @Bean
-    public SecurityFilterChain permitAllSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // ❌ nada de sesiones
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-
-            // ❌ nada de CSRF
-            .csrf(csrf -> csrf.disable())
-
-            // ❌ nada de login form
-            .formLogin(form -> form.disable())
-
-            // ❌ nada de basic auth
-            .httpBasic(basic -> basic.disable())
-
-            // ❌ nada de logout
-            .logout(logout -> logout.disable())
-
-            // ❌ nada de request cache (ESTE ERA EL PROBLEMA)
-            .requestCache(cache -> cache.disable())
-
-            // ❌ nada de OAuth2
-            .oauth2ResourceServer(oauth2 -> oauth2.disable())
-
-            // ✅ todo permitido
-            .authorizeHttpRequests(auth ->
-                auth.anyRequest().permitAll()
-            );
+                .cors().configurationSource(corsConfigurationSource()) // habilita CORS
+                .and()
+                .csrf().disable()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("GET", "/api/images/**").permitAll() // Permitir GET de imágenes sin autenticación
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter()))
+                );
 
         return http.build();
     }
 
-    /**
-     * Provide a JwtAuthenticationConverter used by tests and optionally by
-     * the resource server configuration if enabled. For testing we return
-     * a simple converter; production code may customize authority mapping.
-     */
-    @Bean
     public JwtAuthenticationConverter jwtAuthConverter() {
-        return new JwtAuthenticationConverter();
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            Map<String, Object> realmAccess = (Map<String, Object>) jwt.getClaims().get("realm_access");
+
+            if (realmAccess != null && realmAccess.get("roles") instanceof List<?>) {
+                List<?> roles = (List<?>) realmAccess.get("roles");
+                roles.forEach(r -> authorities.add(new SimpleGrantedAuthority("ROLE_" + r)));
+            }
+
+            return authorities;
+        });
+        return converter;
     }
 
-    /**
-     * CORS
-     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-            "https://toolrent-tingeso.duckdns.org",
-            "http://toolrent-tingeso.duckdns.org",
-            "http://localhost:5173"
-        ));
-        configuration.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
+        configuration.setAllowedOrigins(List.of("https://toolrent-tingeso.duckdns.org", "https://auth.toolrent-tingeso.duckdns.org", "http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-            new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
