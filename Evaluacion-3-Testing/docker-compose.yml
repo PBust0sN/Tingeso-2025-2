@@ -29,6 +29,7 @@ services:
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
+      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
     depends_on:
       - mysql
       - keycloak
@@ -46,6 +47,7 @@ services:
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
+      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
     depends_on:
       - mysql
       - keycloak
@@ -63,6 +65,7 @@ services:
       IMAGE_UPLOAD_DIR: /uploads
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
+      KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
     depends_on:
       - mysql
       - keycloak
