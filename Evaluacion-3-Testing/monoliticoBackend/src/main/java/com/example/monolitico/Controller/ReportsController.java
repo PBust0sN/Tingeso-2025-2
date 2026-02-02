@@ -19,37 +19,42 @@ public class ReportsController {
     @Autowired
     ReportsServices reportsServices;
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @GetMapping("/")
     public ResponseEntity<List<ReportsEntity>> getAllReports(){
         List<ReportsEntity> reports = reportsServices.getAllReports();
         return ResponseEntity.ok(reports);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @GetMapping("/{id}")
     public ResponseEntity<ReportsEntity> getRecordById(@PathVariable Long id){
         ReportsEntity report = reportsServices.getReportsById(id);
         return ResponseEntity.ok(report);
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @GetMapping("/get-all-client/{id}")
     public ResponseEntity<List<ReportsEntity>> getAllClient(@PathVariable Long id){
         List<ReportsEntity> reports = reportsServices.getAllByClientId(id);
         return ResponseEntity.ok(reports);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/")
     public ResponseEntity<ReportsEntity> saveRecord(@RequestBody ReportsEntity report){
         ReportsEntity newReport = reportsServices.saveReport(report);
         return ResponseEntity.ok(newReport);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PutMapping("/")
     public ResponseEntity<ReportsEntity> updateRecord(@RequestBody ReportsEntity report){
         ReportsEntity newReport = reportsServices.updateReport(report);
         return ResponseEntity.ok(newReport);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ReportsEntity> deleteRecord(@PathVariable Long id) throws Exception{
         var isDeleted = reportsServices.deleteReport(id);

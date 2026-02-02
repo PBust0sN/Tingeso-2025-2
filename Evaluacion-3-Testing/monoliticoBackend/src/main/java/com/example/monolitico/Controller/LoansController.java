@@ -19,38 +19,42 @@ public class LoansController {
     @Autowired
     LoansService loansService;
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @GetMapping("/")
     public ResponseEntity<List<LoansEntity>> getAllLoans(){
         List<LoansEntity> loans = loansService.getAllLoans();
         return ResponseEntity.ok(loans);
     }
-    
+
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')") 
     @GetMapping("/{id}")
     public ResponseEntity<LoansEntity> getLoanById(@PathVariable Long id){
         LoansEntity loan = loansService.findLoanById(id);
         return ResponseEntity.ok(loan);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PostMapping("/")
     public ResponseEntity<Optional<LoansEntity>> saveLoan(@RequestBody LoansEntity loan){
         Optional<LoansEntity> loanEntity = loansService.saveLoan(loan);
         return ResponseEntity.ok(loanEntity);
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PutMapping("/")
     public ResponseEntity<LoansEntity> updateLoan(@RequestBody LoansEntity loan){
         LoansEntity newLoan = loansService.updateLoan(loan);
         return ResponseEntity.ok(newLoan);
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<LoansEntity> deleteLoan(@PathVariable Long id) throws  Exception{
         var isDeleted = loansService.deleteLoan(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/new")
     public ResponseEntity<List<String>> saveNewLoan(@RequestBody NewLoanDTO newLoan){
         List<String> errors = loansService.addLoan(
@@ -62,18 +66,21 @@ public class LoansController {
         return ResponseEntity.ok(errors);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/return")
     public ResponseEntity<ReturnLoanDTO> returnLoan(@RequestBody LoansEntity loan){
         ReturnLoanDTO returN = loansService.returnLoan(loan);
         return ResponseEntity.ok(returN);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @GetMapping("/calculate/cost/{id}")
     public ResponseEntity<ReturnLoanDTO> calculateLoanCost(@PathVariable Long id){
         ReturnLoanDTO cost = loansService.calculateCosts(id);
         return ResponseEntity.ok(cost);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN','CLIENT')")
     @PostMapping("/checkdates")
     public ResponseEntity<Boolean> checkDate(@RequestBody LoansEntity loansEntity){
         boolean bool = loansService.checkDates(loansEntity);

@@ -18,39 +18,42 @@ public class FineController {
     @Autowired
     private FineService fineService;
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<FineEntity> getFineById(@PathVariable Long id){
         FineEntity fine = fineService.getFineById(id);
         return ResponseEntity.ok(fine);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<FineEntity>> getAllFine(){
         List<FineEntity> fines = fineService.getAllFine();
         return ResponseEntity.ok(fines);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping("/get-all-clients/{id}")
     public ResponseEntity<List<FineEntity>> getAllClientsById(@PathVariable Long id){
         List<FineEntity> fines = fineService.getAllFinesByClientId(id);
         return ResponseEntity.ok(fines);
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PostMapping("/")
     public ResponseEntity<FineEntity> createFine(@RequestBody FineEntity fineEntity){
         FineEntity newFine = fineService.saveFine(fineEntity);
         return ResponseEntity.ok(newFine);
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PutMapping("/")
     public ResponseEntity<FineEntity> updateFine(@RequestBody FineEntity fineEntity){
         FineEntity updatefine = fineService.updateFine(fineEntity);
         return ResponseEntity.ok(updatefine);
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<FineEntity> deleteFine(@PathVariable Long id) throws Exception {
         var isDeleted = fineService.deleteFineById(id);
@@ -58,7 +61,7 @@ public class FineController {
 
     }
 
-
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PostMapping("/pay/{client_id}/{fine_id}")
     public ResponseEntity<Void> payFine(@PathVariable Long client_id, @PathVariable Long fine_id){
         fineService.payFine(client_id,fine_id);

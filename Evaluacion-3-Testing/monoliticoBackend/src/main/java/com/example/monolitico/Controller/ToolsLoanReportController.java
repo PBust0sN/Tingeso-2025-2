@@ -19,12 +19,14 @@ public class ToolsLoanReportController {
     @Autowired
     private ToolsLoanReportService toolsLoanReportService;
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping("/getools/{id}")
     public ResponseEntity<List<Long>> getByLoanId(@PathVariable Long id) {
         List<Long> tools = toolsLoanReportService.findByLoanId(id);
         return ResponseEntity.ok(tools);
     }
 
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @PostMapping("/")
     public ResponseEntity<ToolsLoanReportEntity> create(@RequestBody ToolsLoanReportEntity toolsLoanReportEntity) {
         ToolsLoanReportEntity newToolsLoanReport = toolsLoanReportService.createToolsLoanReport(toolsLoanReportEntity);
