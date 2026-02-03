@@ -160,7 +160,7 @@ const formatDate = (dateStr) => {
               </TableRow> 
               {/* Fila de búsqueda por rango de fechas */}
               <TableRow>
-                <TableCell colSpan={10} align="left">
+                <TableCell colSpan={8} align="left">
                   <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DatePicker
@@ -200,7 +200,22 @@ const formatDate = (dateStr) => {
                     </Button>
                   </Box>
                 </TableCell>
-                
+                <TableCell colSpan={2} align="right">
+                  <Link
+                    to="/client/list/select"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<BuildIcon />}
+                      size="large"
+                      sx={{ height: 43, minWidth: 180 }}
+                    >
+                      Nuevo Prestamo
+                    </Button>
+                  </Link>
+                </TableCell>
               </TableRow>
               {/* row of labels */}
               <TableRow>
