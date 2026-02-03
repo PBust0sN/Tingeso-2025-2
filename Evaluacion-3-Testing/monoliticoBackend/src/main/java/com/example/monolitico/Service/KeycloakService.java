@@ -12,7 +12,7 @@ import java.util.*;
 public class KeycloakService {
 
     //private static final String KEYCLOAK_URL = "http://localhost:8080";
-    private static final String KEYCLOAK_URL = "http://keycloak:8080";
+    private static final String KEYCLOAK_URL = "https://auth.toolrent-tingeso.duckdns.org";
     private static final String REALM = "toolRent";
 
     private static final String ADMIN_REALM = "master";
