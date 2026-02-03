@@ -20,6 +20,7 @@ import RotateRightIcon from '@mui/icons-material/RotateRight';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import BuildIcon from '@mui/icons-material/Build';
 
 const LoanList = () => {
   const [loans, setLoans] = useState([]);
