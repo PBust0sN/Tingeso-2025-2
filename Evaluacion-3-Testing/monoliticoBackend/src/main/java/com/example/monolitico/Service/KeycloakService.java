@@ -42,7 +42,7 @@ public class KeycloakService {
         return (String) response.getBody().get("access_token");
     }
 
-    public Map<String, String> loginUser(String username, String password) {
+    public Map<String, Object> loginUser(String username, String password) {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -55,16 +55,33 @@ public class KeycloakService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         try {
-            ResponseEntity<Map> response = restTemplate.postForEntity(
+            // Obtener los tokens
+            ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(
                 KEYCLOAK_URL + "/realms/" + REALM + "/protocol/openid-connect/token",
                 new HttpEntity<>(params, headers),
                 Map.class
             );
 
-            Map<String, String> tokens = new HashMap<>();
-            tokens.put("access_token", (String) response.getBody().get("access_token"));
-            tokens.put("refresh_token", (String) response.getBody().get("refresh_token"));
+            Map<String, Object> tokens = tokenResponse.getBody();
+            String accessToken = (String) tokens.get("access_token");
+
+            // Obtener información del usuario
+            HttpHeaders userHeaders = new HttpHeaders();
+            userHeaders.setBearerAuth(accessToken);
+
+            ResponseEntity<Map> userInfoResponse = restTemplate.exchange(
+                KEYCLOAK_URL + "/realms/" + REALM + "/protocol/openid-connect/userinfo",
+                HttpMethod.GET,
+                new HttpEntity<>(userHeaders),
+                Map.class
+            );
+
+            Map<String, Object> userInfo = userInfoResponse.getBody();
+
+            // Combinar tokens e información del usuario
+            tokens.put("user", userInfo);
             return tokens;
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to log in user: " + e.getMessage(), e);
         }

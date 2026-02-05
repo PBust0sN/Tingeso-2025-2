@@ -28,6 +28,12 @@ const getByRut = rut => {
 const login = (username, password) => {
     return httpClient.post('/api/clients/login', null, {
         params: { username, password }
+    }).then(response => {
+        // Manejar el cuerpo completo de la respuesta
+        return response.data; // Retornar los datos completos
+    }).catch(error => {
+        console.error("Error en el login:", error);
+        throw error;
     });
 };
 

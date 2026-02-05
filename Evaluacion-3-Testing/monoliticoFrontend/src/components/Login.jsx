@@ -176,10 +176,18 @@ const Login = () => {
               onClick={async () => {
                 try {
                   const response = await clientService.login(username, password);
-                  const { access_token, refresh_token } = response.data;
-                  console.log("Login successful, tokens:", response.data);
-                  localStorage.setItem("authToken", access_token); // Store access token in localStorage
-                  localStorage.setItem("refreshToken", refresh_token); // Store refresh token in localStorage
+                  console.log("Login successful, response:", response);
+
+                  // Manejar el cuerpo completo de la respuesta
+                  const { access_token, refresh_token, user } = response;
+                  localStorage.setItem("authToken", access_token); // Guardar el token de acceso
+                  localStorage.setItem("refreshToken", refresh_token); // Guardar el token de refresco
+
+                  if (user) {
+                    console.log("Authenticated user:", user);
+                    localStorage.setItem("authenticatedUser", JSON.stringify(user)); // Guardar datos del usuario
+                  }
+
                   navigate("/home");
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
@@ -303,10 +311,18 @@ const Login = () => {
               onClick={async () => {
                 try {
                   const response = await clientService.login(username, password);
-                  const { access_token, refresh_token } = response.data;
-                  console.log("Login successful, tokens:", response.data);
-                  localStorage.setItem("authToken", access_token); // Store access token in localStorage
-                  localStorage.setItem("refreshToken", refresh_token); // Store refresh token in localStorage
+                  console.log("Login successful, response:", response);
+
+                  // Manejar el cuerpo completo de la respuesta
+                  const { access_token, refresh_token, user } = response;
+                  localStorage.setItem("authToken", access_token); // Guardar el token de acceso
+                  localStorage.setItem("refreshToken", refresh_token); // Guardar el token de refresco
+
+                  if (user) {
+                    console.log("Authenticated user:", user);
+                    localStorage.setItem("authenticatedUser", JSON.stringify(user)); // Guardar datos del usuario
+                  }
+
                   navigate("/home");
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
@@ -430,10 +446,18 @@ const Login = () => {
               onClick={async () => {
                 try {
                   const response = await clientService.login(username, password);
-                  const { access_token, refresh_token } = response.data;
-                  console.log("Login successful, tokens:", response.data);
-                  localStorage.setItem("authToken", access_token); // Store access token in localStorage
-                  localStorage.setItem("refreshToken", refresh_token); // Store refresh token in localStorage
+                  console.log("Login successful, response:", response);
+
+                  // Manejar el cuerpo completo de la respuesta
+                  const { access_token, refresh_token, user } = response;
+                  localStorage.setItem("authToken", access_token); // Guardar el token de acceso
+                  localStorage.setItem("refreshToken", refresh_token); // Guardar el token de refresco
+
+                  if (user) {
+                    console.log("Authenticated user:", user);
+                    localStorage.setItem("authenticatedUser", JSON.stringify(user)); // Guardar datos del usuario
+                  }
+
                   navigate("/home");
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
