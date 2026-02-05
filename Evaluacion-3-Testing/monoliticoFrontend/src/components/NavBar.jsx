@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useKeycloak } from "@react-keycloak/web";
 import { useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@mui/material";
@@ -21,9 +21,26 @@ import logo from "../../public/logo.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [tokenPayload, setTokenPayload] = useState(null);
   const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    if (token) {
+        try {
+            const tokenPayload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+            console.log("Authenticated user:", tokenPayload);
+            setIsAuthenticated(true);
+            setTokenPayload(tokenPayload); // Assuming you have a state to store user info
+        } catch (error) {
+            console.error("Failed to parse token payload:", error);
+        }
+    }
+  }, []);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,10 +94,10 @@ export default function Navbar() {
             </Box>
             {initialized && (
               <>
-                {keycloak.authenticated ? (
+                {isAuthenticated ? (
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography sx={{ mr: 2 }}>
-                      {keycloak.tokenParsed?.username || keycloak.tokenParsed?.email}
+                      {tokenPayload?.username ||tokenPayload?.email}
                     </Typography>
                     <IconButton color="inherit" onClick={handleLogout}>
                       <LogoutIcon />
