@@ -42,7 +42,7 @@ public class KeycloakService {
         return (String) response.getBody().get("access_token");
     }
 
-    public String loginUser(String username, String password) {
+    public Map<String, String> loginUser(String username, String password) {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
