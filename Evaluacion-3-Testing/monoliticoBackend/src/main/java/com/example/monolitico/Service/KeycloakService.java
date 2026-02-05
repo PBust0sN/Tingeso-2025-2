@@ -46,9 +46,9 @@ public class KeycloakService {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("client_id", "admin-cli"); // Replace with your client ID if different
-        params.add("username", username);
-        params.add("password", password);
+        params.add("client_id", ADMIN_CLIENT_ID); // Replace with your client ID if different
+        params.add("username", ADMIN_USERNAME);
+        params.add("password", ADMIN_PASSWORD);
         params.add("grant_type", "password");
 
         HttpHeaders headers = new HttpHeaders();
