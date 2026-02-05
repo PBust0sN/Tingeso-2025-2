@@ -50,7 +50,8 @@ public class KeycloakService {
         params.add("username", username);
         params.add("password", password);
         params.add("grant_type", "password");
-
+        params.add("scope", "openid");
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
