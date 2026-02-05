@@ -49,6 +49,29 @@ const Login = () => {
     }
   }, [initialized, keycloak.authenticated, navigate]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (token && refreshToken) {
+        const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+        const isTokenExpired = tokenPayload.exp * 1000 < Date.now();
+
+        if (isTokenExpired) {
+            clientService.refreshToken(refreshToken)
+                .then(response => {
+                    localStorage.setItem("authToken", response.data.access_token);
+                    localStorage.setItem("refreshToken", response.data.refresh_token);
+                })
+                .catch(() => {
+                    console.error("Failed to refresh token");
+                    localStorage.removeItem("authToken");
+                    localStorage.removeItem("refreshToken");
+                });
+        }
+    }
+}, []);
+
   if (!initialized) return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
       {/* background */}
@@ -153,7 +176,10 @@ const Login = () => {
               onClick={async () => {
                 try {
                   const response = await clientService.login(username, password);
-                  console.log("Login successful, token:", response.data);
+                  const { access_token, refresh_token } = response.data;
+                  console.log("Login successful, tokens:", response.data);
+                  localStorage.setItem("authToken", access_token); // Store access token in localStorage
+                  localStorage.setItem("refreshToken", refresh_token); // Store refresh token in localStorage
                   navigate("/home");
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
@@ -277,7 +303,10 @@ const Login = () => {
               onClick={async () => {
                 try {
                   const response = await clientService.login(username, password);
-                  console.log("Login successful, token:", response.data);
+                  const { access_token, refresh_token } = response.data;
+                  console.log("Login successful, tokens:", response.data);
+                  localStorage.setItem("authToken", access_token); // Store access token in localStorage
+                  localStorage.setItem("refreshToken", refresh_token); // Store refresh token in localStorage
                   navigate("/home");
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
@@ -401,7 +430,10 @@ const Login = () => {
               onClick={async () => {
                 try {
                   const response = await clientService.login(username, password);
-                  console.log("Login successful, token:", response.data);
+                  const { access_token, refresh_token } = response.data;
+                  console.log("Login successful, tokens:", response.data);
+                  localStorage.setItem("authToken", access_token); // Store access token in localStorage
+                  localStorage.setItem("refreshToken", refresh_token); // Store refresh token in localStorage
                   navigate("/home");
                 } catch (error) {
                   if (error.response && error.response.status === 401) {

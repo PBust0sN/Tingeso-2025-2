@@ -60,7 +60,10 @@ public class KeycloakService {
                 Map.class
             );
 
-            return (String) response.getBody().get("access_token");
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("access_token", (String) response.getBody().get("access_token"));
+            tokens.put("refresh_token", (String) response.getBody().get("refresh_token"));
+            return tokens;
         } catch (Exception e) {
             throw new RuntimeException("Failed to log in user: " + e.getMessage(), e);
         }

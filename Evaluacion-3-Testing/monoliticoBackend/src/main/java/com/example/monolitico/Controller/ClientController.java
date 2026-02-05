@@ -66,10 +66,10 @@ public class ClientController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         try {
-            String token = keycloakService.loginUser(username, password);
-            return ResponseEntity.ok(token);
+            Map<String, String> tokens = keycloakService.loginUser(username, password);
+            return ResponseEntity.ok(tokens);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Login failed: " + e.getMessage()));
         }
     }
 }

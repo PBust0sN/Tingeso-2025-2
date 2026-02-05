@@ -31,5 +31,15 @@ const login = (username, password) => {
     });
 };
 
+const refreshToken = (refreshToken) => {
+    return httpClient.post('/realms/toolRent/protocol/openid-connect/token', null, {
+        params: {
+            client_id: 'toolrent-Frontend', // Replace with your client ID
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken
+        }
+    });
+};
 
-export default { getAll, get, create, update, remove, getByRut, login };
+
+export default { getAll, get, create, update, remove, getByRut, login, refreshToken };
