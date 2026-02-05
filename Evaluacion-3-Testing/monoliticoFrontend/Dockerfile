@@ -11,6 +11,14 @@ CMD ["npm", "run", "dev"]
 
 # Etapa de construcción
 FROM base as build
+ARG VITE_API_URL=http://localhost/api
+ARG VITE_KEYCLOAK_URL=http://localhost:8080
+ARG VITE_KEYCLOAK_REALM=toolRent
+ARG VITE_KEYCLOAK_CLIENT_ID=toolRent-frontend
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_KEYCLOAK_URL=$VITE_KEYCLOAK_URL
+ENV VITE_KEYCLOAK_REALM=$VITE_KEYCLOAK_REALM
+ENV VITE_KEYCLOAK_CLIENT_ID=$VITE_KEYCLOAK_CLIENT_ID
 RUN npm run build
 
 # Etapa de producción

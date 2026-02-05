@@ -2,7 +2,9 @@ package com.example.monolitico.Controller;
 
 import com.example.monolitico.Entities.ClientEntity;
 import com.example.monolitico.Service.ClientService;
+import com.example.monolitico.Service.KeycloakService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ import java.util.List;
 public class ClientController {
     @Autowired
     ClientService clientService;
+
+    @Autowired
+    KeycloakService keycloakService;
 
     @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping("/")
@@ -56,5 +61,15 @@ public class ClientController {
     public ResponseEntity<ClientEntity> getClientByRut(@PathVariable String rut){
         ClientEntity client = clientService.findByRut(rut);
         return ResponseEntity.ok(client);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+        try {
+            String token = keycloakService.loginUser(username, password);
+            return ResponseEntity.ok(token);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
+        }
     }
 }

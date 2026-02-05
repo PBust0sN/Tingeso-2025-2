@@ -41,6 +41,31 @@ public class KeycloakService {
         return (String) response.getBody().get("access_token");
     }
 
+    public String loginUser(String username, String password) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("client_id", "admin-cli"); // Replace with your client ID if different
+        params.add("username", username);
+        params.add("password", password);
+        params.add("grant_type", "password");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                KEYCLOAK_URL + "/realms/" + REALM + "/protocol/openid-connect/token",
+                new HttpEntity<>(params, headers),
+                Map.class
+            );
+
+            return (String) response.getBody().get("access_token");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to log in user: " + e.getMessage(), e);
+        }
+    }
+
     public void createUserInKeycloak(String username, String email, String password, Long id_real,String role) {
         String token = getAdminToken();
         RestTemplate restTemplate = new RestTemplate();

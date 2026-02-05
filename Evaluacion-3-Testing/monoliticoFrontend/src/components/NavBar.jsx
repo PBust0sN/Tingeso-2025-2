@@ -17,6 +17,7 @@ import HandymanIcon from '@mui/icons-material/Handyman';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import BookIcon from '@mui/icons-material/Book';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import logo from "../../public/logo.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -67,28 +68,32 @@ export default function Navbar() {
     }}>
       <AppBar position="fixed" sx={{ backgroundColor: "#1976d2aa", color: "#fff", zIndex: 1300, width: "100%" }}> {/* Ensured full width */}
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ToolRent: Sistema de Renta De Herramientas
-          </Typography>
-          {initialized && (
-            <>
-              {keycloak.authenticated ? (
-                <>
-                  <Typography sx={{ mr: 2 }}>
-                    {keycloak.tokenParsed?.username ||
-                      keycloak.tokenParsed?.email}
-                  </Typography>
-                  <IconButton color="inherit" onClick={handleLogout}>
-                    <LogoutIcon />
-                  </IconButton>
-                </>
-              ) : (
-                <Button variant="outlined" color="inherit" onClick={() => navigate("/login")}>
-                  Login
-                </Button>
-              )}
-            </>
-          )}
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <img src={logo} alt="ToolRent Logo" style={{ width: "30px", height: "30px", marginRight: "8px" }} />
+              <Typography variant="h6" component="div">
+                ToolRent
+              </Typography>
+            </Box>
+            {initialized && (
+              <>
+                {keycloak.authenticated ? (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography sx={{ mr: 2 }}>
+                      {keycloak.tokenParsed?.username || keycloak.tokenParsed?.email}
+                    </Typography>
+                    <IconButton color="inherit" onClick={handleLogout}>
+                      <LogoutIcon />
+                    </IconButton>
+                  </Box>
+                ) : (
+                  <Button variant="outlined" color="inherit" onClick={() => navigate("/login")}>
+                    Login
+                  </Button>
+                )}
+              </>
+            )}
+          </Box>
         </Toolbar>
         <hr style={{ margin: 0, border: "1px solid #fff" }} /> {/* Added horizontal line */}
         <Toolbar sx={{ minHeight: "35px!important", height: 35, display: "flex", justifyContent: "center", backgroundColor: "#1976d2aa", height: 40, gap: "40px" }}> {/* Centered buttons with spacing */}

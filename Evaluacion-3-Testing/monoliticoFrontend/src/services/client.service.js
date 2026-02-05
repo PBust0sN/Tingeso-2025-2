@@ -25,5 +25,11 @@ const getByRut = rut => {
     return httpClient.get(`/api/clients/getbyrut/${rut}`);
 };
 
+const login = (username, password) => {
+    return httpClient.post('/api/clients/login', null, {
+        params: { username, password }
+    });
+};
 
-export default { getAll, get, create, update, remove, getByRut};
+
+export default { getAll, get, create, update, remove, getByRut, login };
