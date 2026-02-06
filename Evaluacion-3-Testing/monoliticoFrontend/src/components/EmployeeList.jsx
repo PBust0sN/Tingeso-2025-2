@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 import clientService from "../services/client.service";
 import imagesService from "../services/images.service";
 import Table from "@mui/material/Table";
@@ -22,7 +21,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 
 const EmployeeList = () => {
-  const { keycloak } = useKeycloak(); 
   const [client, setclients] = useState([]);
   const [search, setSearch] = useState("");
   const [imageMap, setImageMap] = useState({});

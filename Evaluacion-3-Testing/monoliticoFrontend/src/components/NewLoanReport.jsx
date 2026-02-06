@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box, Typography, Paper, CircularProgress, Button } from "@mui/material";
-import { useKeycloak } from "@react-keycloak/web";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import loansService from "../services/loans.service";
 import loansReportsService from "../services/loansReports.service";
@@ -11,7 +10,6 @@ import toolsLoanReportService from "../services/toolsLoanReport.service";
 import toolsLoansService from "../services/toolsLoans.service";
 
 const  NewLoanReport = () =>{
-	const { keycloak } = useKeycloak();
 	const [searchParams] = useSearchParams();
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();

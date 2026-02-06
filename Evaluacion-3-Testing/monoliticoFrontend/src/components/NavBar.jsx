@@ -1,4 +1,3 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,8 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState, useEffect } from "react";
-import { useKeycloak } from "@react-keycloak/web";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -18,37 +16,55 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import BookIcon from '@mui/icons-material/Book';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import logo from "../../public/logo.png";
+import { useKeycloak } from "@react-keycloak/web";
+import clientService from "../services/client.service";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [tokenPayload, setTokenPayload] = useState(null);
-  const [AuthUser, setAuthUser] = useState(null);
-  const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+  const refreshTokenRef = useRef(localStorage.getItem("refreshToken"));
+  const { keycloak, initialized } = useKeycloak();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    const AuthUser = localStorage.getItem("authenticatedUser");
-    setAuthUser(AuthUser ? JSON.parse(AuthUser) : null);
-    if (token) {
-        try {
-            const tokenPayload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-            const isTokenExpired = tokenPayload.exp * 1000 < Date.now(); // Verificar si el token ha expirado
+    const token = tokenRef.current;
+    const refreshToken = refreshTokenRef.current;
 
-            if (isTokenExpired) {
-                console.warn("Token expirado");
-                setIsAuthenticated(false);
-                localStorage.removeItem("authToken");
-                localStorage.removeItem("refreshToken");
-            } else {
-                setIsAuthenticated(true);
-                setTokenPayload(tokenPayload); // Assuming you have a state to store user info
-            }
-        } catch (error) {
-            console.error("Failed to parse token payload:", error);
+    if (token) {
+      try {
+        const tokenPayload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+        const isTokenExpired = tokenPayload.exp * 1000 < Date.now(); // Check if token is expired
+
+        if (isTokenExpired && refreshToken) {
+          clientService.refreshToken(refreshToken)
+            .then(response => {
+              localStorage.setItem("authToken", response.data.access_token);
+              localStorage.setItem("refreshToken", response.data.refresh_token);
+              tokenRef.current = response.data.access_token; // Update token in memory
+              refreshTokenRef.current = response.data.refresh_token; // Update refresh token in memory
+              setIsAuthenticated(true);
+              setTokenPayload(tokenPayload);
+            })
+            .catch(() => {
+              console.error("Failed to refresh token");
+              localStorage.removeItem("authToken");
+              localStorage.removeItem("refreshToken");
+              tokenRef.current = null;
+              refreshTokenRef.current = null;
+              setIsAuthenticated(false);
+            });
+        } else {
+          setIsAuthenticated(true);
+          setTokenPayload(tokenPayload);
         }
+      } catch (error) {
+        console.error("Failed to parse token payload:", error);
+      }
+    } else {
+      console.warn("Token or refresh token is missing.");
     }
   }, []);
 
@@ -76,15 +92,14 @@ export default function Navbar() {
 
   const handleLogout = () => {
     try {
-      try { localStorage.clear(); } catch (e) {}
-      try { sessionStorage.clear(); } catch (e) {}
+      // Clear tokens from localStorage
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("refreshToken");
       clearAllCookies();
-    } finally {
-      if (keycloak && typeof keycloak.logout === "function") {
-        keycloak.logout({ redirectUri: window.location.origin });
-      } else {
-        window.location.href = "/";
-      }
+      // Redirect to the login page or home
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error during logout:", error);
     }
   };
 
@@ -107,7 +122,7 @@ export default function Navbar() {
                 {isAuthenticated ? (
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography sx={{ mr: 2 }}>
-                      {AuthUser?.username ||AuthUser?.email}
+                      {tokenPayload?.username || tokenPayload?.email}
                     </Typography>
                     <IconButton color="inherit" onClick={handleLogout}>
                       <LogoutIcon />

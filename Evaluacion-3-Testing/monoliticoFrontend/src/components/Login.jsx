@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import Box from "@mui/material/Box";
@@ -25,14 +25,18 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+  const refreshTokenRef = useRef(localStorage.getItem("refreshToken"));
 
   console.log('Keycloak initialized?', initialized);
   console.log('Keycloak instance:', keycloak);
-  console.log('Is authenticated?', keycloak?.authenticated);
+  console.log('Is authenticated?', isAuthenticated);
 
   useEffect(() => {
-    if (initialized && keycloak.authenticated) {
+    if (initialized && isAuthenticated) {
       navigate("/home");
     }
 
@@ -41,36 +45,73 @@ const Login = () => {
     }, 3000); // Change image every 3 seconds
 
     return () => clearInterval(interval);
-  }, [initialized, keycloak.authenticated, navigate]);
+  }, [initialized, isAuthenticated, navigate]);
 
   useEffect(() => {
-    if (initialized && keycloak.authenticated) {
+    if (initialized && isAuthenticated) {
       navigate("/home");
     }
-  }, [initialized, keycloak.authenticated, navigate]);
+  }, [initialized, isAuthenticated, navigate]);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    const refreshToken = localStorage.getItem("refreshToken");
+    const token = tokenRef.current;
+    const refreshToken = refreshTokenRef.current;
 
     if (token && refreshToken) {
-        const tokenPayload = JSON.parse(atob(token.split(".")[1]));
-        const isTokenExpired = tokenPayload.exp * 1000 < Date.now();
+      try {
+        const tokenPayload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+        const isTokenExpired = tokenPayload.exp * 1000 < Date.now(); // Check if token is expired
 
         if (isTokenExpired) {
-            clientService.refreshToken(refreshToken)
-                .then(response => {
-                    localStorage.setItem("authToken", response.data.access_token);
-                    localStorage.setItem("refreshToken", response.data.refresh_token);
-                })
-                .catch(() => {
-                    console.error("Failed to refresh token");
-                    localStorage.removeItem("authToken");
-                    localStorage.removeItem("refreshToken");
-                });
+          clientService.refreshToken(refreshToken)
+            .then(response => {
+              localStorage.setItem("authToken", response.data.access_token);
+              localStorage.setItem("refreshToken", response.data.refresh_token);
+              tokenRef.current = response.data.access_token; // Update token in memory
+              refreshTokenRef.current = response.data.refresh_token; // Update refresh token in memory
+              setIsAuthenticated(true);
+            })
+            .catch(() => {
+              console.error("Failed to refresh token");
+              localStorage.removeItem("authToken");
+              localStorage.removeItem("refreshToken");
+              tokenRef.current = null;
+              refreshTokenRef.current = null;
+              setIsAuthenticated(false);
+            });
+        } else {
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error("Failed to parse token payload:", error);
+      }
+    } else {
+      console.warn("Token or refresh token is missing.");
+    }
+  }, []);
+
+  const handleLogin = async () => {
+    try {
+        const response = await clientService.login(username, password);
+        console.log("Login successful, response:", response);
+
+        const { access_token, refresh_token } = response;
+        localStorage.setItem("authToken", access_token);
+        localStorage.setItem("refreshToken", refresh_token);
+        tokenRef.current = access_token; // Update token in memory
+        refreshTokenRef.current = refresh_token; // Update refresh token in memory
+        setIsAuthenticated(true);
+
+        navigate("/home");
+        window.location.reload();
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            setErrorMessage("Contraseña y/o usuario incorrecto");
+        } else {
+            setErrorMessage("Ocurrió un error inesperado");
         }
     }
-}, []);
+};
 
   if (!initialized) return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
@@ -173,31 +214,7 @@ const Login = () => {
                   backgroundColor: "#1565c0",
                 },
               }}
-              onClick={async () => {
-                try {
-                  const response = await clientService.login(username, password);
-                  console.log("Login successful, response:", response);
-
-                  // Manejar el cuerpo completo de la respuesta
-                  const { access_token, refresh_token, user } = response;
-                  localStorage.setItem("authToken", access_token); // Guardar el token de acceso
-                  localStorage.setItem("refreshToken", refresh_token); // Guardar el token de refresco
-
-                  if (user) {
-                    console.log("Authenticated user:", user);
-                    localStorage.setItem("authenticatedUser", JSON.stringify(user)); // Guardar datos del usuario
-                  }
-
-                  navigate("/home");
-                  window.location.reload(); // Recargar la página después de la navegación
-                } catch (error) {
-                  if (error.response && error.response.status === 401) {
-                    setErrorMessage("Contraseña y/o usuario incorrecto");
-                  } else {
-                    setErrorMessage("Ocurrió un error inesperado");
-                  }
-                }
-              }}
+              onClick={handleLogin}
             >
               Iniciar Sesión
             </Button>
@@ -309,31 +326,7 @@ const Login = () => {
                   backgroundColor: "#1565c0",
                 },
               }}
-              onClick={async () => {
-                try {
-                  const response = await clientService.login(username, password);
-                  console.log("Login successful, response:", response);
-
-                  // Manejar el cuerpo completo de la respuesta
-                  const { access_token, refresh_token, user } = response;
-                  localStorage.setItem("authToken", access_token); // Guardar el token de acceso
-                  localStorage.setItem("refreshToken", refresh_token); // Guardar el token de refresco
-
-                  if (user) {
-                    console.log("Authenticated user:", user);
-                    localStorage.setItem("authenticatedUser", JSON.stringify(user)); // Guardar datos del usuario
-                  }
-
-                  navigate("/home");
-                  window.location.reload(); // Recargar la página después de la navegación
-                } catch (error) {
-                  if (error.response && error.response.status === 401) {
-                    setErrorMessage("Contraseña y/o usuario incorrecto");
-                  } else {
-                    setErrorMessage("Ocurrió un error inesperado");
-                  }
-                }
-              }}
+              onClick={handleLogin}
             >
               Iniciar Sesión
             </Button>
@@ -445,31 +438,7 @@ const Login = () => {
                   backgroundColor: "#1565c0",
                 },
               }}
-              onClick={async () => {
-                try {
-                  const response = await clientService.login(username, password);
-                  console.log("Login successful, response:", response);
-
-                  // Manejar el cuerpo completo de la respuesta
-                  const { access_token, refresh_token, user } = response;
-                  localStorage.setItem("authToken", access_token); // Guardar el token de acceso
-                  localStorage.setItem("refreshToken", refresh_token); // Guardar el token de refresco
-
-                  if (user) {
-                    console.log("Authenticated user:", user);
-                    localStorage.setItem("authenticatedUser", JSON.stringify(user)); // Guardar datos del usuario
-                  }
-
-                  navigate("/home");
-                  window.location.reload(); // Recargar la página después de la navegación
-                } catch (error) {
-                  if (error.response && error.response.status === 401) {
-                    setErrorMessage("Contraseña y/o usuario incorrecto");
-                  } else {
-                    setErrorMessage("Ocurrió un error inesperado");
-                  }
-                }
-              }}
+              onClick={handleLogin}
             >
               Iniciar Sesión
             </Button>

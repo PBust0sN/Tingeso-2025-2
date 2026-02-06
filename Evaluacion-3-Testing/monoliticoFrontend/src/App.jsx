@@ -2,10 +2,10 @@ import './App.css'
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom'
 import NavBar from "./components/NavBar"
 import SecondaryNavBar from "./components/SecondaryNavBar"
+import React, { useState, useEffect, useRef } from "react";
 import Home from "./components/Home";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useKeycloak } from "@react-keycloak/web";
 import ToolList from './components/ToolList';
 import ClientList from './components/ClientList';
 import AddTool from './components/AddTool';
@@ -37,13 +37,55 @@ import AdminList from './components/AdminList';
 import AddAdmin from './components/AddAdmin';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
-
+import clientService from './services/client.service';
 
 function App() {
-  const { keycloak } = useKeycloak();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [tokenPayload, setTokenPayload] = useState(null);
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+  const refreshTokenRef = useRef(localStorage.getItem("refreshToken"));
+
+  useEffect(() => {
+    const token = tokenRef.current;
+    const refreshToken = refreshTokenRef.current;
+
+    if (token) {
+      try {
+        const tokenPayload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+        const isTokenExpired = tokenPayload.exp * 1000 < Date.now(); // Check if token is expired
+
+        if (isTokenExpired && refreshToken) {
+          clientService.refreshToken(refreshToken)
+            .then(response => {
+              localStorage.setItem("authToken", response.data.access_token);
+              localStorage.setItem("refreshToken", response.data.refresh_token);
+              tokenRef.current = response.data.access_token; // Update token in memory
+              refreshTokenRef.current = response.data.refresh_token; // Update refresh token in memory
+              setIsAuthenticated(true);
+              setTokenPayload(tokenPayload);
+            })
+            .catch(() => {
+              console.error("Failed to refresh token");
+              localStorage.removeItem("authToken");
+              localStorage.removeItem("refreshToken");
+              tokenRef.current = null;
+              refreshTokenRef.current = null;
+              setIsAuthenticated(false);
+            });
+        } else {
+          setIsAuthenticated(true);
+          setTokenPayload(tokenPayload);
+        }
+      } catch (error) {
+        console.error("Failed to parse token payload:", error);
+      }
+    } else {
+      console.warn("Token or refresh token is missing.");
+    }
+  }, []);
 
   const PrivateRoute = ({ element, rolesAllowed }) => {
-    if(!keycloak.authenticated){
+    if(!isAuthenticated){
       return (<Box sx={{ position: "relative", minHeight: "100vh" }}>
       {/* Fondo difuminado */}
       <Box
@@ -95,7 +137,7 @@ function App() {
     </Box>
   );
     }
-    const roles = keycloak.tokenParsed?.realm_access?.roles || [];
+    const roles = tokenPayload?.realm_access?.roles || [];
     if (rolesAllowed && !rolesAllowed.some(r => roles.includes(r))) {
       return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>

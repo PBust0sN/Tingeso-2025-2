@@ -6,7 +6,6 @@ import Paper from "@mui/material/Paper";
 import toolsService from "../services/tools.service";
 import loansService from "../services/loans.service";
 import imagesService from "../services/images.service";
-import { useKeycloak } from "@react-keycloak/web";
 import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -24,7 +23,6 @@ const NewLoan = () => {
   const [selectedTools, setSelectedTools] = useState([]);
   const [imageMap, setImageMap] = useState({});
   const navigate = useNavigate();
-  const { keycloak } = useKeycloak();
   const staff_id = Number(keycloak.tokenParsed?.id_real);
   const clientNumber = Number(client_id);
 

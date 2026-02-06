@@ -5,10 +5,8 @@ import toolsReportService from "../services/toolsReport.service";
 import reportsService from "../services/reports.service";
 import toolsRankingService from "../services/toolsRanking.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 
 const NewRakingTool = () => {
-	const { keycloak } = useKeycloak();
 	const [searchParams] = useSearchParams();
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();

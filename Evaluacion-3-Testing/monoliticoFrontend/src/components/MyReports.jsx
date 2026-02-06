@@ -16,14 +16,12 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useKeycloak } from "@react-keycloak/web";
 
 const MyReports = () => {
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
 
   useEffect(() => {

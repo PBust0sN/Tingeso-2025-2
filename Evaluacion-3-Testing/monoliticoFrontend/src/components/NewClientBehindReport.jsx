@@ -7,12 +7,10 @@ import clientBehindService from "../services/clientBehind.service";
 import clientBehindLoansService from "../services/clientBehindLoans.service";
 import loansReportsService from "../services/loansReports.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 
 const NewClientBehindReport = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { keycloak } = useKeycloak();
   const [searchParams] = useSearchParams();
 
   const handleGenerateBehind = async () => {
