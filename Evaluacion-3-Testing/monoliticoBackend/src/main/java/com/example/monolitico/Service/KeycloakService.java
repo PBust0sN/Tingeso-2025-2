@@ -46,7 +46,7 @@ public class KeycloakService {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("client_id", "toolrent-Frontend");
+        params.add("client_id", "toolRent-Frontend");
         params.add("username", username);
         params.add("password", password);
         params.add("grant_type", "password");
