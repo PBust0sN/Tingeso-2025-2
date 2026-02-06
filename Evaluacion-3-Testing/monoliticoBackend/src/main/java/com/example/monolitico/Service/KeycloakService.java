@@ -47,6 +47,7 @@ public class KeycloakService {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("client_id", "toolRent-Frontend");
+        params.add("client_secret", "xc9s0DXyi2NSr600MoUP5q6U9oCaFYan")
         params.add("username", username);
         params.add("password", password);
         params.add("grant_type", "password");
