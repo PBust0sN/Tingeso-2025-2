@@ -189,6 +189,7 @@ const Login = () => {
                   }
 
                   navigate("/home");
+                  window.location.reload(); // Recargar la página después de la navegación
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
                     setErrorMessage("Contraseña y/o usuario incorrecto");
@@ -324,6 +325,7 @@ const Login = () => {
                   }
 
                   navigate("/home");
+                  window.location.reload(); // Recargar la página después de la navegación
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
                     setErrorMessage("Contraseña y/o usuario incorrecto");
@@ -459,6 +461,7 @@ const Login = () => {
                   }
 
                   navigate("/home");
+                  window.location.reload(); // Recargar la página después de la navegación
                 } catch (error) {
                   if (error.response && error.response.status === 401) {
                     setErrorMessage("Contraseña y/o usuario incorrecto");

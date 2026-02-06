@@ -46,12 +46,12 @@ public class KeycloakService {
         RestTemplate restTemplate = new RestTemplate();
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("client_id", ADMIN_CLIENT_ID); // Replace with your client ID if different
+        params.add("client_id", "toolrent-Frontend");
         params.add("username", username);
         params.add("password", password);
         params.add("grant_type", "password");
         params.add("scope", "openid");
-        
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 

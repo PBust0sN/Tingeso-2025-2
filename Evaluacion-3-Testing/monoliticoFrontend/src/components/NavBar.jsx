@@ -23,19 +23,29 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [tokenPayload, setTokenPayload] = useState(null);
+  const [AuthUser, setAuthUser] = useState(null);
   const { keycloak, initialized } = useKeycloak();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-
+    const AuthUser = localStorage.getItem("authenticatedUser");
+    setAuthUser(AuthUser ? JSON.parse(AuthUser) : null);
     if (token) {
         try {
             const tokenPayload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-            console.log("Authenticated user:", tokenPayload);
-            setIsAuthenticated(true);
-            setTokenPayload(tokenPayload); // Assuming you have a state to store user info
+            const isTokenExpired = tokenPayload.exp * 1000 < Date.now(); // Verificar si el token ha expirado
+
+            if (isTokenExpired) {
+                console.warn("Token expirado");
+                setIsAuthenticated(false);
+                localStorage.removeItem("authToken");
+                localStorage.removeItem("refreshToken");
+            } else {
+                setIsAuthenticated(true);
+                setTokenPayload(tokenPayload); // Assuming you have a state to store user info
+            }
         } catch (error) {
             console.error("Failed to parse token payload:", error);
         }
@@ -97,7 +107,7 @@ export default function Navbar() {
                 {isAuthenticated ? (
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography sx={{ mr: 2 }}>
-                      {tokenPayload?.username ||tokenPayload?.email}
+                      {AuthUser?.username ||AuthUser?.email}
                     </Typography>
                     <IconButton color="inherit" onClick={handleLogout}>
                       <LogoutIcon />
