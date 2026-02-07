@@ -38,6 +38,7 @@ import AddAdmin from './components/AddAdmin';
 import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
 import clientService from './services/client.service';
+import ClientSelectLoan from './components/ClientSelectLoan';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -324,6 +325,10 @@ function App() {
           <Route
             path="/fines/:client_id"
             element={<PrivateRoute element={<FineListId />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
+          />
+          <Route
+            path="/client/list/select"
+            element={<PrivateRoute element={<ClientSelectLoan />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
           />
         </Routes>
 
