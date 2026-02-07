@@ -14,11 +14,12 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import PaymentIcon from '@mui/icons-material/Payment';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const FineList = () => {
   const [fines, setFines] = useState([]);
   const [search, setSearch] = useState("");
- 
+  const [loading, setLoading] = useState(true); // Added loading state
 
   // filter by client ID
   const filteredFines = fines.filter(fine => {
@@ -29,6 +30,7 @@ const FineList = () => {
   });
 
   const init = () => {
+    setLoading(true); // Start loading
     fineService
       .getAll()
       .then((response) => {
@@ -39,6 +41,9 @@ const FineList = () => {
           "Se ha producido un error al intentar mostrar listado de Multas.",
           error
         );
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   };
 
@@ -47,23 +52,24 @@ const FineList = () => {
   }, []);
 
   const handlePay = (client_id, fine_id) => {
-      const confirmPay = window.confirm(
-        "¿Esta seguro que desea pagar esta multa?"
-      );
-      if (confirmPay) {
-        fineService.pay(client_id, fine_id)
-          .then(() => {
-            init(); // refresh list after payment
-          })
-          .catch((error) => {
-            console.log(
-              "Se ha producido un error al intentar pagar la multa",
-              error
-            );
-          }); 
-      }
-    };
-  
+    const confirmPay = window.confirm(
+      "¿Esta seguro que desea pagar esta multa?"
+    );
+    if (confirmPay) {
+      fineService
+        .pay(client_id, fine_id)
+        .then(() => {
+          init(); // refresh list after payment
+        })
+        .catch((error) => {
+          console.log(
+            "Se ha producido un error al intentar pagar la multa",
+            error
+          );
+        });
+    }
+  };
+
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr.length === 10 ? dateStr + "T00:00:00Z" : dateStr);
@@ -73,6 +79,27 @@ const FineList = () => {
     const year = date.getUTCFullYear();
     return `${day}/${month}/${year}`;
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 10,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -106,10 +133,10 @@ const FineList = () => {
           paddingTop: 6,
         }}
       >
-      
-        <TableContainer component={Paper} sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}>
-
-
+        <TableContainer
+          component={Paper}
+          sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}
+        >
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>

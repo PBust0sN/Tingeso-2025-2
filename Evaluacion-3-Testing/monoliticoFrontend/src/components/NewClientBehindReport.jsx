@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, Paper, CircularProgress, Button } from "@mui/material";
 import loansService from "../services/loans.service";
 import reportsService from "../services/reports.service";
@@ -9,16 +9,30 @@ import loansReportsService from "../services/loansReports.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const NewClientBehindReport = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Updated loading state to true initially
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+
+  useEffect(() => {
+    // Simulate loading completion for demonstration
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
 
   const handleGenerateBehind = async () => {
     setLoading(true);
 
+    const token = tokenRef.current;
+    if (!token) {
+      console.error("No auth token found in memory.");
+      setLoading(false);
+      return;
+    }
+
     const urlClientId = searchParams.get("clientId");
-    const idFromToken = urlClientId ? parseInt(urlClientId) : parseInt(keycloak?.tokenParsed?.id_real);
-    
+    const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+    const idFromToken = urlClientId ? parseInt(urlClientId) : parseInt(tokenPayload?.id_real);
+
     if (!idFromToken) {
       setLoading(false);
       return;
@@ -37,7 +51,7 @@ const NewClientBehindReport = () => {
       const reportRes = await reportsService.create({ clientIdBehind: true, clientIdReport: idFromToken });
       const reportId = reportRes.data?.reportId;
 
-      // 3. get client data  
+      // 3. get client data
       const clientRes = await clientService.get(idFromToken);
       const clientData = clientRes.data;
 
@@ -99,8 +113,9 @@ const NewClientBehindReport = () => {
       } else {
         navigate("/myreports");
       }
-    } catch (e) {
-      console.error("Error creating behind report:", e);
+    } catch (error) {
+      console.error("Error generating behind report:", error);
+    } finally {
       setLoading(false);
     }
   };

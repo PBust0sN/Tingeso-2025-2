@@ -19,11 +19,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { lime, purple } from '@mui/material/colors';
 import RotateRightIcon from '@mui/icons-material/RotateRight';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ListLoanId = () => {
   const { client_id } = useParams();
   const [loans, setLoans] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
 
   const theme = createTheme({
@@ -34,6 +36,7 @@ const ListLoanId = () => {
   });
 
   useEffect(() => {
+    setLoading(true); // Start loading
     loansService
       .getAll()
       .then((response) => {
@@ -41,14 +44,16 @@ const ListLoanId = () => {
       })
       .catch((error) => {
         console.log("Error al obtener préstamos.", error);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   }, []);
 
-  // filter loans by client ID and active loans
   const filteredLoans = loans
-    .filter(loan => String(loan.clientId) === String(client_id))
-    .filter(loan => loan.active === true)
-    .filter(loan =>
+    .filter((loan) => String(loan.clientId) === String(client_id))
+    .filter((loan) => loan.active === true)
+    .filter((loan) =>
       (loan.loanType || "").toLowerCase().includes(search.toLowerCase())
     );
 
@@ -60,7 +65,7 @@ const ListLoanId = () => {
       loansService
         .remove(id)
         .then(() => {
-          setLoans(loans.filter(loan => loan.loanId !== id));
+          setLoans(loans.filter((loan) => loan.loanId !== id));
         })
         .catch((error) => {
           console.log("Error al eliminar el préstamo", error);
@@ -72,15 +77,36 @@ const ListLoanId = () => {
     navigate(`/loan/info/${id}`);
   };
 
-const formatDate = (dateStr) => {
-  if (!dateStr) return "";
-  const date = new Date(dateStr.length === 10 ? dateStr + "T00:00:00Z" : dateStr);
-  if (isNaN(date)) return dateStr;
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const year = date.getUTCFullYear();
-  return `${day}/${month}/${year}`;
-};
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr.length === 10 ? dateStr + "T00:00:00Z" : dateStr);
+    if (isNaN(date)) return dateStr;
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 10,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -114,7 +140,10 @@ const formatDate = (dateStr) => {
           paddingTop: 6,
         }}
       >
-        <TableContainer component={Paper} sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}>
+        <TableContainer
+          component={Paper}
+          sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}
+        >
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
@@ -234,11 +263,7 @@ const formatDate = (dateStr) => {
           </Table>
         </TableContainer>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-          <Button
-            variant="contained"
-            color="info"
-            onClick={() => navigate(-1)}
-          >
+          <Button variant="contained" color="info" onClick={() => navigate(-1)}>
             Volver atrás
           </Button>
         </Box>

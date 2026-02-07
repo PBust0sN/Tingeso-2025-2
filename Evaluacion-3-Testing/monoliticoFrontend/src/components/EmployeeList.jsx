@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
 import clientService from "../services/client.service";
 import imagesService from "../services/images.service";
 import Table from "@mui/material/Table";
@@ -19,13 +20,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const EmployeeList = () => {
+  const { keycloak } = useKeycloak();
   const [client, setclients] = useState([]);
   const [search, setSearch] = useState("");
   const [imageMap, setImageMap] = useState({});
+  const [loading, setLoading] = useState(true); // Added loading state
 
-  // find if the autenticated user has role ADMIN
   const isAdmin = Boolean(
     keycloak &&
       (
@@ -34,30 +37,28 @@ const EmployeeList = () => {
       )
   );
 
-  // show only users with role "CLIENT"
   const filteredClient = client
-    .filter(c => {
+    .filter((c) => {
       const rolesField = c.role;
       if (Array.isArray(rolesField)) {
-        return rolesField.map(r => String(r).toUpperCase()).includes("STAFF");
+        return rolesField.map((r) => String(r).toUpperCase()).includes("STAFF");
       }
       if (typeof rolesField === "string") {
         return rolesField.toUpperCase() === "STAFF";
       }
       return false;
     })
-    .filter(c => (c.rut || "").includes(search));
- 
+    .filter((c) => (c.rut || "").includes(search));
+
   const navigate = useNavigate();
 
-
   const init = () => {
+    setLoading(true); // Start loading
     clientService
       .getAll()
       .then((response) => {
         setclients(response.data);
-        // Cargar imágenes para cada cliente
-        response.data.forEach(c => {
+        response.data.forEach((c) => {
           loadImage(c.client_id);
         });
       })
@@ -66,6 +67,9 @@ const EmployeeList = () => {
           "Se ha producido un error al intentar mostrar listado de herramientas.",
           error
         );
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   };
 
@@ -74,11 +78,10 @@ const EmployeeList = () => {
     imagesService
       .getImage(filename)
       .then((response) => {
-        // Convertir blob a URL
         const url = URL.createObjectURL(response.data);
-        setImageMap(prev => ({
+        setImageMap((prev) => ({
           ...prev,
-          [clientId]: url
+          [clientId]: url,
         }));
       })
       .catch((error) => {
@@ -113,6 +116,27 @@ const EmployeeList = () => {
     navigate(`/employee/edit/${id}`);
   };
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 10,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ position: "relative" }}>
       <Box
@@ -145,7 +169,10 @@ const EmployeeList = () => {
           paddingTop: 6,
         }}
       >
-        <TableContainer component={Paper} sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}>
+        <TableContainer
+          component={Paper}
+          sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}
+        >
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
@@ -278,14 +305,18 @@ const EmployeeList = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", gap: 2, mt: 2}}>
-            <Button
-            variant="contained"
-            sx={{ mt: 2 }}
-            onClick={() => navigate("/")}
-            >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 2,
+            mt: 2,
+          }}
+        >
+          <Button variant="contained" sx={{ mt: 2 }} onClick={() => navigate("/")}>
             Volver atras
-            </Button>
+          </Button>
         </Box>
       </Box>
     </Box>

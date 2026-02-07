@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import TextField from '@mui/material/TextField';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const CARD_WIDTH = 200;
 const CARD_HEIGHT = 270;
@@ -22,8 +23,19 @@ const NewLoan = () => {
   const [toolOptions, setToolOptions] = useState([]);
   const [selectedTools, setSelectedTools] = useState([]);
   const [imageMap, setImageMap] = useState({});
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
-  const staff_id = Number(keycloak.tokenParsed?.id_real);
+
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+  const token = tokenRef.current;
+  if (!token) {
+    console.error("No auth token found in memory.");
+    navigate("/login");
+    return null;
+  }
+
+  const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+  const staff_id = Number(tokenPayload?.id_real);
   const clientNumber = Number(client_id);
 
   useEffect(() => {
@@ -32,12 +44,14 @@ const NewLoan = () => {
       .then((response) => {
         setToolOptions(response.data);
         // load images for each tool fetched
-        response.data.forEach(tool => {
+        response.data.forEach((tool) => {
           loadImage(tool.toolId);
         });
+        setLoading(false); // Set loading to false after fetching tools
       })
       .catch((error) => {
         console.log("Error al obtener herramientas:", error);
+        setLoading(false); // Set loading to false even if there is an error
       });
   }, []);
 
@@ -48,15 +62,23 @@ const NewLoan = () => {
       .then((response) => {
         // convert blob to object URL
         const url = URL.createObjectURL(response.data);
-        setImageMap(prev => ({
+        setImageMap((prev) => ({
           ...prev,
-          [toolId]: url
+          [toolId]: url,
         }));
       })
       .catch((error) => {
         console.log(`Error al cargar imagen para herramienta ${toolId}:`, error);
       });
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   // select/deselect tool on click
   const handleToolClick = (toolId) => {

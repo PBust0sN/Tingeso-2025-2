@@ -18,11 +18,13 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import logo from "../../public/logo.png";
 import { useKeycloak } from "@react-keycloak/web";
 import clientService from "../services/client.service";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [tokenPayload, setTokenPayload] = useState(null);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const tokenRef = useRef(localStorage.getItem("authToken"));
@@ -47,26 +49,33 @@ export default function Navbar() {
               refreshTokenRef.current = response.data.refresh_token; // Update refresh token in memory
               setIsAuthenticated(true);
               setTokenPayload(tokenPayload);
+              setLoading(false); // Set loading to false after authentication
             })
             .catch(() => {
               console.error("Failed to refresh token");
-              localStorage.removeItem("authToken");
-              localStorage.removeItem("refreshToken");
-              tokenRef.current = null;
-              refreshTokenRef.current = null;
-              setIsAuthenticated(false);
+              setLoading(false); // Set loading to false even if there is an error
             });
         } else {
           setIsAuthenticated(true);
           setTokenPayload(tokenPayload);
+          setLoading(false); // Set loading to false if token is valid
         }
       } catch (error) {
         console.error("Failed to parse token payload:", error);
+        setLoading(false); // Set loading to false even if there is an error
       }
     } else {
-      console.warn("Token or refresh token is missing.");
+      setLoading(false); // Set loading to false if no token is found
     }
   }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);

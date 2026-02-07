@@ -21,11 +21,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import BuildIcon from '@mui/icons-material/Build';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const LoanList = () => {
   const [loans, setLoans] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [loading, setLoading] = useState(false); // Added loading state
 
   // filter loans by date range (loan date or delivery date)
   const filteredLoans = loans.filter((loan) => {
@@ -57,6 +59,7 @@ const LoanList = () => {
   const navigate = useNavigate();
 
   const init = () => {
+    setLoading(true); // Start loading
     loansService
       .getAll()
       .then((response) => {
@@ -67,6 +70,9 @@ const LoanList = () => {
           "Se ha producido un error al intentar mostrar listado de Prestamos.",
           error
         );
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   };
   const theme = createTheme({
@@ -116,6 +122,24 @@ const formatDate = (dateStr) => {
 
   return (
     <Box sx={{ position: "relative" }}>
+      {loading && (
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 10,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
       <Box
         sx={{
           position: "fixed",

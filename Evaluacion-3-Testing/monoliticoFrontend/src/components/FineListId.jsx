@@ -17,16 +17,16 @@ import Typography from "@mui/material/Typography";
 import PaymentIcon from '@mui/icons-material/Payment';
 import { createTheme } from '@mui/material/styles';
 import { lime, purple } from '@mui/material/colors';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const FineListId = () => {
   const { client_id } = useParams();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [fines, setFines] = useState([]);
   const [search, setSearch] = useState("");
- 
+  const [loading, setLoading] = useState(true); // Added loading state
 
-  // filter by client ID
-  const filteredFines = fines.filter(fine => {
+  const filteredFines = fines.filter((fine) => {
     if (search.trim()) {
       return String(fine.clientId).toLowerCase().includes(search.toLowerCase());
     }
@@ -34,6 +34,7 @@ const FineListId = () => {
   });
 
   const init = () => {
+    setLoading(true); // Start loading
     fineService
       .getAllByClientId(client_id)
       .then((response) => {
@@ -44,36 +45,41 @@ const FineListId = () => {
           "Se ha producido un error al intentar mostrar listado de Multas.",
           error
         );
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading
       });
   };
+
   const theme = createTheme({
-      palette: {
-        primary: lime,
-        secondary: purple,
-      },
-    });
+    palette: {
+      primary: lime,
+      secondary: purple,
+    },
+  });
 
   useEffect(() => {
     init();
   }, []);
 
   const handlePay = (client_id, fine_id) => {
-      const confirmPay = window.confirm(
-        "¿Esta seguro que desea pagar esta multa?"
-      );
-      if (confirmPay) {
-        fineService.pay(client_id, fine_id)
-          .then(() => {
-            init(); // refresh list after payment
-          })
-          .catch((error) => {
-            console.log(
-              "Se ha producido un error al intentar pagar la multa",
-              error
-            );
-          }); 
-      }
-    };
+    const confirmPay = window.confirm(
+      "¿Esta seguro que desea pagar esta multa?"
+    );
+    if (confirmPay) {
+      fineService
+        .pay(client_id, fine_id)
+        .then(() => {
+          init(); // refresh list after payment
+        })
+        .catch((error) => {
+          console.log(
+            "Se ha producido un error al intentar pagar la multa",
+            error
+          );
+        });
+    }
+  };
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
@@ -84,6 +90,27 @@ const FineListId = () => {
     const year = date.getUTCFullYear();
     return `${day}/${month}/${year}`;
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 10,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -117,10 +144,10 @@ const FineListId = () => {
           paddingTop: 6,
         }}
       >
-      
-        <TableContainer component={Paper} sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}>
-
-
+        <TableContainer
+          component={Paper}
+          sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}
+        >
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
@@ -129,7 +156,7 @@ const FineListId = () => {
                     Listado de Multas
                   </Typography>
                 </TableCell>
-              </TableRow> 
+              </TableRow>
               {/* row of search and button */}
               <TableRow>
                 <TableCell colSpan={10} align="left">
@@ -157,7 +184,7 @@ const FineListId = () => {
               </TableRow>
               {/* row of labels */}
               <TableRow>
-                <TableCell align="left" sx={{  maxWidth: 180, fontWeight: "bold", color: "black" }}>
+                <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Id
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
@@ -220,7 +247,6 @@ const FineListId = () => {
             </TableBody>
           </Table>
         </TableContainer>
-
         <Box sx={{ mt: 2, width: "100%", display: "flex", justifyContent: "center" }}>
           <Button
             variant="contained"

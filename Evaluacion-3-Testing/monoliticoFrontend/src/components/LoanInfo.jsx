@@ -15,21 +15,26 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const LoanInfo = () => {
   const { loan_id } = useParams();
   const [loan, setLoan] = useState(null);
   const [tools, setTools] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Start loading
+    setLoading(true);
+
     // get loan info
     loansService
       .get(loan_id)
       .then((response) => {
         setLoan(response.data);
 
-        // get associated tools IDs and then their details 
+        // get associated tools IDs and then their details
         toolsLoansService
           .getToolsIdByLoanId(loan_id)
           .then(async (idsResponse) => {
@@ -48,9 +53,33 @@ const LoanInfo = () => {
       })
       .catch((error) => {
         console.log("Error al obtener préstamo:", error);
+      })
+      .finally(() => {
+        // Stop loading
+        setLoading(false);
       });
   }, [loan_id]);
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 10,
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   const handleDelete = (id) => {
       const confirmDelete = window.confirm(
@@ -237,25 +266,32 @@ const formatDate = (dateStr) => {
             </Table>
           </TableContainer>
         </Paper>
-        <Box sx={{display: "flex", flexDirection: "row", justifyContent: "center", gap: 2, mt: 2}}>
-            <Button
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 2,
+            mt: 2,
+          }}
+        >
+          <Button
             variant="contained"
             sx={{ mt: 2 }}
             onClick={() => navigate("/loan/list")}
-            >
+          >
             Volver atras
-            </Button>
-            
+          </Button>
 
-            <Button
-                variant="contained"
-                color="error"
-                sx = {{ mt: 2}}
-                onClick={() => handleDelete(loan.loan_id)}
-                startIcon={<DeleteIcon />}
-            >
-                Eliminar
-            </Button>
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ mt: 2 }}
+            onClick={() => handleDelete(loan.loan_id)}
+            startIcon={<DeleteIcon />}
+          >
+            Eliminar
+          </Button>
         </Box>
       </Box>
     </Box>

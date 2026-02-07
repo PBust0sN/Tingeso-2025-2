@@ -11,6 +11,7 @@ import login2 from "../../public/login2.png";
 import login3 from "../../public/login3.png";
 import login4 from "../../public/login4.png";
 import clientService from "../services/client.service";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const images = [
   login1,
@@ -27,13 +28,10 @@ const Login = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const tokenRef = useRef(localStorage.getItem("authToken"));
   const refreshTokenRef = useRef(localStorage.getItem("refreshToken"));
-
-  console.log('Keycloak initialized?', initialized);
-  console.log('Keycloak instance:', keycloak);
-  console.log('Is authenticated?', isAuthenticated);
 
   useEffect(() => {
     if (initialized && isAuthenticated) {
@@ -43,6 +41,8 @@ const Login = () => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 3000); // Change image every 3 seconds
+
+    setLoading(false); // Set loading to false after initialization
 
     return () => clearInterval(interval);
   }, [initialized, isAuthenticated, navigate]);
@@ -91,6 +91,7 @@ const Login = () => {
   }, []);
 
   const handleLogin = async () => {
+    setLoading(true); // Mostrar el ícono de carga
     try {
         const response = await clientService.login(username, password);
         console.log("Login successful, response:", response);
@@ -110,9 +111,57 @@ const Login = () => {
         } else {
             setErrorMessage("Ocurrió un error inesperado");
         }
+    } finally {
+        setLoading(false); // Ocultar el ícono de carga
     }
-};
+  };
 
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {/* Fondo con desenfoque */}
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(./fondo.jpg)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            filter: "blur(8px)",
+            zIndex: 0,
+          }}
+        />
+
+        {/* CircularProgress sin desenfoque */}
+        <Box
+          sx={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+            zIndex: 1,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </Box>
+    );
+  }
+  
   if (!initialized) return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
       {/* background */}

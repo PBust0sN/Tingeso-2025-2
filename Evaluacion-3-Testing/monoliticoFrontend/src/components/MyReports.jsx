@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import reportsService from "../services/reports.service";
 import Table from "@mui/material/Table";
@@ -16,33 +16,60 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import CircularProgress from "@mui/material/CircularProgress";
 
 const MyReports = () => {
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+  
+  const token = tokenRef.current;
+  if (!token) {
+    console.error("No auth token found in memory.");
+    navigate("/login");
+    return null;
+  }
+
+  const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+  const keycloakClientId = Number(tokenPayload?.id_real);
 
   useEffect(() => {
-    console.log("Client ID from token:", keycloak?.tokenParsed?.id_real);
-    reportsService.getAllByClientId(keycloak?.tokenParsed?.id_real)
+    console.log("Client ID from token:", keycloakClientId);
+    reportsService
+      .getAllByClientId(keycloakClientId)
       .then((response) => {
         setReports(response.data);
         setFilteredReports(response.data);
+        setLoading(false); // Set loading to false after fetching reports
       })
-      .catch((error) => console.log("Error al cargar reportes", error));
+      .catch((error) => {
+        console.log("Error al cargar reportes", error);
+        setLoading(false); // Set loading to false even if there is an error
+      });
   }, []);
 
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   const formatDate = (dateStr) => {
-        if (!dateStr) return "";
-        const date = new Date(dateStr.length === 10 ? dateStr + "T00:00:00Z" : dateStr);
-        if (isNaN(date)) return dateStr;
-        const day = String(date.getUTCDate()).padStart(2, "0");
-        const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-        const year = date.getUTCFullYear();
-        return `${day}/${month}/${year}`;
-    };
+    if (!dateStr) return "";
+    const date = new Date(dateStr.length === 10 ? dateStr + "T00:00:00Z" : dateStr);
+    if (isNaN(date)) return dateStr;
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
       {/* background */}
@@ -62,8 +89,13 @@ const MyReports = () => {
         }}
       />
       <Box sx={{ position: "relative", zIndex: 1, p: 4 }}>
-        <Typography variant="h4" sx={{ mb: 3 }}>Mis Reportes</Typography>
-        <TableContainer component={Paper} sx={{ maxWidth: 1200, background: "rgba(255,255,255,0.95)" }}>
+        <Typography variant="h4" sx={{ mb: 3 }}>
+          Mis Reportes
+        </Typography>
+        <TableContainer
+          component={Paper}
+          sx={{ maxWidth: 1200, background: "rgba(255,255,255,0.95)" }}
+        >
           <Table size="small">
             <TableHead>
               {/* row of filters */}
@@ -79,8 +111,13 @@ const MyReports = () => {
                         slots={{ textField: TextField }}
                         slotProps={{
                           textField: {
-                            sx: { width: 160, background: "white", borderRadius: 1, '& .MuiInputBase-root': { height: 43 } }
-                          }
+                            sx: {
+                              width: 160,
+                              background: "white",
+                              borderRadius: 1,
+                              "& .MuiInputBase-root": { height: 43 },
+                            },
+                          },
                         }}
                       />
                       <DatePicker
@@ -91,8 +128,13 @@ const MyReports = () => {
                         slots={{ textField: TextField }}
                         slotProps={{
                           textField: {
-                            sx: { width: 160, background: "white", borderRadius: 1, '& .MuiInputBase-root': { height: 43 } }
-                          }
+                            sx: {
+                              width: 160,
+                              background: "white",
+                              borderRadius: 1,
+                              "& .MuiInputBase-root": { height: 43 },
+                            },
+                          },
                         }}
                       />
                     </LocalizationProvider>
@@ -102,12 +144,16 @@ const MyReports = () => {
                       onClick={() => {
                         let filtered = [...reports];
                         if (startDate) {
-                          filtered = filtered.filter(r => new Date(r.reportDate) >= startDate);
+                          filtered = filtered.filter(
+                            (r) => new Date(r.reportDate) >= startDate
+                          );
                         }
                         if (endDate) {
                           const endOfDay = new Date(endDate);
-                          endOfDay.setHours(23,59,59,999);
-                          filtered = filtered.filter(r => new Date(r.reportDate) <= endOfDay);
+                          endOfDay.setHours(23, 59, 59, 999);
+                          filtered = filtered.filter(
+                            (r) => new Date(r.reportDate) <= endOfDay
+                          );
                         }
                         setFilteredReports(filtered);
                       }}
@@ -118,7 +164,9 @@ const MyReports = () => {
                     <Button
                       variant="outlined"
                       onClick={() => {
-                        setStartDate(null); setEndDate(null); setFilteredReports(reports);
+                        setStartDate(null);
+                        setEndDate(null);
+                        setFilteredReports(reports);
                       }}
                       sx={{ height: 43 }}
                     >
@@ -127,12 +175,12 @@ const MyReports = () => {
                   </Box>
                 </TableCell>
               </TableRow>
-               <TableRow>
-                 <TableCell>ID Reporte</TableCell>
-                 <TableCell>Fecha</TableCell>
-                 <TableCell>Tipo</TableCell>
-                 <TableCell></TableCell>
-               </TableRow>
+              <TableRow>
+                <TableCell>ID Reporte</TableCell>
+                <TableCell>Fecha</TableCell>
+                <TableCell>Tipo</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
               {filteredReports.map((report) => {
@@ -152,7 +200,9 @@ const MyReports = () => {
                           variant="contained"
                           color="primary"
                           size="small"
-                          onClick={() => navigate(`/viewLoanreports/${report.reportId}`)}
+                          onClick={() =>
+                            navigate(`/viewLoanreports/${report.reportId}`)
+                          }
                           style={{ marginLeft: "0.5rem" }}
                           startIcon={<VisibilityIcon />}
                         >
@@ -163,7 +213,9 @@ const MyReports = () => {
                           variant="contained"
                           color="primary"
                           size="small"
-                          onClick={() => navigate(`/viewrankingreport/${report.reportId}`)}
+                          onClick={() =>
+                            navigate(`/viewrankingreport/${report.reportId}`)
+                          }
                           style={{ marginLeft: "0.5rem" }}
                           startIcon={<VisibilityIcon />}
                         >
@@ -174,7 +226,9 @@ const MyReports = () => {
                           variant="contained"
                           color="primary"
                           size="small"
-                          onClick={() => navigate(`/viewreports/${report.reportId}`)}
+                          onClick={() =>
+                            navigate(`/viewreports/${report.reportId}`)
+                          }
                           style={{ marginLeft: "0.5rem" }}
                           startIcon={<VisibilityIcon />}
                         >
@@ -185,7 +239,9 @@ const MyReports = () => {
                           variant="contained"
                           color="primary"
                           size="small"
-                          onClick={() => navigate(`/viewclientbehind/${report.reportId}`)}
+                          onClick={() =>
+                            navigate(`/viewclientbehind/${report.reportId}`)
+                          }
                           style={{ marginLeft: "0.5rem" }}
                           startIcon={<VisibilityIcon />}
                         >
@@ -200,9 +256,8 @@ const MyReports = () => {
           </Table>
         </TableContainer>
       </Box>
-
     </Box>
   );
-}
+};
 
 export default MyReports;
