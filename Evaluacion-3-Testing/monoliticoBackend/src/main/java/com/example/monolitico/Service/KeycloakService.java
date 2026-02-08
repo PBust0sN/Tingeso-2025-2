@@ -11,9 +11,9 @@ import java.util.*;
 
 @Service
 public class KeycloakService {
-    @Value("${keycloak.url}")
+    @Value("${keycloak.url: http://keycloak:8080}")
     private String KEYCLOAK_URL;
-    @Value("${client.secret}")
+    @Value("${client.secret: xc9s0DXyi2NSr600MoUP5q6U9oCaFYan}")
     private String CLIENT_SECRET;
 
     //private static final String KEYCLOAK_URL = "http://keycloak:8080";
