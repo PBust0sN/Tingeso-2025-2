@@ -82,9 +82,14 @@ services:
   # FRONTEND
   # ===================
   frontend:
-    build: ./monoliticoFrontend
-    environment:
-      VITE_KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
+    build:
+      context: ./monoliticoFrontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+        VITE_KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
+        VITE_KEYCLOAK_REALM: toolRent
+        VITE_KEYCLOAK_CLIENT_ID: toolRent-frontend
     networks:
       - mynet
 
