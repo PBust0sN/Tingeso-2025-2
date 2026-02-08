@@ -13,7 +13,9 @@ import java.util.*;
 public class KeycloakService {
     @Value("${keycloak.url}")
     private String KEYCLOAK_URL;
-    
+    @Value("${client.secret}")
+    private String CLIENT_SECRET;
+
     //private static final String KEYCLOAK_URL = "http://keycloak:8080";
     //private static final String KEYCLOAK_URL = "https://auth.toolrent-tingeso.duckdns.org";
     private static final String REALM = "toolRent";
@@ -21,7 +23,8 @@ public class KeycloakService {
     private static final String ADMIN_REALM = "master";
     private static final String ADMIN_CLIENT_ID = "admin-cli";
     private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWORD = "admin";
+    private static final String ADMIN_PASSWOR0D = "admin";
+
 
     public String getAdminToken() {
         RestTemplate restTemplate = new RestTemplate();
@@ -49,7 +52,7 @@ public class KeycloakService {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("client_id", "toolRent-Frontend");
-        params.add("client_secret", "xc9s0DXyi2NSr600MoUP5q6U9oCaFYan");
+        params.add("client_secret", CLIENT_SECRET);
         params.add("username", username);
         params.add("password", password);
         params.add("grant_type", "password");
