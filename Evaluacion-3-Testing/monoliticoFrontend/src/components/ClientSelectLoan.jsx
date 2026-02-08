@@ -18,11 +18,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Typography from "@mui/material/Typography";
 
-const ClientSelectLoan = ({ onSelect }) => {
+const ClientSelectLoan  = () => {
   const [clients, setClients] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false); // Estado de carga
   const [imageMap, setImageMap] = useState({}); // Mapear imágenes por cliente
+  const navigate = useNavigate(); // Import useNavigate hook
 
   useEffect(() => {
     setLoading(true); // Iniciar carga
@@ -71,6 +72,10 @@ const ClientSelectLoan = ({ onSelect }) => {
     })
     .filter((client) => (client.rut || "").toLowerCase().includes(search.toLowerCase()));
 
+
+  const handleSelect = (clientId) => {
+    navigate(`/loan/new/${clientId}`); // Redirect to the desired route
+  };
 
   return (
     <Box sx={{ position: "relative" }}>
