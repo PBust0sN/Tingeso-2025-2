@@ -83,10 +83,7 @@ services:
   # ===================
   frontend:
     build: ./monoliticoFrontend
-    image: pbust0sn/toolrent-frontend:latest
-    pull_policy: always
-    dockerfile: Dockerfile
-    args:
+    environment:
       VITE_KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
     networks:
       - mynet
