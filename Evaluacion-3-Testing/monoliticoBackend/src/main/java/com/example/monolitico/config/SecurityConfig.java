@@ -28,12 +28,13 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/api/clients/login",
-                    "/api/clients/refresh",
-                    "/public/**"
-                ).permitAll()
+                // ENDPOINTS PUBLICOS
+                .requestMatchers(HttpMethod.POST, "/api/clients/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/clients/refresh").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/images/**").permitAll()
+                .requestMatchers("/public/**").permitAll()
+
+                // TODO LO DEMÁS REQUIERE JWT
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
             )

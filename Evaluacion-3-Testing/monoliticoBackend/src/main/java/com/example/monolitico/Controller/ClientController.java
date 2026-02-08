@@ -66,6 +66,7 @@ public class ClientController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestParam String username, @RequestParam String password) {
+        System.out.println("Login attempt for user: " + username);
         try {
             Map<String, Object> tokens = keycloakService.loginUser(username, password);
             return ResponseEntity.ok(tokens);
