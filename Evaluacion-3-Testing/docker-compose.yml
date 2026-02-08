@@ -85,7 +85,7 @@ services:
     build: ./monoliticoFrontend
     image: pbust0sn/toolrent-frontend:latest
     pull_policy: always
-    environment:
+    args:
       VITE_KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
     networks:
       - mynet
