@@ -24,7 +24,7 @@ public class KeycloakService {
     private static final String ADMIN_REALM = "master";
     private static final String ADMIN_CLIENT_ID = "admin-cli";
     private static final String ADMIN_USERNAME = "admin";
-    private static final String ADMIN_PASSWOR0D = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
 
 
     public String getAdminToken() {
