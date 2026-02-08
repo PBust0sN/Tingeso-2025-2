@@ -30,8 +30,8 @@ services:
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
       KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
-      CLIENT_SECRET: "Xzkzvv1KOcsTFcNkbu7uTCEbEXrNHqBL"
+      keycloak.url: https://auth.toolrent-tingeso.duckdns.org
+      client.secret: "Xzkzvv1KOcsTFcNkbu7uTCEbEXrNHqBL"
     depends_on:
       - mysql
       - keycloak
@@ -50,8 +50,8 @@ services:
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
       KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
-      CLIENT_SECRET: "Xzkzvv1KOcsTFcNkbu7uTCEbEXrNHqBL"
+      keycloak.url: https://auth.toolrent-tingeso.duckdns.org
+      client.secret: "Xzkzvv1KOcsTFcNkbu7uTCEbEXrNHqBL"
     depends_on:
       - mysql
       - keycloak
@@ -70,8 +70,8 @@ services:
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ROOT: DEBUG
       KEYCLOAK_ISSUER_URI: https://auth.toolrent-tingeso.duckdns.org/realms/toolRent
-      KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
-      CLIENT_SECRET: "Xzkzvv1KOcsTFcNkbu7uTCEbEXrNHqBL"
+      keycloak.url: https://auth.toolrent-tingeso.duckdns.org
+      client.secret: "Xzkzvv1KOcsTFcNkbu7uTCEbEXrNHqBL"
     depends_on:
       - mysql
       - keycloak
