@@ -1,7 +1,8 @@
 import Keycloak from "keycloak-js";
+const keycloakUrl = import.meta.env.VITE_KEYCLOAK_URL || "http://localhost:8080";
 
 const keycloak = new Keycloak({
-  url: "https://auth.toolrent-tingeso.duckdns.org/",
+  url: keycloakUrl,
   realm: "toolRent",
   clientId: "toolRent-Frontend",
 });

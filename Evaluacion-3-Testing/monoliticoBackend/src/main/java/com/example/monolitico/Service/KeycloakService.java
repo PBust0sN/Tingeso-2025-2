@@ -11,8 +11,10 @@ import java.util.*;
 
 @Service
 public class KeycloakService {
-
-    private static final String KEYCLOAK_URL = "http://keycloak:8080";
+    @Value("${keycloak.url}")
+    private String KEYCLOAK_URL;
+    
+    //private static final String KEYCLOAK_URL = "http://keycloak:8080";
     //private static final String KEYCLOAK_URL = "https://auth.toolrent-tingeso.duckdns.org";
     private static final String REALM = "toolRent";
 
