@@ -6,14 +6,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 
 @Service
 public class KeycloakService {
-    @Value("${keycloak.url: http://keycloak:8080}")
+    @Value("${keycloak.url}")
     private String KEYCLOAK_URL;
-    @Value("${client.secret: xc9s0DXyi2NSr600MoUP5q6U9oCaFYan}")
+    @Value("${client.secret}")
     private String CLIENT_SECRET;
 
     //private static final String KEYCLOAK_URL = "http://keycloak:8080";
