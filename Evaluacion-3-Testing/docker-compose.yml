@@ -91,7 +91,7 @@ services:
       args:
         VITE_KEYCLOAK_URL: https://auth.toolrent-tingeso.duckdns.org
         VITE_KEYCLOAK_REALM: toolRent
-        VITE_KEYCLOAK_CLIENT_ID: toolRent-frontend
+        VITE_KEYCLOAK_CLIENT_ID: toolRent-Frontend
     networks:
       - mynet
 
