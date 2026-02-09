@@ -29,9 +29,9 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
                 // ENDPOINTS PUBLICOS
-                .requestMatchers(HttpMethod.POST, "/api/clients/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/clients/login**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/clients/refresh").permitAll()
-                .requestMatchers(HttpMethod.POST, "/clients/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/clients/login**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/clients/refresh").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/images/**").permitAll()
                 .requestMatchers("/public/**").permitAll()
