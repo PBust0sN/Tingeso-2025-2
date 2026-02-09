@@ -120,7 +120,11 @@ export default function Navbar() {
       <AppBar position="fixed" sx={{ backgroundColor: "#1976d2aa", color: "#fff", zIndex: 1300, width: "100%" }}> {/* Ensured full width */}
         <Toolbar>
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", position: "relative" }}>
+              <Box
+                sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", cursor: "pointer" }}
+                onClick={() => navigate("/home")}
+              />
               <img src={logo} alt="ToolRent Logo" style={{ width: "30px", height: "30px", marginRight: "8px" }} />
               <Typography variant="h6" component="div">
                 ToolRent
