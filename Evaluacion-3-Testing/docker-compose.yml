@@ -22,8 +22,8 @@ services:
   # BACKEND (3 instancias)
   # ===================
   backend1:
+    build: ./monoliticoBackend
     image: pbust0sn/toolrent-backend:latest
-    pull_policy: always
     environment:
       DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
@@ -42,8 +42,8 @@ services:
     restart: unless-stopped
 
   backend2:
+    build: ./monoliticoBackend
     image: pbust0sn/toolrent-backend:latest
-    pull_policy: always
     environment:
       DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
@@ -62,8 +62,8 @@ services:
     restart: unless-stopped
 
   backend3:
+    build: ./monoliticoBackend
     image: pbust0sn/toolrent-backend:latest
-    pull_policy: always
     environment:
       DB_HOST: mysql
       IMAGE_UPLOAD_DIR: /uploads
