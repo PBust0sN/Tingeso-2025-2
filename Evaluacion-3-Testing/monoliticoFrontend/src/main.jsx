@@ -4,6 +4,7 @@ import './index.css'
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import keycloak from "./services/keycloak";
 import { BrowserRouter } from "react-router-dom";
+import Clarity from '@microsoft/clarity';
 
 const projectId = "vfdtj40ou9"
 
