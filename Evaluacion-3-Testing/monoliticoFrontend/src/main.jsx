@@ -5,6 +5,12 @@ import { ReactKeycloakProvider } from "@react-keycloak/web";
 import keycloak from "./services/keycloak";
 import { BrowserRouter } from "react-router-dom";
 
+const projectId = "vfdtj40ou9"
+
+Clarity.init(projectId);
+
+console.log('Clarity initialized with project ID:', projectId);
+
 console.log('Keycloak instance at index:', keycloak);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
