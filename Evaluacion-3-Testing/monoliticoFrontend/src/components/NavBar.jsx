@@ -19,6 +19,10 @@ import logo from "../../public/logo.png";
 import { useKeycloak } from "@react-keycloak/web";
 import clientService from "../services/client.service";
 import CircularProgress from "@mui/material/CircularProgress";
+import FeedIcon from '@mui/icons-material/Feed';
+import HelpIcon from '@mui/icons-material/Help';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -130,24 +134,32 @@ export default function Navbar() {
                 ToolRent
               </Typography>
             </Box>
-            {initialized && (
-              <>
-                {isAuthenticated ? (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography sx={{ mr: 2 }}>
-                      {tokenPayload?.username || tokenPayload?.email}
-                    </Typography>
-                    <IconButton color="inherit" onClick={handleLogout}>
-                      <LogoutIcon />
-                    </IconButton>
-                  </Box>
-                ) : (
-                  <Button variant="outlined" color="inherit" onClick={() => navigate("/login")}>
-                    Login
-                  </Button>
-                )}
-              </>
-            )}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Button sx={{ display: "left" }} variant="text" color="inherit" onClick={() => navigate("/help")} endIcon={<HelpIcon />}>
+                Ayuda
+              </Button>
+              {initialized && (
+                <>
+                  {isAuthenticated ? (
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Button variant="text" color="inherit" onClick={() => navigate("/myreports")} endIcon={<FeedIcon />}>
+                        Mis Reportes
+                      </Button>
+                      <Typography sx={{ ml: 2 }}>
+                            Hola!, {tokenPayload?.username || tokenPayload?.email}
+                      </Typography>
+                      <IconButton color="inherit" onClick={handleLogout}>
+                        <LogoutIcon />
+                      </IconButton>
+                    </Box>
+                  ) : (
+                    <Button variant="text" color="inherit" onClick={() => navigate("/login")} endIcon={<AccountCircleIcon />}>
+                      Iniciar Sesión
+                    </Button>
+                  )}
+                </>
+              )}
+            </Box>
           </Box>
         </Toolbar>
         <hr style={{ margin: 0, border: "1px solid #fff" }} /> {/* Added horizontal line */}
@@ -211,7 +223,7 @@ export default function Navbar() {
     '&:active': { outline: 'none' } 
   }} 
   disableRipple 
-  disableFocusRipple>Records</Button>
+  disableFocusRipple>Historial</Button>
           <Button variant="text" color="inherit" onClick={() => navigate("/fine/list")} endIcon={
               <ReceiptIcon/>
             } sx={{ 
@@ -221,7 +233,17 @@ export default function Navbar() {
     '&:active': { outline: 'none' } 
   }} 
   disableRipple 
-  disableFocusRipple>Fines</Button>
+  disableFocusRipple>Multas</Button>
+  <Button variant="text" color="inherit" onClick={() => navigate("/reports/create")} endIcon={
+              <AssessmentIcon/>
+            } sx={{ 
+    lineHeight: 1, 
+    padding: "0 8px", 
+    '&:focus': { outline: 'none' }, 
+    '&:active': { outline: 'none' } 
+  }} 
+  disableRipple 
+  disableFocusRipple>Reportes</Button>
         </Toolbar>
       </AppBar>
     </Box>

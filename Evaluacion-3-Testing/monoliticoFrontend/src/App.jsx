@@ -39,6 +39,7 @@ import AddEmployee from './components/AddEmployee';
 import EditEmployee from './components/EditEmployee';
 import clientService from './services/client.service';
 import ClientSelectLoan from './components/ClientSelectLoan';
+import Help from './components/Help';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -204,6 +205,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/help" element={<Help />} />
           <Route path="/login" element={<Login />} />
 
           <Route

@@ -33,6 +33,14 @@ const Login = () => {
   const tokenRef = useRef(localStorage.getItem("authToken"));
   const refreshTokenRef = useRef(localStorage.getItem("refreshToken"));
 
+  // Precargar todas las imágenes
+  useEffect(() => {
+    images.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  }, []);
+
   useEffect(() => {
     if (initialized && isAuthenticated) {
       navigate("/home");
