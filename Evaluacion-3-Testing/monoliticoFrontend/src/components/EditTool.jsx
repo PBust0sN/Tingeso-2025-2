@@ -255,10 +255,12 @@ const EditTool = () => {
       .update(tool)
       .then((response) => {
         console.log("Herramienta actualizada.", response.data);
+        window.alert("Herramienta actualizada exitosamente");
         navigate("/tool/list");
       })
       .catch((error) => {
         console.log("Ha ocurrido un error al intentar actualizar la herramienta.", error);
+        window.alert("Error al actualizar la herramienta");
       });
   };
 

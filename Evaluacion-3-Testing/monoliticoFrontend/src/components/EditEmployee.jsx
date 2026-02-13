@@ -137,10 +137,12 @@ const EditEmployee = () => {
       .update(client)
       .then((response) => {
         console.log("Empleado actualizado.", response.data);
+        window.alert("Empleado actualizado exitosamente");
         navigate("/employee/list");
       })
       .catch((error) => {
         console.log("Ha ocurrido un error al intentar actualizar el empleado.", error);
+        window.alert("Error al actualizar el empleado");
       });
   };
 

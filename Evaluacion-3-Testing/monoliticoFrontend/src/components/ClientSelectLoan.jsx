@@ -133,12 +133,12 @@ const ClientSelectLoan  = () => {
               <TableRow>
                 <TableCell colSpan={8} align="center">
                   <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-                    Listado de Clientes
+                    Seleccione un cliente
                   </Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell colSpan={6} align="left">
+                <TableCell colSpan={8} align="left">
                   <TextField
                     variant="outlined"
                     placeholder="Buscar cliente por rut..."

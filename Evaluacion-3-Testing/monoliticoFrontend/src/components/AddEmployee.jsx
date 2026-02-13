@@ -107,11 +107,13 @@ const AddEmployee = () => {
     clientService
       .create(client)
       .then((response) => {
-        console.log("Cliente añadido.", response.data);
+        console.log("Empleado añadido.", response.data);
+        window.alert("Empleado añadido exitosamente");
         navigate("/employee/list");
       })
       .catch((error) => {
-        console.log("Ha ocurrido un error al intentar crear nuevo cliente.", error);
+        console.log("Ha ocurrido un error al intentar crear nuevo empleado.", error);
+        window.alert("Error al crear nuevo empleado");
       });
   };
 

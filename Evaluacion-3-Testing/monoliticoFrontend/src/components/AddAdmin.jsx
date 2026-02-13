@@ -106,11 +106,13 @@ const AddAdmin = () => {
     clientService
       .create(client)
       .then((response) => {
-        console.log("Cliente añadido.", response.data);
+        console.log("Admin añadido.", response.data);
+        window.alert("Admin añadido exitosamente");
         navigate("/admin/list");
       })
       .catch((error) => {
-        console.log("Ha ocurrido un error al intentar crear nuevo cliente.", error);
+        console.log("Ha ocurrido un error al intentar crear nuevo admin.", error);
+        window.alert("Error al crear nuevo admin");
       });
   };
 

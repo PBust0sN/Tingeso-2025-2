@@ -60,12 +60,14 @@ const FineList = () => {
         .pay(client_id, fine_id)
         .then(() => {
           init(); // refresh list after payment
+          window.alert("Multa pagada exitosamente");
         })
         .catch((error) => {
           console.log(
             "Se ha producido un error al intentar pagar la multa",
             error
           );
+          window.alert("Error al pagar la multa");
         });
     }
   };

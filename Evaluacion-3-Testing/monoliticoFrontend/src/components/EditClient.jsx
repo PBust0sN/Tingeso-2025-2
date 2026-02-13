@@ -131,10 +131,12 @@ const EditClient = () => {
       .update(client)
       .then((response) => {
         console.log("Cliente actualizado.", response.data);
+        window.alert("Cliente actualizado exitosamente");
         navigate("/client/list");
       })
       .catch((error) => {
         console.log("Ha ocurrido un error al intentar actualizar el cliente.", error);
+        window.alert("Error al actualizar el cliente");
       });
   };
 

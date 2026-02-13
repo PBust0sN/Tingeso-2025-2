@@ -106,7 +106,7 @@ const NewClientBehindReport = () => {
       // simulate delay for better UX 
       await new Promise((res) => setTimeout(res, 1000));
       setLoading(false);
-      
+      window.alert("Reporte de clientes morosos generado exitosamente");
       const urlClientId = searchParams.get("clientId");
       if (urlClientId) {
         navigate("/client/list");

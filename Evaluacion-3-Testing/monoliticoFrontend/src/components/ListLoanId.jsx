@@ -66,9 +66,11 @@ const ListLoanId = () => {
         .remove(id)
         .then(() => {
           setLoans(loans.filter((loan) => loan.loanId !== id));
+          window.alert("Préstamo eliminado exitosamente");
         })
         .catch((error) => {
           console.log("Error al eliminar el préstamo", error);
+          window.alert("Error al eliminar el préstamo");
         });
     }
   };

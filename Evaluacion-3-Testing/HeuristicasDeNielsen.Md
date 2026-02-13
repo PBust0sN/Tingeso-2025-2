@@ -6,12 +6,12 @@
 
     When users know the current system status, they learn the outcome of their prior interactions and determine next steps. Predictable interactions create trust in the product as well as the brand.
 
-    **1.1** Communicate clearly to users what the system’s state is — no action with consequences to users should be taken without informing them.
+    **1.1** Communicate clearly to users what the system’s state is — no action with consequences to users should be taken without informing them. ✅
 
-    **1.2** Present feedback to the user as quickly as possible (ideally, immediately).
+    **1.2** Present feedback to the user as quickly as possible (ideally, immediately). ✅
 
-    **1.3** Build trust through open and continuous communication.
-2.  Match Between the System and the Real World
+    **1.3** Build trust through open and continuous communication. ✅
+2.  Match Between the System and the Real World 
 
     **The design should speak the users' language. Use words, phrases, and concepts familiar to the user, rather than internal jargon. Follow real-world conventions, making information appear in a natural and logical order.**
 

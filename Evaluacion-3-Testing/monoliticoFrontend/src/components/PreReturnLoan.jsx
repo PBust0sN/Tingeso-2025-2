@@ -88,6 +88,7 @@ const PreReturnLoan = () => {
 
       console.log(`Préstamo ${loan_id} marcado como devuelto`);
 
+      window.alert("Prestamo devuelto exitosamente. A continuación se mostrará el resumen de la devolución.");
       navigate(`${window.location.pathname}/summary`, { state: { returnLoanData: res.data } });
       
     } catch (err) {

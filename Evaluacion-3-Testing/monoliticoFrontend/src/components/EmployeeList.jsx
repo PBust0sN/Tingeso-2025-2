@@ -102,12 +102,14 @@ const EmployeeList = () => {
         .remove(id)
         .then(() => {
           init();
+          window.alert("Empleado eliminado exitosamente");
         })
         .catch((error) => {
           console.log(
             "Se ha producido un error al intentar eliminar la herramienta",
             error
           );
+          window.alert("Error al eliminar el empleado");
         });
     }
   };

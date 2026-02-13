@@ -113,6 +113,7 @@ const NewLoanReport = () => {
 		}
 		await new Promise((res) => setTimeout(res, 1000));
 
+		window.alert("Reporte de préstamos generado exitosamente");
 		if (urlClientId) {
 			navigate("/client/list");
 		} else {

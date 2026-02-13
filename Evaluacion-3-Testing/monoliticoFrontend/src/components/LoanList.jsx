@@ -95,12 +95,14 @@ const LoanList = () => {
         .remove(id)
         .then(() => {
           init();
+          window.alert("Prestamo eliminado exitosamente");
         })
         .catch((error) => {
           console.log(
             "Se ha producido un error al intentar eliminar el prestamo",
             error
           );
+          window.alert("Error al eliminar el prestamo");
         });
     }
   };
@@ -283,7 +285,7 @@ const formatDate = (dateStr) => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.loanId}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 100 }}>{loan.active? "Finalizado":"Activo"}</TableCell>
+                  <TableCell align="left" sx={{ maxWidth: 100 }}>{loan.active? "Activo":"Finalizado"}</TableCell>
                   <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.amount}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.deliveryDate)}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.returnDate)}</TableCell>

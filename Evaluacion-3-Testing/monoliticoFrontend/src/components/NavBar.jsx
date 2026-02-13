@@ -23,6 +23,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import HelpIcon from '@mui/icons-material/Help';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import HomeIcon from '@mui/icons-material/Home';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -164,6 +165,16 @@ export default function Navbar() {
         </Toolbar>
         <hr style={{ margin: 0, border: "1px solid #fff" }} /> {/* Added horizontal line */}
         <Toolbar sx={{ minHeight: "35px!important", height: 35, display: "flex", justifyContent: "center", backgroundColor: "#1976d2aa", height: 40, gap: "40px" }}> {/* Centered buttons with spacing */}
+          <Button variant="text" color="inherit" onClick={() => navigate("/home")} endIcon={
+              <HomeIcon/>
+            } sx={{ 
+    lineHeight: 1, 
+    padding: "0 8px", 
+    '&:focus': { outline: 'none' }, 
+    '&:active': { outline: 'none' } 
+  }} 
+  disableRipple 
+  disableFocusRipple>Inicio</Button>
           <Button
             color="inherit"
             aria-controls="user-menu"

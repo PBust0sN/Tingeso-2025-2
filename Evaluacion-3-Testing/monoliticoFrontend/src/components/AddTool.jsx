@@ -192,6 +192,7 @@ const AddTool = () => {
             console.log("Error al subir imagen, pero herramienta fue creada:", imgErr);
           }
         }
+        window.alert("Herramienta creada exitosamente");
         navigate("/tool/list");
       } else {
         window.alert("La creación respondió con código: " + (res?.status ?? "unknown"));

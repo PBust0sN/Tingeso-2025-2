@@ -64,6 +64,7 @@ const NewRakingTool = () => {
 
 		setLoading(false);
 
+		window.alert("Ranking de herramientas generado exitosamente");
 		if (urlClientId) {
 			navigate("/client/list");
 		} else {

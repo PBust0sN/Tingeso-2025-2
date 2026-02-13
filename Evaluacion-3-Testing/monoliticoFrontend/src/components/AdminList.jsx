@@ -89,6 +89,7 @@ const AdminList = () => {
         .remove(id)
         .then(() => {
           init();
+          window.alert("Admin eliminado exitosamente");
         })
         .catch((error) => {
           console.log(

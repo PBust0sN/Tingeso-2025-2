@@ -128,10 +128,12 @@ const AddClient = () => {
       .create(client)
       .then((response) => {
         console.log("Cliente añadido.", response.data);
+        window.alert("Cliente añadido exitosamente");
         navigate("/client/list");
       })
       .catch((error) => {
         console.log("Ha ocurrido un error al intentar crear nuevo cliente.", error);
+        window.alert("Error al crear nuevo cliente");
       });
   };
 

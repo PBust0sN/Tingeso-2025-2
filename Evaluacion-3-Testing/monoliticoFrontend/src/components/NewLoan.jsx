@@ -133,7 +133,7 @@ const NewLoan = () => {
         // suposing that if response.data is an empty array, no errors occurred
         if (Array.isArray(response.data) && response.data.length === 0) {
           window.alert("Préstamo añadido exitosamente");
-          navigate("/client/list");
+          navigate("/loan/list");
         } else if (Array.isArray(response.data)) {
           // show the list of errors 
           window.alert("Errores:\n" + response.data.join("\n"));
@@ -195,21 +195,28 @@ const NewLoan = () => {
             mb: 3,
           }}
         >
-          <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-              Selecciona Herramientas para el Préstamo
-            </Typography>
-            <TextField
-              id="filled-search"
-              label="Días de préstamo"
-              type="number"
-              variant="filled"
-              value={days}
-              onChange={e => setDays(e.target.value)}
-              sx={{ width: 260 }}
-              inputProps={{ min: 1 }}
-              required
-            />
+          <Box sx={{ mb: 4 }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2 }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                Selecciona Herramientas para el Préstamo
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                  Selecciona la cantidad de días para el préstamo: 
+                </Typography>
+                <TextField
+                  id="filled-search"
+                  label="Días de préstamo"
+                  type="number"
+                  variant="filled"
+                  value={days}
+                  onChange={e => setDays(e.target.value)}
+                  sx={{ width: 260 }}
+                  inputProps={{ min: 1 }}
+                  required
+                />
+              </Box>
+            </Box>
           </Box>
           <Box
             sx={{
@@ -326,7 +333,7 @@ const NewLoan = () => {
               })
             )}
           </Box>
-          <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+          <Box sx={{ mt: 1 , display: "flex", justifyContent: "center" }}>
             <Pagination
               count={Math.ceil(toolOptions.length / ITEMS_PER_PAGE)}
               page={currentPage}
@@ -336,7 +343,7 @@ const NewLoan = () => {
               color="primary"
             />
           </Box>
-          <Box sx={{ mt: 4, display: "flex", justifyContent: "center", gap: 2, mb: 2 }}>
+          <Box sx={{ mt: 1, display: "flex", justifyContent: "center", gap: 2, mb: 2 }}>
             <Button
               variant="contained"
               color="info"
@@ -346,7 +353,7 @@ const NewLoan = () => {
             >
               {savingLoan ? "Guardando..." : "Grabar Préstamo"}
             </Button>
-            <Link to="/client/list" style={{ textDecoration: "none", pointerEvents: savingLoan ? "none" : "auto" }}>
+            <Link to="/loan/list" style={{ textDecoration: "none", pointerEvents: savingLoan ? "none" : "auto" }}>
               <Button variant="outlined" color="primary" disabled={savingLoan}>
                 Volver al Listado
               </Button>

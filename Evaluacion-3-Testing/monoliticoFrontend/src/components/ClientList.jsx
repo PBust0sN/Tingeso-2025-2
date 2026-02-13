@@ -100,17 +100,18 @@ const ClientList = () => {
 
   const handleDelete = (id) => {
     const confirmDelete = window.confirm(
-      "¿Esta seguro que desea borrar esta herramienta?"
+      "¿Esta seguro que desea borrar este cliente?"
     );
     if (confirmDelete) {
       clientService
         .remove(id)
         .then(() => {
           init();
+          window.alert("Cliente eliminado exitosamente");
         })
         .catch((error) => {
           console.log(
-            "Se ha producido un error al intentar eliminar la herramienta",
+            "Se ha producido un error al intentar eliminar el cliente",
             error
           );
         });
