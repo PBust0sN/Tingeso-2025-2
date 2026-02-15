@@ -223,22 +223,22 @@ const ClientList = () => {
                   Rut
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  lastName
+                  Apellido
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Name
+                  Nombre
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  email
+                  Correo
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  phone Number
+                  Número telefonico
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Role
+                  Rol
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 150, fontWeight: "bold", color: "black" }}>
-                  state
+                  Estado
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 80, fontWeight: "bold", color: "black" }}>
                   Más
@@ -307,7 +307,7 @@ const ClientList = () => {
                               onClick={() => navigate(`/reports/create/${client.client_id}`)}
                               startIcon={<AddCircleIcon />}
                             >
-                              Create Report
+                              Crear Reporte
                             </Button>
                           </ThemeProvider>
                         
@@ -319,7 +319,7 @@ const ClientList = () => {
                               onClick={() => handleNewLoan(client.client_id)}
                               startIcon={<AddCircleIcon />}
                             >
-                              New Loan
+                              Nuevo Prestamo
                             </Button>
                           </ThemeProvider>
                           <ThemeProvider theme={theme}>
@@ -330,7 +330,7 @@ const ClientList = () => {
                               onClick={() => navigate(`/loan/list/${client.client_id}`)}
                               startIcon={<VisibilityIcon />}
                             >
-                              See Loans
+                              Ver prestamos
                             </Button>
                           </ThemeProvider>
                           <Button

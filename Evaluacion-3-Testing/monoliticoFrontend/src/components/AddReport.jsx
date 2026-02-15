@@ -57,7 +57,7 @@ const AddReport = () => {
         }}
       >
         <Typography variant="h4" align="center" sx={{ mb: 4, fontWeight: "bold" }}>
-          Selecciona un Reporte
+          Selecciona un tipo de Reporte
         </Typography>
         <Box
           sx={{

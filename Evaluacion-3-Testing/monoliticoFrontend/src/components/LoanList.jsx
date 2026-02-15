@@ -265,10 +265,10 @@ const formatDate = (dateStr) => {
                   Fecha
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 50, fontWeight: "bold", color: "black" }}>
-                  ID Staff
+                  Id de Empleado
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 50, fontWeight: "bold", color: "black" }}>
-                  ID Cliente
+                  Id de Cliente
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Cargos Extra

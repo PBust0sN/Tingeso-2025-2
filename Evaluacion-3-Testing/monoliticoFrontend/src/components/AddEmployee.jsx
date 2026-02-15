@@ -201,7 +201,7 @@ const AddEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="name"
-                label="Name"
+                label="Nombre"
                 value={name}
                 variant="standard"
                 onChange={(e) => setName(e.target.value)}
@@ -211,7 +211,7 @@ const AddEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="last_name"
-                label="Last Name"
+                label="Apellido"
                 value={last_name}
                 variant="standard"
                 onChange={(e) => setLastName(e.target.value)}
@@ -221,7 +221,7 @@ const AddEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="mail"
-                label="E-Mail"
+                label="correo"
                 value={mail}
                 variant="standard"
                 onChange={(e) => setMail(e.target.value)}
@@ -232,7 +232,7 @@ const AddEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="password"
-                label="Password"
+                label="Contraseña"
                 type="password"
                 value={password}
                 variant="standard"
@@ -245,7 +245,7 @@ const AddEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="phone_number"
-                label="Phone Number"
+                label="Número telefonico"
                 value={phone_number}
                 variant="standard"
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -256,7 +256,7 @@ const AddEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 select
-                label="State"
+                label="Estado"
                 value={state}
                 variant="standard"
                 onChange={(e) => setState(e.target.value)}
@@ -277,7 +277,7 @@ const AddEmployee = () => {
               </Button>
             </FormControl>
             <hr />
-            <Link to="/client/list">Back to List</Link>
+            <Link to="/employee/list">Volver al listado</Link>
           </Box>
         </Paper>
       </Box>

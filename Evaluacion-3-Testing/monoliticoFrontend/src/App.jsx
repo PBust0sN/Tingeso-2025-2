@@ -40,8 +40,12 @@ import EditEmployee from './components/EditEmployee';
 import clientService from './services/client.service';
 import ClientSelectLoan from './components/ClientSelectLoan';
 import Help from './components/Help';
+import { useGlobalShortcuts } from './hooks/useGlobalShortcuts';
 
-function App() {
+function AppRoutes() {
+  // Enable global shortcuts - must be inside Router context
+  useGlobalShortcuts();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [tokenPayload, setTokenPayload] = useState(null);
   const tokenRef = useRef(localStorage.getItem("authToken"));
@@ -199,10 +203,9 @@ function App() {
 
   return (
     <div style={{ marginTop: '50px' }}> {/* Added global margin-top */}
-      <Router>
-        <NavBar />
+      <NavBar />
 
-        <Routes>
+      <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/help" element={<Help />} />
@@ -334,9 +337,16 @@ function App() {
           />
         </Routes>
 
-      </Router>
-    </div>
-  );
-}
+      </div>
+    );
+  }
 
-export default App
+  function App() {
+    return (
+      <Router>
+        <AppRoutes />
+      </Router>
+    );
+  }
+
+export default App;

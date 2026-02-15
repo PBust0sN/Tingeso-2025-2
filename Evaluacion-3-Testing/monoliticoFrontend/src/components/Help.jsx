@@ -34,59 +34,115 @@ const Help = () => {
     },
     {
       id: 3,
+      category: "Inicio de Sesión",
+      question: "¿Cómo inicio sesión en la aplicación?",
+      answer:
+        "Para iniciar sesión, dirígete a la página de inicio de sesión e ingresa tu correo electrónico y contraseña. Luego haz clic en 'Iniciar Sesión'. Si eres un nuevo usuario, deberás registrarte primero con tus datos.",
+    },
+    {
+      id: 4,
+      category: "Inicio de Sesión",
+      question: "¿Qué debo hacer si olvido mi contraseña?",
+      answer:
+        "Si olvidas tu contraseña, haz clic en el enlace 'Olvidé mi contraseña' en la página de inicio de sesión. Ingresa tu correo electrónico y recibirás instrucciones para restablecer tu contraseña.",
+    },
+    {
+      id: 5,
+      category: "Inicio de Sesión",
+      question: "¿Mi sesión caduca?",
+      answer:
+        "Sí, por razones de seguridad, las sesiones cuentan con un tiempo de expiración. Si tu sesión expira, el sistema intentará renovarla automáticamente. Si no puede renovarla, deberás iniciar sesión de nuevo.",
+    },
+    {
+      id: 6,
+      category: "Inicio de Sesión",
+      question: "¿Qué significan los diferentes roles de usuario?",
+      answer:
+        "Existen tres roles principales: Admin (acceso completo del sistema), Staff (puede gestionar préstamos, clientes y herramientas) y Client (puede consultar sus propios reportes y préstamos).",
+    },
+    {
+      id: 7,
       category: "Clientes",
       question: "¿Cómo agrego un nuevo cliente al sistema?",
       answer:
         "Ve a la sección de Clientes, haz clic en 'Agregar Cliente' e ingresa los datos requeridos: nombre, RUT, correo electrónico y número de teléfono.",
     },
     {
-      id: 4,
+      id: 8,
       category: "Clientes",
       question: "¿Puedo editar la información de un cliente existente?",
       answer:
         "Sí, en la lista de Clientes encontrarás un botón de edición junto a cada cliente. Haz clic para modificar sus datos.",
     },
     {
-      id: 5,
+      id: 9,
       category: "Herramientas",
       question: "¿Cómo administro el inventario de herramientas?",
       answer:
         "En la sección de Herramientas puedes ver el inventario completo. Puedes agregar nuevas herramientas, editar existentes o eliminarlas si es necesario.",
     },
     {
-      id: 6,
+      id: 10,
       category: "Herramientas",
       question: "¿Qué información debo proporcionar al agregar una herramienta?",
       answer:
         "Debes proporcionar el nombre de la herramienta, descripción, código único, cantidad disponible y el precio diario de alquiler.",
     },
     {
-      id: 7,
-      category: "Reportes",
-      question: "¿Qué tipos de reportes están disponibles?",
-      answer:
-        "Puedes generar reportes sobre: Préstamos por cliente, Herramientas más utilizadas, Clientes con préstamos atrasados y Multas aplicadas.",
-    },
-    {
-      id: 8,
-      category: "Reportes",
-      question: "¿Cómo descargo un reporte?",
-      answer:
-        "Una vez generado un reporte, encontrarás un botón de descarga. Los reportes se pueden descargar en formato PDF o Excel según la disponibilidad.",
-    },
-    {
-      id: 9,
+      id: 11,
       category: "Devoluciones",
       question: "¿Cuál es el proceso para devolver una herramienta?",
       answer:
         "Dirígete a Préstamos, selecciona el préstamo que deseas cerrar, haz clic en 'Devolver' y verifica el estado de la herramienta. El sistema calculará automáticamente cualquier multa si está retrasada.",
     },
     {
-      id: 10,
+      id: 12,
+      category: "Reportes",
+      question: "¿Qué tipos de reportes están disponibles?",
+      answer:
+        "Puedes generar reportes sobre: Préstamos por cliente, Herramientas más utilizadas, Clientes con préstamos atrasados y Multas aplicadas.",
+    },
+    {
+      id: 13,
+      category: "Reportes",
+      question: "¿Cómo descargo un reporte?",
+      answer:
+        "Una vez generado un reporte, encontrarás un botón de descarga. Los reportes se pueden descargar en formato PDF o Excel según la disponibilidad.",
+    },
+    {
+      id: 14,
       category: "Usuarios",
       question: "¿Qué roles de usuario existen en el sistema?",
       answer:
         "Existen tres roles: Admin (acceso completo), Staff (gestión de préstamos y clientes) y Client (consultar propios reportes y préstamos).",
+    },
+    {
+      id: 15,
+      category: "Atajos de Teclado",
+      question: "¿Cuáles son los atajos de teclado disponibles?",
+      answer:
+        "El sistema incluye los siguientes atajos de teclado para navegar más rápidamente: Shift+N para ir a nuevo préstamo, Shift+H para volver al inicio, y Shift+B para volver a la página anterior.",
+    },
+    {
+      id: 16,
+      category: "Atajos de Teclado",
+      question: "¿Cómo creo un nuevo préstamo usando el atajo de teclado?",
+      answer:
+        "Presiona Shift+N desde cualquier página para ir directamente a la sección de creación de nuevo préstamo. Esta combinación de teclas te llevará a la pantalla de selección de clientes.",
+    },
+    {
+      id: 17,
+      category: "Atajos de Teclado",
+      question: "¿Cómo navego rápidamente a la página de inicio?",
+      answer:
+        "Presiona Shift+H desde cualquier página para volver al inicio de la aplicación. Este atajo funciona desde cualquier sección del sistema.",
+    },
+    {
+      id: 18,
+      category: "Atajos de Teclado",
+      question: "¿Cómo vuelvo a la página anterior?",
+      answer:
+        "Presiona Shift+B para volver a la página que visitaste anteriormente. Este atajo es equivalente a hacer clic en el botón atrás del navegador.",
     },
   ];
 

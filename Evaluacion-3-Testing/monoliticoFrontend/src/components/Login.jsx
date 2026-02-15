@@ -112,11 +112,14 @@ const Login = () => {
         setIsAuthenticated(true);
 
         navigate("/home");
+        window.alert("Inicio de sesión exitoso");
         window.location.reload();
     } catch (error) {
         if (error.response && error.response.status === 401) {
             setErrorMessage("Contraseña y/o usuario incorrecto");
+            window.alert("Contraseña y/o usuario incorrecto");
         } else {
+            window.alert("Ocurrió un error inesperado");
             setErrorMessage("Ocurrió un error inesperado");
         }
     } finally {
@@ -247,16 +250,18 @@ const Login = () => {
               fullWidth
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               placeholder="Ingrese su usuario"
             />
             
             <TextField
               label="Contraseña"
-              type="password"
+              type="Contrasña"
               variant="outlined"
               fullWidth
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               placeholder="Ingrese su contraseña"
             />
             
@@ -359,16 +364,18 @@ const Login = () => {
               fullWidth
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               placeholder="Ingrese su usuario"
             />
             
             <TextField
               label="Contraseña"
-              type="password"
+              type="Contraseña"
               variant="outlined"
               fullWidth
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               placeholder="Ingrese su contraseña"
             />
             
@@ -471,16 +478,18 @@ const Login = () => {
               fullWidth
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               placeholder="Ingrese su usuario"
             />
             
             <TextField
               label="Contraseña"
-              type="password"
+              type="Contraseña"
               variant="outlined"
               fullWidth
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
               placeholder="Ingrese su contraseña"
             />
             

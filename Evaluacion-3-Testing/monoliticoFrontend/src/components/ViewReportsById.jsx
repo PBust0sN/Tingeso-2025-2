@@ -129,9 +129,9 @@ const ViewReportsById = () => {
                 </TableCell>
               </TableRow>
                <TableRow>
-                 <TableCell>ID Reporte</TableCell>
+                 <TableCell>Id de Reporte</TableCell>
                  <TableCell>Fecha</TableCell>
-                 <TableCell>Tipo</TableCell>
+                 <TableCell>Tipo de reporte</TableCell>
                  <TableCell></TableCell>
                </TableRow>
             </TableHead>

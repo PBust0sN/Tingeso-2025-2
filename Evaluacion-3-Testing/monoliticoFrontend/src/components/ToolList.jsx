@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import BuildIcon from '@mui/icons-material/Build';
 import CircularProgress from "@mui/material/CircularProgress";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ToolList = () => {
   const [tools, setTools] = useState([]);
@@ -179,43 +180,43 @@ const ToolList = () => {
                     align="left"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    categoria
+                    Categoria
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    loan fee
+                    Valor de prestamo
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    reposition fee
+                    Valor de reposición
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    disponibility
+                    Disponibilidad
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    diary fine fee
+                    Valor de multa diaria
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    stock
+                    Cantidad en Stock
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}
                   >
-                    low dmg fee
+                    Valor por desgaste
                   </TableCell>
                   <TableCell
                     align="center"
@@ -287,6 +288,16 @@ const ToolList = () => {
             </Table>
           </TableContainer>
         )}
+        <Box sx={{ mt: 3, mb: 3 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(-1)}
+          >
+            Volver Atrás
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

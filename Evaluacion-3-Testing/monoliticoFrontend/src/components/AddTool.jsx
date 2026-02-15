@@ -277,7 +277,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="toolName"
-                label="Tool Name"
+                label="Nombre de la herramienta"
                 value={toolName}
                 variant="standard"
                 onChange={(e) => setToolName(e.target.value)}
@@ -289,7 +289,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="category"
-                label="Category"
+                label="Categoría"
                 value={category}
                 select
                 variant="standard"
@@ -308,7 +308,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="disponibility"
-                label="Disponibility"
+                label="Disponibilidad"
                 value={disponibility}
                 select
                 variant="standard"
@@ -325,7 +325,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="initialState"
-                label="Initial State"
+                label="Estado inicial"
                 value={initialState}
                 variant="standard"
                 onChange={(e) => setInitialState(e.target.value)}
@@ -336,7 +336,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="loanFee"
-                label="Loan Fee"
+                label="Valor de prestamo"
                 type="number"
                 value={loanFee}
                 variant="standard"
@@ -348,7 +348,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="repositionFee"
-                label="Reposition Fee"
+                label="Valor de reposición"
                 type="number"
                 value={repositionFee}
                 variant="standard"
@@ -360,20 +360,20 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="lowDmgFee"
-                label="Low Dmg Fee"
+                label="Valor por desgaste"
                 type="number"
                 value={lowDmgFee}
                 variant="standard"
                 onChange={(e) => setLowDmgFee(e.target.value)}
                 error={!!fieldErrors.lowDmgFee}
-                helperText="Debe ser > 0 y menor que Reposition Fee"
+                helperText="Debe ser > 0 y menor que Valor de reposición"
               />
             </FormControl>
 
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="diaryFineFee"
-                label="Diary Fine Fee"
+                label="Valor de multa diaria"
                 type="number"
                 value={diaryFineFee}
                 variant="standard"
@@ -385,7 +385,7 @@ const AddTool = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="stock"
-                label="Stock"
+                label="Cantidad en stock"
                 type="number"
                 value={stock}
                 variant="standard"
@@ -469,7 +469,7 @@ const AddTool = () => {
               </Button>
             </FormControl>
             <hr />
-            <Link to="/tool/list">Back to List</Link>
+            <Link to="/tool/list">Volver al listado</Link>
           </Box>
         </Paper>
       </Box>

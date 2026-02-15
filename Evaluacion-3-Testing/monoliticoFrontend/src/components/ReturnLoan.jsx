@@ -51,8 +51,8 @@ const ReturnLoan = () => {
             <Box>
               {/* Primera fila */}
               <Box sx={{ display: "flex", flexDirection: "row", gap: 40, mb: 1, textAlign: "left" }}>
-                <Typography sx={{ textAlign: "justify" }}><b>ID:</b> {returnLoanData.loan.loanId}</Typography>
-                <Typography sx={{ textAlign: "flex" }}><b>Cliente:</b> {returnLoanData.loan.clientId}</Typography>
+                <Typography sx={{ textAlign: "justify" }}><b>Id:</b> {returnLoanData.loan.loanId}</Typography>
+                <Typography sx={{ textAlign: "flex" }}><b>Id del Cliente:</b> {returnLoanData.loan.clientId}</Typography>
                 <Typography sx={{ textAlign: "left" }}><b>Estado:</b> {returnLoanData.loan.active? "Activo" : "Devuelto"}</Typography>
               </Box>
               {/* Segunda fila */}
@@ -69,14 +69,14 @@ const ReturnLoan = () => {
         {/* Fines issued */}
         <Paper sx={{ p: 3, mb: 2, minWidth: 1000, maxWidth: 2000, width: "90%", textAlign: "justify" }}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold", textAlign: "center" }}>
-            Fines issued
+            Multas cursadas
           </Typography>
           {/* Behind Fine y Repo Fine en paralelo */}
           <Box sx={{ display: "flex", flexDirection: "row", gap: 4, justifyContent: "space-between", textAlign: "justify" }}>
             {/* Behind Fine */}
             <Paper sx={{ flex: 1, p: 2, mb: 2, background: "#f9f9f9", textAlign: "justify" }}>
               <Typography variant="subtitle1" sx={{ fontWeight: "bold", textAlign: "center" }}>
-                Behind Fine
+                Multas por atraso
               </Typography>
               {returnLoanData?.fine ? (
                 <Box>
@@ -84,22 +84,22 @@ const ReturnLoan = () => {
                     <b>Monto:</b> {returnLoanData.fine.amount}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Cliente ID:</b> {returnLoanData.fine.clientId}
+                    <b>Id del Cliente:</b> {returnLoanData.fine.clientId}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
                     <b>Fecha:</b> {returnLoanData.fine.date}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Fine ID:</b> {returnLoanData.fine.fineId}
+                    <b>Id multa:</b> {returnLoanData.fine.fineId}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Loan ID:</b> {returnLoanData.fine.loanId}
+                    <b>Id prestamo:</b> {returnLoanData.fine.loanId}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
                     <b>Estado:</b> {returnLoanData.fine.state}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Tipo:</b> {returnLoanData.fine.type}
+                    <b>Tipo de Multa:</b> {returnLoanData.fine.type}
                   </Typography>
                 </Box>
               ) : (
@@ -109,7 +109,7 @@ const ReturnLoan = () => {
             {/* Repo Fine */}
             <Paper sx={{ flex: 1, p: 2, mb: 2, background: "#f9f9f9", textAlign: "justify" }}>
               <Typography variant="subtitle1" sx={{ fontWeight: "bold", textAlign: "center" }}>
-                Repo Fine
+                Multas por daños graves
               </Typography>
               {returnLoanData?.repoFine ? (
                 <Box>
@@ -117,22 +117,22 @@ const ReturnLoan = () => {
                     <b>Monto:</b> {returnLoanData.repoFine.amount}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Cliente ID:</b> {returnLoanData.repoFine.clientId}
+                    <b>Id del Cliente:</b> {returnLoanData.repoFine.clientId}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
                     <b>Fecha:</b> {returnLoanData.repoFine.date}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Fine ID:</b> {returnLoanData.repoFine.fineId}
+                    <b>Id multa:</b> {returnLoanData.repoFine.fineId}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Loan ID:</b> {returnLoanData.repoFine.loanId}
+                    <b>Id prestamo:</b> {returnLoanData.repoFine.loanId}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
                     <b>Estado:</b> {returnLoanData.repoFine.state}
                   </Typography>
                   <Typography sx={{ textAlign: "justify" }}>
-                    <b>Tipo:</b> {returnLoanData.repoFine.type}
+                    <b>Tipo de Multa:</b> {returnLoanData.repoFine.type}
                   </Typography>
                 </Box>
               ) : (
@@ -172,7 +172,7 @@ const ReturnLoan = () => {
             color="primary"
             onClick={() => navigate("/home")}
           >
-            Ir a Home
+            Volver a la pagina principal
           </Button>
         </Box>
       </Box>

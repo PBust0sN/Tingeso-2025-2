@@ -231,7 +231,7 @@ const EditEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="name"
-                label="Name"
+                label="Nombre"
                 value={name}
                 variant="standard"
                 onChange={(e) => setName(e.target.value)}
@@ -242,7 +242,7 @@ const EditEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="last_name"
-                label="Last Name"
+                label="Apellido"
                 value={last_name}
                 variant="standard"
                 onChange={(e) => setLastName(e.target.value)}
@@ -253,7 +253,7 @@ const EditEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="mail"
-                label="E-Mail"
+                label="Correo"
                 value={mail}
                 variant="standard"
                 onChange={(e) => setMail(e.target.value)}
@@ -264,7 +264,7 @@ const EditEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="phone_number"
-                label="Phone Number"
+                label="Número telefónico"
                 value={phone_number}
                 variant="standard"
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -276,7 +276,7 @@ const EditEmployee = () => {
             <FormControl fullWidth sx={{ mb: 2 }}>
               <TextField
                 id="state"
-                label="State"
+                label="Estado"
                 value={state}
                 select
                 variant="standard"
@@ -299,7 +299,7 @@ const EditEmployee = () => {
               </Button>
             </FormControl>
             <hr />
-            <Link to="/employee/list">Back to List</Link>
+            <Link to="/employee/list">Volver al listado</Link>
           </Box>
         </Paper>
       </Box>

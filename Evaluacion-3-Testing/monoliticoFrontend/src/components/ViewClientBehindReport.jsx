@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import clientBehindService from "../services/clientBehind.service";
 import loansReportsService from "../services/loansReports.service";
 import Table from "@mui/material/Table";
@@ -11,9 +11,12 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function ViewClientBehindReport() {
   const { reportId } = useParams();
+  const navigate = useNavigate();
   const [clientBehind, setClientBehind] = useState(null);
   const [loansReport, setLoansReport] = useState([]);
 
@@ -97,10 +100,10 @@ function ViewClientBehindReport() {
           <Typography variant="h5" align="center" sx={{ fontWeight: "bold", mb: 2 }}>Detalle Cliente Moroso</Typography>
           {clientBehind ? (
             <Box sx={{ display: "flex", gap: 6, justifyContent: "center", alignItems: "center" }}>
-              <Typography variant="body1"><b>ID clientBehind:</b> {clientBehind.clientIdBehind}</Typography>
+              <Typography variant="body1"><b>Id del cliente:</b> {clientBehind.clientIdBehind}</Typography>
               <Typography variant="body1"><b>Nombre:</b> {clientBehind.name} {clientBehind.lastName}</Typography>
-              <Typography variant="body1"><b>RUT:</b> {clientBehind.rut}</Typography>
-              <Typography variant="body1"><b>Email:</b> {clientBehind.mail}</Typography>
+              <Typography variant="body1"><b>Rut:</b> {clientBehind.rut}</Typography>
+              <Typography variant="body1"><b>Correo:</b> {clientBehind.mail}</Typography>
             </Box>
           ) : (
             <Typography variant="body2" color="text.secondary">No se encontró información del cliente para este reporte.</Typography>
@@ -116,8 +119,8 @@ function ViewClientBehindReport() {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: "bold" }}>ID Préstamo</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Tipo</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Id de Préstamo</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Tipo de pretamo</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Cantidad</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Fecha Entrega</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Fecha Retorno</TableCell>
@@ -140,6 +143,16 @@ function ViewClientBehindReport() {
             </TableContainer>
           )}
         </Paper>
+        <Box sx={{ mt: 3 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(-1)}
+          >
+            Volver Atrás
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

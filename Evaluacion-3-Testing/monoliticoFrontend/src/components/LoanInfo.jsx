@@ -90,12 +90,14 @@ const LoanInfo = () => {
           .remove(id)
           .then(() => {
             init();
+            window.alert("Préstamo eliminado exitosamente");
           })
           .catch((error) => {
             console.log(
               "Se ha producido un error al intentar eliminar el prestamo",
               error
             );
+            window.alert("Error al eliminar el préstamo");
           });
       }
     };
@@ -181,12 +183,8 @@ const formatDate = (dateStr) => {
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID Préstamo</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Id</TableCell>
                   <TableCell>{loan.loanId}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>Tipo</TableCell>
-                  <TableCell>{loan.loanType}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={{ fontWeight: "bold" }}>Cantidad</TableCell>
@@ -205,11 +203,11 @@ const formatDate = (dateStr) => {
                   <TableCell>{formatDate(loan.date)}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID Staff</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Id de Empleado</TableCell>
                   <TableCell>{loan.staffId}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID Cliente</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Id de Cliente</TableCell>
                   <TableCell>{loan.clientId}</TableCell>
                 </TableRow>
                 <TableRow>
@@ -241,7 +239,7 @@ const formatDate = (dateStr) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>ID Herramienta</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Id de Herramienta</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Nombre</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Categoría</TableCell>
                 </TableRow>

@@ -137,7 +137,7 @@ export default function Navbar() {
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Button sx={{ display: "left" }} variant="text" color="inherit" onClick={() => navigate("/help")} endIcon={<HelpIcon />}>
-                Ayuda
+                Centro de ayuda
               </Button>
               {initialized && (
                 <>
@@ -234,7 +234,7 @@ export default function Navbar() {
     '&:active': { outline: 'none' } 
   }} 
   disableRipple 
-  disableFocusRipple>Historial</Button>
+  disableFocusRipple>Registros</Button>
           <Button variant="text" color="inherit" onClick={() => navigate("/fine/list")} endIcon={
               <ReceiptIcon/>
             } sx={{ 

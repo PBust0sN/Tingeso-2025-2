@@ -150,19 +150,17 @@ const PreReturnLoan = () => {
           <Table size="small">
             <TableBody>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>Tipo</TableCell>
-                <TableCell>{loan.loanType}</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Cantidad</TableCell>
                 <TableCell>{loan.amount}</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Entrega</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Fecha de Entrega</TableCell>
                 <TableCell>{formatDate(loan.deliveryDate)}</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Retorno</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Fecha de Retorno</TableCell>
                 <TableCell>{formatDate(loan.returnDate)}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell sx={{ fontWeight: "bold" }}>Staff</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Id de Empelado</TableCell>
                 <TableCell>{loan.staffId}</TableCell>
-                <TableCell sx={{ fontWeight: "bold" }}>Cliente</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }}>Id de Cliente</TableCell>
                 <TableCell>{loan.clientId}</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }}>Cargos Extra</TableCell>
                 <TableCell>{loan.extraCharges}</TableCell>
@@ -184,7 +182,7 @@ const PreReturnLoan = () => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: "bold" }}>ID</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Id de Herramienta</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Nombre</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Categoría</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Disponibilidad</TableCell>

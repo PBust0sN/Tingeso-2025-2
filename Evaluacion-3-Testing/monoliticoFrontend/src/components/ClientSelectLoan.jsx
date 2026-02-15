@@ -172,16 +172,16 @@ const ClientSelectLoan  = () => {
                   Rut
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  lastName
+                  Apellido
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Name
+                  Nombre
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  email
+                  Correo
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  phone Number
+                  Número telefónico
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 80, fontWeight: "bold", color: "black" }}>
                   Acción

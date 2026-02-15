@@ -1,6 +1,9 @@
 import { Container, Typography, Button, Box, Card, CardContent } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const Home = () => {
+  const navigate = useNavigate();
     return (
       <Box sx = {{position: "relative"}}>
         <Box 
@@ -70,7 +73,25 @@ const Home = () => {
           ].join(", "), // fallback for outline in other browsers
         }}
         >
-        Hace click en el menu lateral para alguna acción
+        Necesitas ayuda?, visita el{" "}
+        <span 
+          onClick={() => navigate("/help")}
+          style={{
+            color: "#ffffff",
+            textDecoration: "underline",
+            textDecorationColor: "#ffffff",
+            cursor: "pointer",
+            fontWeight: 700,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "4px",
+            textShadow: "none"
+          }}
+        >
+          centro de ayuda
+          <OpenInNewIcon sx={{ fontSize: "1.2em" }} />
+        </span>
+        {" "}para conocer los atajos de teclado y más información sobre el sistema.
       </Typography>      
       </Box>
     </Box>

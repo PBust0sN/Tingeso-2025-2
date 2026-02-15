@@ -176,9 +176,9 @@ const MyReports = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>ID Reporte</TableCell>
+                <TableCell>Id de Reporte</TableCell>
                 <TableCell>Fecha</TableCell>
-                <TableCell>Tipo</TableCell>
+                <TableCell>Tipo de Reporte</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>

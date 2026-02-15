@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import reportsService from "../services/reports.service";
 import toolsRankingService from "../services/toolsRanking.service";
 import toolsReportService from "../services/toolsReport.service";
@@ -12,9 +12,12 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function ViewRankingReport() {
   const { reportId } = useParams();
+  const navigate = useNavigate();
   const [report, setReport] = useState(null);
   const [tools, setTools] = useState([]);
 
@@ -60,7 +63,7 @@ function ViewRankingReport() {
           <Typography variant="h5" align="center" sx={{ fontWeight: "bold", mb: 2 }}>Detalle del Reporte de Ranking</Typography>
           {report ? (
             <Box sx={{ display: "flex", gap: 6, justifyContent: "center", alignItems: "center" }}>
-              <Typography variant="body1"><b>ID Reporte:</b> {report.reportId}</Typography>
+              <Typography variant="body1"><b>Id del Reporte:</b> {report.reportId}</Typography>
               <Typography variant="body1"><b>Fecha:</b> {report.reportDate ? new Date(report.reportDate).toLocaleString() : "-"}</Typography>
               <Typography variant="body1"><b>Tipo:</b> Tool Ranking</Typography>
             </Box>
@@ -80,7 +83,7 @@ function ViewRankingReport() {
                   <TableRow>
                     <TableCell sx={{ fontWeight: "bold" }}>Nombre</TableCell>
                     <TableCell sx={{ fontWeight: "bold" }}>Categoría</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Cantidad Préstamos</TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>Cantidad Préstada</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -96,6 +99,16 @@ function ViewRankingReport() {
             </TableContainer>
           )}
         </Paper>
+        <Box sx={{ mt: 3 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(-1)}
+          >
+            Volver Atrás
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

@@ -188,19 +188,19 @@ const FineListId = () => {
                   Id
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Tipo
+                  Tipo de multa
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  State
+                  Estado
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Loan ID
+                  Id de Prestamo
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Amount
+                  Valor
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Date
+                  Fecha
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Acciones

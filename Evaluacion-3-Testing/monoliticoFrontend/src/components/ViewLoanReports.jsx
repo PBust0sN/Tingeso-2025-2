@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import reportsService from "../services/reports.service";
 import Stack from "@mui/material/Stack";
 import Table from "@mui/material/Table";
@@ -14,10 +14,13 @@ import loansReportsService from "../services/loansReports.service";
 import toolsLoanReportService from "../services/toolsLoanReport.service";
 import toolsReportService from "../services/toolsReport.service";
 import TableHead from "@mui/material/TableHead";
+import Button from "@mui/material/Button";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function ViewLoanReports() {
 	const { reportId } = useParams();
+	const navigate = useNavigate();
 	const [report, setReport] = useState(null);
 	const [loansReport, setLoansReport] = useState([]);
 	const [toolsByLoan, setToolsByLoan] = useState({});
@@ -91,10 +94,10 @@ function ViewLoanReports() {
 					<Typography variant="h5" align="center" sx={{ fontWeight: "bold", mb: 2 }}>Detalle del Reporte</Typography>
 					{report ? (
 						<Stack direction="row" spacing={6} sx={{ width: "100%", justifyContent: "center", alignItems: "center" }}>
-							<Typography variant="body1"><b>ID Reporte:</b> {report.reportId}</Typography>
+							<Typography variant="body1"><b>Id del Reporte:</b> {report.reportId}</Typography>
 							<Typography variant="body1"><b>Fecha:</b> {report.reportDate ? new Date(report.reportDate).toLocaleString() : "-"}</Typography>
 							<Typography variant="body1"><b>Tipo:</b> {tipo}</Typography>
-							<Typography variant="body1"><b>Cliente:</b> {report.clientIdReport}</Typography>
+							<Typography variant="body1"><b>Id del Cliente:</b> {report.clientIdReport}</Typography>
 						</Stack>
 					) : (
 						<Typography variant="body2" color="text.secondary">No se encontró información del reporte.</Typography>
@@ -113,9 +116,9 @@ function ViewLoanReports() {
 									<Table size="small">
 										<TableBody>
 											<TableRow>
-												<TableCell sx={{ fontWeight: "bold" }}>ID Préstamo</TableCell>
+												<TableCell sx={{ fontWeight: "bold" }}>Id del Préstamo</TableCell>
 												<TableCell>{lr.loanId}</TableCell>
-												<TableCell sx={{ fontWeight: "bold" }}>Tipo</TableCell>
+												<TableCell sx={{ fontWeight: "bold" }}>Tipo de prestamo</TableCell>
 												<TableCell>{lr.loanType}</TableCell>
 												<TableCell sx={{ fontWeight: "bold" }}>Cantidad</TableCell>
 												<TableCell>{lr.amount}</TableCell>
@@ -125,7 +128,7 @@ function ViewLoanReports() {
 												<TableCell>{lr.deliveryDate ? new Date(lr.deliveryDate).toLocaleDateString() : "-"}</TableCell>
 												<TableCell sx={{ fontWeight: "bold" }}>Fecha Retorno</TableCell>
 												<TableCell>{lr.returnDate ? new Date(lr.returnDate).toLocaleDateString() : "-"}</TableCell>
-												<TableCell sx={{ fontWeight: "bold" }}>ID Cliente</TableCell>
+												<TableCell sx={{ fontWeight: "bold" }}>Id del Cliente</TableCell>
 												<TableCell>{lr.clientId}</TableCell>
 											</TableRow>
 										</TableBody>
@@ -167,8 +170,18 @@ function ViewLoanReports() {
 						))
 					)}
 				</Paper>
+			<Box sx={{ mt: 3 }}>
+				<Button
+					variant="contained"
+					color="primary"
+					startIcon={<ArrowBackIcon />}
+					onClick={() => navigate(-1)}
+				>
+					Volver Atrás
+				</Button>
 			</Box>
 		</Box>
+	</Box>
 	);
 }
 

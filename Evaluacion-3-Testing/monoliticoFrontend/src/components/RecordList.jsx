@@ -17,6 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import recordsService from "../services/records.service";
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MenuItem from "@mui/material/MenuItem";
 import toolsService from "../services/tools.service";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -122,14 +123,13 @@ const RecordList = () => {
           paddingTop: 6,
         }}
       >
-        
         <TableContainer component={Paper} sx={{ maxWidth: 1400, background: "rgba(198, 198, 198, 0.85)" }}>
           <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
             <TableHead>
                 <TableRow>
                 <TableCell colSpan={8} align="center">
                   <Typography variant="h5" sx={{ color: "black", fontWeight: "bold" }}>
-                    Records
+                    Historial de Registros
                   </Typography>
                 </TableCell>
               </TableRow> 
@@ -208,22 +208,22 @@ const RecordList = () => {
                   Id
                 </TableCell>
                 <TableCell align="left" sx={{  maxWidth: 250, fontWeight: "bold", color: "black" }}>
-                  Record Type
+                  Tipo de Registro
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Record Date
+                  Fecha del Registro
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Tool ID
+                  Id de Herramienta
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Client Id
+                  Id de Cliente
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Loan ID
+                  Id de Prestamo
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Record Amount
+                  Monto del registro
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -245,6 +245,16 @@ const RecordList = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box sx={{ mt: 3, mb: 3 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate(-1)}
+          >
+            Volver Atrás
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

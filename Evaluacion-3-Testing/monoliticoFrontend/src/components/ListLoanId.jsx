@@ -182,9 +182,6 @@ const ListLoanId = () => {
                   Id
                 </TableCell>
                 <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  Tipo
-                </TableCell>
-                <TableCell align="left" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Cantidad
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
@@ -197,10 +194,10 @@ const ListLoanId = () => {
                   Fecha
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  ID Staff
+                  Id de Empleado
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
-                  ID Cliente
+                  Id de Cliente
                 </TableCell>
                 <TableCell align="center" sx={{ maxWidth: 180, fontWeight: "bold", color: "black" }}>
                   Cargos Extra
@@ -217,7 +214,6 @@ const ListLoanId = () => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.loanId}</TableCell>
-                  <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.loanType}</TableCell>
                   <TableCell align="left" sx={{ maxWidth: 180 }}>{loan.amount}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.deliveryDate)}</TableCell>
                   <TableCell align="center" sx={{ maxWidth: 180 }}>{formatDate(loan.returnDate)}</TableCell>

@@ -150,7 +150,7 @@ const NewLoanReport = () => {
 							Volver atrás
 						</Button>
 						<Button variant="contained" color="primary" onClick={handleSaveReport} disabled={loading}>
-							Generar
+							Generar Reporte
 						</Button>
 					</Box>
 					{loading && (
