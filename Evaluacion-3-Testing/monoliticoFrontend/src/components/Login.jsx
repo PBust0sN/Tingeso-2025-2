@@ -370,7 +370,7 @@ const Login = () => {
             
             <TextField
               label="Contraseña"
-              type="Contraseña"
+              type="password"
               variant="outlined"
               fullWidth
               value={password}
@@ -484,7 +484,7 @@ const Login = () => {
             
             <TextField
               label="Contraseña"
-              type="Contraseña"
+              type="password"
               variant="outlined"
               fullWidth
               value={password}
