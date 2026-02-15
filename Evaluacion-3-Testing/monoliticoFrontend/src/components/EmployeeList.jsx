@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 import clientService from "../services/client.service";
@@ -28,13 +28,12 @@ const EmployeeList = () => {
   const [search, setSearch] = useState("");
   const [imageMap, setImageMap] = useState({});
   const [loading, setLoading] = useState(true); // Added loading state
+  const [tokenPayload, setTokenPayload] = useState(null);
+  const tokenRef = useRef(localStorage.getItem("authToken"));
 
+  // Determine isAdmin from token payload
   const isAdmin = Boolean(
-    keycloak &&
-      (
-        keycloak.tokenParsed?.realm_access?.roles?.includes("ADMIN") ||
-        (typeof keycloak.hasRealmRole === "function" && keycloak.hasRealmRole("ADMIN"))
-      )
+    tokenPayload?.role === "ADMIN" || tokenPayload?.role?.toUpperCase() === "ADMIN"
   );
 
   const filteredClient = client
@@ -88,6 +87,19 @@ const EmployeeList = () => {
         console.log(`Error al cargar imagen para cliente ${clientId}:`, error);
       });
   };
+
+  // Decode token and extract payload
+  useEffect(() => {
+    const token = tokenRef.current;
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        setTokenPayload(decoded);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     init();
