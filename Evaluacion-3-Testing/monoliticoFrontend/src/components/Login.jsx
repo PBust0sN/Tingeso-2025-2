@@ -256,7 +256,7 @@ const Login = () => {
             
             <TextField
               label="Contraseña"
-              type="Contrasña"
+              type="password"
               variant="outlined"
               fullWidth
               value={password}
