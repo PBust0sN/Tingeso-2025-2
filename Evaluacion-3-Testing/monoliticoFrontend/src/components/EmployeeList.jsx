@@ -33,7 +33,7 @@ const EmployeeList = () => {
 
   // Determine isAdmin from token payload
   const isAdmin = Boolean(
-    tokenPayload?.role === "ADMIN" || tokenPayload?.role?.toUpperCase() === "ADMIN"
+    tokenPayload?.realm_access?.roles === "ADMIN" || tokenPayload?.realm_access?.roles?.toUpperCase() === "ADMIN"
   );
 
   const filteredClient = client
