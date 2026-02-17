@@ -8,7 +8,7 @@ import Clarity from '@microsoft/clarity';
 
 const projectId = "vfdtj40ou9"
 
-// Clarity.init(projectId);
+Clarity.init(projectId);
 
 console.log('Clarity initialized with project ID:', projectId);
 
