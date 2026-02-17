@@ -63,10 +63,11 @@ const ClientSelectLoan  = () => {
     .filter((client) => {
       const rolesField = client.role;
       if (Array.isArray(rolesField)) {
-        return rolesField.map((r) => String(r).toUpperCase()).includes("CLIENT");
+        return rolesField.map((r) => String(r).toUpperCase()).includes("CLIENT") ||
+               rolesField.map((r) => String(r).toUpperCase()).includes("STAFF");
       }
       if (typeof rolesField === "string") {
-        return rolesField.toUpperCase() === "CLIENT";
+        return rolesField.toUpperCase() === "CLIENT" || rolesField.toUpperCase() === "STAFF";
       }
       return false;
     })
