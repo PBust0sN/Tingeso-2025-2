@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import clientService from "../services/client.service";
 import imagesService from "../services/images.service";
@@ -23,7 +23,22 @@ const ClientSelectLoan  = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false); // Estado de carga
   const [imageMap, setImageMap] = useState({}); // Mapear imágenes por cliente
+  const [currentUserId, setCurrentUserId] = useState(null); // ID del usuario actual
   const navigate = useNavigate(); // Import useNavigate hook
+  const tokenRef = useRef(localStorage.getItem("authToken"));
+
+  // Obtener el ID del usuario actual del token
+  useEffect(() => {
+    const token = tokenRef.current;
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        setCurrentUserId(Number(decoded?.id_real) || Number(decoded?.sub));
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(true); // Iniciar carga
@@ -61,6 +76,11 @@ const ClientSelectLoan  = () => {
 
   const filteredClients = clients
     .filter((client) => {
+      // Excluir el usuario actual
+      if (currentUserId && client.client_id === currentUserId) {
+        return false;
+      }
+      
       const rolesField = client.role;
       if (Array.isArray(rolesField)) {
         return rolesField.map((r) => String(r).toUpperCase()).includes("CLIENT") ||
