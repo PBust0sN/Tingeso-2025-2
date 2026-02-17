@@ -332,7 +332,7 @@ function AppRoutes() {
             element={<PrivateRoute element={<FineListId />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
           />
           <Route
-            path="/client/list/select"
+            path="/loan/list/client-select"
             element={<PrivateRoute element={<ClientSelectLoan />} rolesAllowed={["STAFF","ADMIN", "CLIENT"]} />}
           />
         </Routes>

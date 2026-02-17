@@ -229,7 +229,7 @@ const formatDate = (dateStr) => {
                 </TableCell>
                 <TableCell colSpan={2} align="right">
                   <Link
-                    to="/client/list/select"
+                    to="/loan/list/client-select"
                     style={{ textDecoration: "none" }}
                   >
                     <Button
