@@ -155,11 +155,16 @@ export default function Navbar() {
     const newBreadcrumbs = [{ name: 'Inicio', path: '/home' }];
     let currentBuildPath = '';
 
-    segments.forEach((segment) => {
+    segments.forEach((segment, index) => {
       currentBuildPath += '/' + segment;
       const name = pageNames[segment] || segment.charAt(0).toUpperCase() + segment.slice(1);
       
-      if (!segment.match(/^\d+$/) && !segment.match(/^[a-f0-9\-]{36}$/)) {
+      // Si el segmento es 'list' y es el último, actualizar la ruta del anterior
+      if (segment === 'list' && index === segments.length - 1) {
+        if (newBreadcrumbs.length > 1) {
+          newBreadcrumbs[newBreadcrumbs.length - 1].path = currentBuildPath;
+        }
+      } else if (!segment.match(/^\d+$/) && !segment.match(/^[a-f0-9\-]{36}$/)) {
         newBreadcrumbs.push({ name: name, path: currentBuildPath });
       }
     });
