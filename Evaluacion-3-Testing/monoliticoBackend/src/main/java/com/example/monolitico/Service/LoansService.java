@@ -1,13 +1,5 @@
 package com.example.monolitico.Service;
 
-import com.example.monolitico.DTO.ReturnLoanDTO;
-import com.example.monolitico.Entities.*;
-import com.example.monolitico.Repositories.LoansRepository;
-import com.example.monolitico.Repositories.ToolsLoansRepository;
-import com.sun.jdi.LongValue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.monolitico.DTO.ReturnLoanDTO;
+import com.example.monolitico.Entities.ClientEntity;
+import com.example.monolitico.Entities.FineEntity;
+import com.example.monolitico.Entities.LoansEntity;
+import com.example.monolitico.Entities.RecordsEntity;
+import com.example.monolitico.Entities.ToolsEntity;
+import com.example.monolitico.Entities.ToolsLoansEntity;
+import com.example.monolitico.Repositories.LoansRepository;
+import com.example.monolitico.Repositories.ToolsLoansRepository;
 
 @Service
 public class LoansService {
@@ -201,6 +206,12 @@ public class LoansService {
     }
 
     public ReturnLoanDTO returnLoan(LoansEntity loansEntity) {
+        // we check first if the loan is active, if not then we cant return it
+        if (!loansEntity.getActive()) {
+            ReturnLoanDTO dto = new ReturnLoanDTO();
+            dto.setError("Loan is already returned.");
+            return dto;
+        }
         // first we calculate the costs
         ReturnLoanDTO loanCost = calculateCosts(loansEntity.getLoanId());
         System.out.println("1");

@@ -19,4 +19,5 @@ public class ReturnLoanDTO {
     private FineEntity RepoFine;
     private List<String> tools;
     private Long lowDmgAmount;
+    private String error;
 }

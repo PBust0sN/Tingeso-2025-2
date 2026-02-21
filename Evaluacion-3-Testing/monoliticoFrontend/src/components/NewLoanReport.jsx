@@ -100,7 +100,7 @@ const NewLoanReport = () => {
 					const toolReportRes = await toolsReportService.create({
 						toolName: tool.tool_name,
 						category: tool.category,
-						loanNount: tool.loan_count,
+						loanCount: tool.loan_count,
 					});
 					const toolIdReport = toolReportRes.data?.toolIdReport;
 					// Vincular con toolsLoanReport
